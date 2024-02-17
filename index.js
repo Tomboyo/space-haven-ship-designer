@@ -50,8 +50,10 @@ const CanvasClearSystem = function() {
   ctx.clearRect(0, 0, canvas.width, canvas.height)
 }
 
-const GridRenderSystem = function({ offsetX, offsetY, s }) {
-  console.log("Rendering grid")
+const GridRenderSystem = function(grid) {
+  console.log("Rendering grid:", grid)
+
+  const { offsetX, offsetY, s } = grid
   var w = 1 + Math.floor(canvas.width / s)
   var h = 1 + Math.floor(canvas.height / s)
   ctx.reset();
@@ -74,12 +76,13 @@ const GridRenderSystem = function({ offsetX, offsetY, s }) {
   ctx.stroke()
 }
 
+const rem = () => parseInt(window.getComputedStyle(document.documentElement).fontSize)
 
-const grid = ecs.newEntity({
+const gridEntity = ecs.newEntity({
   "grid": {
     offsetX: 0,
     offsetY: 0,
-    s: 10,
+    s: rem(),
   }
 })
 
@@ -87,14 +90,21 @@ ecs.registerSystems([
   ["CanvasClearSystem", [], CanvasClearSystem],
   ["GridRenderSystem", ["grid"], GridRenderSystem]])
 
+
 const resizeCanvas = () => {
-  var rem = window.getComputedStyle(document.documentElement).fontSize
-  grid.components.s = rem
   canvas.width = window.innerWidth
   canvas.height = window.innerHeight
   ecs.run()
 }
 
 window.addEventListener('resize', resizeCanvas)
+
+const zoom = (e) => {
+  gridEntity.components.grid.s += rem() * e.deltaY * -0.00075
+  ecs.run()
+}
+
+window.addEventListener('wheel', zoom)
+
 resizeCanvas()
 
