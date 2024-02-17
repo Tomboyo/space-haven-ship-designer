@@ -72,7 +72,7 @@ const GridRenderSystem = function(grid) {
     ctx.lineTo(canvas.width, y)
   }
 
-  ctx.strokeStyle = "black"
+  ctx.strokeStyle = "#66ccff88"
   ctx.stroke()
 }
 
