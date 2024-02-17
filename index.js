@@ -10,8 +10,16 @@ const canvas = document.querySelector("canvas")
 const ctx = canvas.getContext("2d")
 
 const ecs = {
+  resources: {},
   entities: [],
   systems: [],
+
+  newResource(name, resource) {
+    if (this.resources.hasOwnProperty(name))
+      throw new Error(`Resource ${name} already exists`)
+    this.resources[name] = resource
+    return resource
+  },
 
   /* components: { string => obj } => Entity */
   newEntity(components) {
@@ -25,20 +33,21 @@ const ecs = {
     this.entities.splice(e.id, 1)
   },
 
-  /* args: [ [ name: String, components: [string], f: function arity components.length ] ] => void */
+  /* args: [ [ name: String, resources: [string], components: [string], f: function arity resources.length + components.length ] ] => void */
   registerSystems(args) {
-    args.forEach(([ name, components, f ]) => {
-      this.systems.push({ name, components: [...components].sort(), f })
+    args.forEach(([ name, resources, components, f ]) => {
+      this.systems.push({ name, resources, components, f })
     })
   },
 
   run() {
-    this.systems.forEach(({ name, components: signature, f }) => {
+    this.systems.forEach(({ name, resources: resourceSignature, components: componentSignature, f }) => {
       console.log(`Running system ${name}`)
+      let resources = resourceSignature.map(name => this.resources[name])
       this.entities.forEach(({ components }) => {
-	if (signature.every(componentName => components.hasOwnProperty(componentName))) {
-	  var components = signature.map(componentName => components[componentName])
-	  f(...components)
+	if (componentSignature.every(componentName => components.hasOwnProperty(componentName))) {
+	  var components = componentSignature.map(componentName => components[componentName])
+	  f(...resources, ...components)
 	}
       })
     })
@@ -50,24 +59,27 @@ const CanvasClearSystem = function() {
   ctx.clearRect(0, 0, canvas.width, canvas.height)
 }
 
-const GridRenderSystem = function(grid) {
+const GridRenderSystem = function(camera, grid) {
   console.log("Rendering grid:", grid)
+  let offsetX = camera.offsetX % grid.s
+  let offsetY = camera.offsetY % grid.s
+  // The number of squares is the minimum number to cover the screen + 1 to
+  // slide in as the grid pans.
+  var w = 1 + Math.ceil(canvas.width / grid.s)
+  var h = 1 + Math.ceil(canvas.height / grid.s)
 
-  const { offsetX, offsetY, s } = grid
-  var w = 1 + Math.floor(canvas.width / s)
-  var h = 1 + Math.floor(canvas.height / s)
   ctx.reset();
 
   // Render vertical grid lines
   for (let i = 0; i < w; i++) {
-    var x = offsetX + (i * s)
+    var x = offsetX + (i * grid.s)
     ctx.moveTo(x, 0)
     ctx.lineTo(x, canvas.height)
   }
 
   // Render horizontal grid lines
   for (let i = 0; i < h; i++) {
-    var y = offsetY + (i * s)
+    var y = offsetY + (i * grid.s)
     ctx.moveTo(0, y)
     ctx.lineTo(canvas.width, y)
   }
@@ -78,17 +90,13 @@ const GridRenderSystem = function(grid) {
 
 const rem = () => parseInt(window.getComputedStyle(document.documentElement).fontSize)
 
-const gridEntity = ecs.newEntity({
-  "grid": {
-    offsetX: 0,
-    offsetY: 0,
-    s: rem(),
-  }
-})
+const cameraResource = ecs.newResource("world", { offsetX: 0, offsetY: 0 })
+
+const gridEntity = ecs.newEntity({ "grid": { s: rem() }})
 
 ecs.registerSystems([
-  ["CanvasClearSystem", [], CanvasClearSystem],
-  ["GridRenderSystem", ["grid"], GridRenderSystem]])
+  ["CanvasClearSystem", [], [], CanvasClearSystem],
+  ["GridRenderSystem", ["world"], ["grid"], GridRenderSystem]])
 
 
 const resizeCanvas = () => {
@@ -105,6 +113,15 @@ const zoom = (e) => {
 }
 
 window.addEventListener('wheel', zoom)
+
+const pan = (e) => {
+  if (e.buttons != 1) return
+  cameraResource.offsetX += e.movementX
+  cameraResource.offsetY += e.movementY
+  ecs.run()
+}
+
+window.addEventListener('mousemove', pan)
 
 resizeCanvas()
 
