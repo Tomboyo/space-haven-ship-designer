@@ -5,18 +5,20 @@
     <title>Space Haven Ship Designer</title>
     <script src="./index.js" defer></script>
     <style>
+      html, body {
+	padding: 0;
+	margin: 0;
+      }
       canvas {
-	border: 1px solid black
+	display: block;
+	width: 100vw;
+	height: 100vh;
       }
     </style>
   </head>
   <body>
-    <div>
-      <span>
-	<input type="number" id="width" min="1" max="100" value="50" />
-	<input type="number" id="height" min="1" max="100" value="25" />
-      </span>
+    <div id="canvas-container">
+      <canvas>Space Haven ship designer</canvas>
     </div>
-    <canvas width="120" height="120">Space Haven ship designer</canvas>
   </body>
 </html>

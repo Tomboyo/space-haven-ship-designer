@@ -1,9 +1,13 @@
 "use strict";
 
+/*
+ * ToDo: data and render loop with target FPS
+ * see https://stackoverflow.com/a/48412686
+ */
+
+
 const canvas = document.querySelector("canvas")
 const ctx = canvas.getContext("2d")
-const widthInput = document.querySelector("#width")
-const heightInput = document.querySelector("#height")
 
 const ecs = {
   entities: [],
@@ -70,7 +74,8 @@ const GridRenderSystem = function({ offsetX, offsetY, s }) {
   ctx.stroke()
 }
 
-ecs.newEntity({
+
+const grid = ecs.newEntity({
   "grid": {
     offsetX: 0,
     offsetY: 0,
@@ -82,5 +87,14 @@ ecs.registerSystems([
   ["CanvasClearSystem", [], CanvasClearSystem],
   ["GridRenderSystem", ["grid"], GridRenderSystem]])
 
-ecs.run()
+const resizeCanvas = () => {
+  var rem = window.getComputedStyle(document.documentElement).fontSize
+  grid.components.s = rem
+  canvas.width = window.innerWidth
+  canvas.height = window.innerHeight
+  ecs.run()
+}
+
+window.addEventListener('resize', resizeCanvas)
+resizeCanvas()
 
