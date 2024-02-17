@@ -6,6 +6,7 @@
     <script src="./index.js" defer></script>
     <style>
       html, body {
+	font-size: 12pt;
 	padding: 0;
 	margin: 0;
 	background-color: black;
@@ -15,11 +16,22 @@
 	width: 100vw;
 	height: 100vh;
       }
+
+      #btn-draw-hull {
+	font-size: inherit;
+	position: absolute;
+	left: 2rem;
+	bottom: 2rem;
+	padding: 0.5rem;
+	border: none;
+      }
+      #btn-draw-hull.active {
+	background-color: #66ccff;
+      }
     </style>
   </head>
   <body>
-    <div id="canvas-container">
-      <canvas>Space Haven ship designer</canvas>
-    </div>
+    <canvas>Space Haven ship designer</canvas>
+    <button id="btn-draw-hull">Draw Hull</button>
   </body>
 </html>

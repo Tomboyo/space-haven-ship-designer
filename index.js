@@ -1,11 +1,5 @@
 "use strict";
 
-/*
- * ToDo: data and render loop with target FPS
- * see https://stackoverflow.com/a/48412686
- */
-
-
 const canvas = document.querySelector("canvas")
 const ctx = canvas.getContext("2d")
 
@@ -42,25 +36,26 @@ const ecs = {
 
   run() {
     this.systems.forEach(({ name, resources: resourceSignature, components: componentSignature, f }) => {
-      console.log(`Running system ${name}`)
       let resources = resourceSignature.map(name => this.resources[name])
-      this.entities.forEach(({ components }) => {
-	if (componentSignature.every(componentName => components.hasOwnProperty(componentName))) {
-	  var components = componentSignature.map(componentName => components[componentName])
-	  f(...resources, ...components)
-	}
-      })
+      if (componentSignature.length == 0) {
+	f(...resources)
+      } else {
+	this.entities.forEach(({ components }) => {
+	  if (componentSignature.every(componentName => components.hasOwnProperty(componentName))) {
+	    var components = componentSignature.map(componentName => components[componentName])
+	    f(...resources, ...components)
+	  }
+	})
+      }
     })
   },
 }
 
 const CanvasClearSystem = function() {
-  console.log("Clearing canvas")
   ctx.clearRect(0, 0, canvas.width, canvas.height)
 }
 
 const GridRenderSystem = function(camera, grid) {
-  console.log("Rendering grid:", grid)
   let offsetX = camera.offsetX % grid.s
   let offsetY = camera.offsetY % grid.s
   // The number of squares is the minimum number to cover the screen + 1 to
@@ -90,14 +85,19 @@ const GridRenderSystem = function(camera, grid) {
 
 const rem = () => parseInt(window.getComputedStyle(document.documentElement).fontSize)
 
-const cameraResource = ecs.newResource("world", { offsetX: 0, offsetY: 0 })
-
-const gridEntity = ecs.newEntity({ "grid": { s: rem() }})
+const cameraResource = ecs.newResource("camera", { offsetX: 0, offsetY: 0 })
+const gridResource = ecs.newResource("grid", { s: rem() })
 
 ecs.registerSystems([
   ["CanvasClearSystem", [], [], CanvasClearSystem],
-  ["GridRenderSystem", ["world"], ["grid"], GridRenderSystem]])
+  ["GridRenderSystem", ["camera", "grid"], [], GridRenderSystem]])
 
+const PointerMode = {
+  DrawHull: 'draw hull',
+  Pan: 'pan'
+}
+
+var pointerMode = PointerMode.Pan;
 
 const resizeCanvas = () => {
   canvas.width = window.innerWidth
@@ -108,20 +108,45 @@ const resizeCanvas = () => {
 window.addEventListener('resize', resizeCanvas)
 
 const zoom = (e) => {
-  gridEntity.components.grid.s += rem() * e.deltaY * -0.00075
+  gridResource.s += rem() * e.deltaY * -0.00075
   ecs.run()
 }
 
 window.addEventListener('wheel', zoom)
 
-const pan = (e) => {
+const mouseMove = (e) => {
   if (e.buttons != 1) return
-  cameraResource.offsetX += e.movementX
-  cameraResource.offsetY += e.movementY
+
+  if (pointerMode == PointerMode.Pan) {
+    cameraResource.offsetX += e.movementX
+    cameraResource.offsetY += e.movementY
+  } else {
+    /*
+    let x = (e.offsetX + camera.offsetX) / gridResource.s
+    let y = (e.offsetY + camera.offsetY) / gridResource.s
+    ecs.newEntity({
+      "position": { x, y },
+      "render": drawHullBlock
+    });
+    */
+  }
+
   ecs.run()
 }
 
-window.addEventListener('pointermove', pan)
+window.addEventListener('pointermove', mouseMove)
+
+const toggleDrawHull = (e) => {
+  if (pointerMode == PointerMode.DrawHull) {
+    pointerMode = PointerMode.Pan
+    e.target.classList.remove('active')
+  } else {
+    pointerMode = PointerMode.DrawHull
+    e.target.classList.add('active')
+  }
+}
+
+document.querySelector('#btn-draw-hull').addEventListener('click', toggleDrawHull)
 
 resizeCanvas()
 
