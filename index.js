@@ -121,7 +121,7 @@ const pan = (e) => {
   ecs.run()
 }
 
-window.addEventListener('mousemove', pan)
+window.addEventListener('pointermove', pan)
 
 resizeCanvas()
 
