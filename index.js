@@ -1,96 +1,22 @@
-"use strict";
+import { createEcs } from "./modules/ecs.js"
+import { ClearCanvasSystem } from "./modules/systems/clearCanvasSystem.js"
+import { GridRenderSystem } from "./modules/systems/gridRenderSystem.js"
+import { TileRenderSystem } from "./modules/systems/tileRenderSystem.js" 
 
 const canvas = document.querySelector("canvas")
-const ctx = canvas.getContext("2d")
-
-const ecs = {
-  resources: {},
-  entities: [],
-  systems: [],
-
-  newResource(name, resource) {
-    if (this.resources.hasOwnProperty(name))
-      throw new Error(`Resource ${name} already exists`)
-    this.resources[name] = resource
-    return resource
-  },
-
-  /* components: { string => obj } => Entity */
-  newEntity(components) {
-    var entity = { components, id: this.entities.length }
-    this.entities.push(entity)
-    return entity
-  },
-
-  /* Entity => void */
-  removeEntity(e) {
-    this.entities.splice(e.id, 1)
-  },
-
-  /* args: [ [ name: String, resources: [string], components: [string], f: function arity resources.length + components.length ] ] => void */
-  registerSystems(args) {
-    args.forEach(([ name, resources, components, f ]) => {
-      this.systems.push({ name, resources, components, f })
-    })
-  },
-
-  run() {
-    this.systems.forEach(({ name, resources: resourceSignature, components: componentSignature, f }) => {
-      let resources = resourceSignature.map(name => this.resources[name])
-      if (componentSignature.length == 0) {
-	f(...resources)
-      } else {
-	this.entities.forEach(({ components }) => {
-	  if (componentSignature.every(componentName => components.hasOwnProperty(componentName))) {
-	    var components = componentSignature.map(componentName => components[componentName])
-	    f(...resources, ...components)
-	  }
-	})
-      }
-    })
-  },
-}
-
-const CanvasClearSystem = function() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height)
-}
-
-const GridRenderSystem = function(camera, grid) {
-  let offsetX = camera.offsetX % grid.s
-  let offsetY = camera.offsetY % grid.s
-  // The number of squares is the minimum number to cover the screen + 1 to
-  // slide in as the grid pans.
-  var w = 1 + Math.ceil(canvas.width / grid.s)
-  var h = 1 + Math.ceil(canvas.height / grid.s)
-
-  ctx.reset();
-
-  // Render vertical grid lines
-  for (let i = 0; i < w; i++) {
-    var x = offsetX + (i * grid.s)
-    ctx.moveTo(x, 0)
-    ctx.lineTo(x, canvas.height)
-  }
-
-  // Render horizontal grid lines
-  for (let i = 0; i < h; i++) {
-    var y = offsetY + (i * grid.s)
-    ctx.moveTo(0, y)
-    ctx.lineTo(canvas.width, y)
-  }
-
-  ctx.strokeStyle = "#66ccff88"
-  ctx.stroke()
-}
-
 const rem = () => parseInt(window.getComputedStyle(document.documentElement).fontSize)
+const ecs = createEcs()
 
+ecs.newResource("canvas", canvas)
 const cameraResource = ecs.newResource("camera", { offsetX: 0, offsetY: 0 })
 const gridResource = ecs.newResource("grid", { s: rem() })
+const tilesResource = ecs.newResource("tiles", [])
 
 ecs.registerSystems([
-  ["CanvasClearSystem", [], [], CanvasClearSystem],
-  ["GridRenderSystem", ["camera", "grid"], [], GridRenderSystem]])
+  ClearCanvasSystem,
+  TileRenderSystem,
+  GridRenderSystem
+])
 
 const PointerMode = {
   DrawHull: 'draw hull',
@@ -114,6 +40,13 @@ const zoom = (e) => {
 
 window.addEventListener('wheel', zoom)
 
+const newHullBlock = (x, y) => {
+  return {
+    "position": { x, y },
+    "tile": { color: "gray" }
+  }
+}
+
 const mouseMove = (e) => {
   if (e.buttons != 1) return
 
@@ -121,20 +54,19 @@ const mouseMove = (e) => {
     cameraResource.offsetX += e.movementX
     cameraResource.offsetY += e.movementY
   } else {
-    /*
-    let x = (e.offsetX + camera.offsetX) / gridResource.s
-    let y = (e.offsetY + camera.offsetY) / gridResource.s
-    ecs.newEntity({
-      "position": { x, y },
-      "render": drawHullBlock
-    });
-    */
+    let x = Math.floor((e.offsetX - cameraResource.offsetX) / gridResource.s)
+    let y = Math.floor((e.offsetY - cameraResource.offsetY) / gridResource.s)
+    tilesResource[x] ||= []
+    if (!tilesResource[x][y]) {
+      tilesResource[x][y] = ecs.newEntity(newHullBlock(x, y));
+    }
   }
 
   ecs.run()
 }
 
 window.addEventListener('pointermove', mouseMove)
+
 
 const toggleDrawHull = (e) => {
   if (pointerMode == PointerMode.DrawHull) {
