@@ -1,4 +1,5 @@
 import { createEcs } from "./modules/ecs.js"
+import createFrameScheduler from "./modules/frameScheduler.js" 
 import { ClearCanvasSystem } from "./modules/systems/clearCanvasSystem.js"
 import { GridRenderSystem } from "./modules/systems/gridRenderSystem.js"
 import { TileRenderSystem } from "./modules/systems/tileRenderSystem.js" 
@@ -6,6 +7,7 @@ import { TileRenderSystem } from "./modules/systems/tileRenderSystem.js"
 const canvas = document.querySelector("canvas")
 const rem = () => parseInt(window.getComputedStyle(document.documentElement).fontSize)
 const ecs = createEcs()
+const frameScheduler = createFrameScheduler(ecs.run)
 
 ecs.newResource("canvas", canvas)
 const cameraResource = ecs.newResource("camera", { offsetX: 0, offsetY: 0 })
@@ -28,14 +30,14 @@ var pointerMode = PointerMode.Pan;
 const resizeCanvas = () => {
   canvas.width = window.innerWidth
   canvas.height = window.innerHeight
-  ecs.run()
+  frameScheduler.requestFrame()
 }
 
 window.addEventListener('resize', resizeCanvas)
 
 const zoom = (e) => {
   gridResource.s += rem() * e.deltaY * -0.00075
-  ecs.run()
+  frameScheduler.requestFrame()
 }
 
 window.addEventListener('wheel', zoom)
@@ -62,7 +64,7 @@ const mouseMove = (e) => {
     }
   }
 
-  ecs.run()
+  frameScheduler.requestFrame()
 }
 
 window.addEventListener('pointermove', mouseMove)
