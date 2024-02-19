@@ -1,13 +1,13 @@
 import { createEcs } from "./modules/ecs.js"
-import createFrameScheduler from "./modules/frameScheduler.js" 
+import { createInputManager } from './modules/input.js'
+import frameScheduler from "./modules/frameScheduler.js"
+import { rem } from "./modules/css.js"
 import { ClearCanvasSystem } from "./modules/systems/clearCanvasSystem.js"
 import { GridRenderSystem } from "./modules/systems/gridRenderSystem.js"
 import { TileRenderSystem } from "./modules/systems/tileRenderSystem.js" 
 
 const canvas = document.querySelector("canvas")
-const rem = () => parseInt(window.getComputedStyle(document.documentElement).fontSize)
 const ecs = createEcs()
-const frameScheduler = createFrameScheduler(ecs.run)
 
 ecs.newResource("canvas", canvas)
 const cameraResource = ecs.newResource("camera", { offsetX: 0, offsetY: 0 })
@@ -20,67 +20,11 @@ ecs.registerSystems([
   GridRenderSystem
 ])
 
-const PointerMode = {
-  DrawHull: 'draw hull',
-  Pan: 'pan'
-}
+const inputManager = createInputManager(canvas, cameraResource, gridResource, tilesResource, frameScheduler, ecs)
+window.addEventListener('resize', e => inputManager.onResize(e))
+window.addEventListener('wheel', e => inputManager.onWheel(e))
+canvas.addEventListener('pointermove', (e) => inputManager.onPointerMove(e))
+document.querySelector('#btn-draw-hull').addEventListener('click', (e) => inputManager.onPaintHullToggle(e))
 
-var pointerMode = PointerMode.Pan;
-
-const resizeCanvas = () => {
-  canvas.width = window.innerWidth
-  canvas.height = window.innerHeight
-  frameScheduler.requestFrame()
-}
-
-window.addEventListener('resize', resizeCanvas)
-
-const zoom = (e) => {
-  gridResource.s += rem() * e.deltaY * -0.00075
-  frameScheduler.requestFrame()
-}
-
-window.addEventListener('wheel', zoom)
-
-const newHullBlock = (x, y) => {
-  return {
-    "position": { x, y },
-    "tile": { color: "gray" }
-  }
-}
-
-const mouseMove = (e) => {
-  if (e.buttons != 1) return
-
-  if (pointerMode == PointerMode.Pan) {
-    cameraResource.offsetX += e.movementX
-    cameraResource.offsetY += e.movementY
-  } else {
-    let x = Math.floor((e.offsetX - cameraResource.offsetX) / gridResource.s)
-    let y = Math.floor((e.offsetY - cameraResource.offsetY) / gridResource.s)
-    tilesResource[x] ||= []
-    if (!tilesResource[x][y]) {
-      tilesResource[x][y] = ecs.newEntity(newHullBlock(x, y));
-    }
-  }
-
-  frameScheduler.requestFrame()
-}
-
-window.addEventListener('pointermove', mouseMove)
-
-
-const toggleDrawHull = (e) => {
-  if (pointerMode == PointerMode.DrawHull) {
-    pointerMode = PointerMode.Pan
-    e.target.classList.remove('active')
-  } else {
-    pointerMode = PointerMode.DrawHull
-    e.target.classList.add('active')
-  }
-}
-
-document.querySelector('#btn-draw-hull').addEventListener('click', toggleDrawHull)
-
-resizeCanvas()
+inputManager.onResize()
 
