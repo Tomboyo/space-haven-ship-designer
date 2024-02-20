@@ -25,9 +25,9 @@ ecs.registerSystems([
 const inputManager = createInputManager(canvas, cameraResource, gridResource, tilesResource, frameScheduler, ecs)
 window.addEventListener('resize', e => inputManager.onResize(e))
 window.addEventListener('wheel', e => inputManager.onWheel(e))
-canvas.addEventListener('pointerdown', (e) => inputManager.onPointerDown(e))
-canvas.addEventListener('pointermove', (e) => inputManager.onPointerMove(e))
-canvas.addEventListener('pointerup', (e) => inputManager.onPointerUp(e))
+canvas.addEventListener('mousedown', (e) => inputManager.onPointerDown(e))
+canvas.addEventListener('mousemove', (e) => inputManager.onPointerMove(e))
+canvas.addEventListener('mouseup', (e) => inputManager.onPointerUp(e))
 document.querySelector('#btn-draw-hull').addEventListener('click', (e) => inputManager.onPaintHullToggle(e))
 
 inputManager.onResize()

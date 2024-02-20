@@ -2,6 +2,10 @@ import { rem } from "./css.js"
 
 export const createInputManager = (canvas, cameraResource, gridResource, tilesResource, frameScheduler, ecs) => {
   return {
+    pointer: {
+      b0: false,
+      b2: false
+    },
     isPaintHullToggleActive: false,
     paintHullSelection: null,
     
@@ -16,37 +20,37 @@ export const createInputManager = (canvas, cameraResource, gridResource, tilesRe
     },
 
     onPointerDown(e) {
-      if (!this.isPrimaryButtonPressed(e)) return
-      if (this.isPaintHullToggleActive) {
-	if (this.paintHullSelection)
-	  throw new Error('Tried to create paintHullSelection but it already exists')
-	let p = this.getTileCoordinates(e)
-	this.paintHullSelection = ecs.newEntity({ 'selection': {p0: p, p1: p}})
+      if (e.button === 0) this.pointer.b0 = true
+      else if (e.button === 2) this.pointer.b2 = true
 
-	frameScheduler.requestFrame(() => ecs.run())
+      if (e.button === 0) {
+	if (this.isPaintHullToggleActive) {
+	  this.beginPaintHullSelection(e)
+	}
+      } else if (e.button === 2) {
+	if (this.isPaintHullToggleActive && this.paintHullSelection) {
+	  this.cancelPaintHullSelection()
+	}
       }
     },
 
     onPointerMove(e) {
-      if (!this.isPrimaryButtonPressed(e)) return
-
-      if (this.paintHullSelection) {
-	this.paintHullSelection.selection.p1 = this.getTileCoordinates(e)
-      } else {
-	this.panCamera(e)
+      if (this.pointer.b0) {
+	if (this.paintHullSelection) {
+	  this.expandPaintHullSelection(e)
+	} else {
+	  this.panCamera(e)
+	}
       }
-
-      frameScheduler.requestFrame(() => ecs.run())
     },
 
     onPointerUp(e) {
-      if (!this.paintHullSelection) return
-      if (this.isPrimaryButtonPressed(e)) return
-      ecs.removeEntity(this.paintHullSelection)
-      this.drawHull(this.paintHullSelection)
-      this.paintHullSelection = null
+      if (this.pointer.b0 && e.button === 0 && this.paintHullSelection) {
+	this.commitPaintHullSelection(e)
+      }
 
-      frameScheduler.requestFrame(() => ecs.run())
+      if (e.button === 0) this.pointer.b0 = false
+      else if (e.button === 2) this.pointer.b2 = false
     },
 
     onResize(_e) {
@@ -60,8 +64,33 @@ export const createInputManager = (canvas, cameraResource, gridResource, tilesRe
       frameScheduler.requestFrame(() => ecs.run())
     },
 
-    // e.buttons is an int bitmask (1 = primary, 2 = secondary, 4 = middle, etc)
-    isPrimaryButtonPressed(e) { return e.buttons %2 === 1 },
+    beginPaintHullSelection(e) {
+      if (this.paintHullSelection)
+	throw new Error('Tried to create paintHullSelection but it already exists')
+
+      let p = this.getTileCoordinates(e)
+      this.paintHullSelection = ecs.newEntity({ 'selection': {p0: p, p1: p}})
+
+      frameScheduler.requestFrame(() => ecs.run())
+    },
+
+    expandPaintHullSelection(e) {
+      this.paintHullSelection.selection.p1 = this.getTileCoordinates(e)
+      frameScheduler.requestFrame(() => ecs.run())
+    },
+
+    commitPaintHullSelection(e) {
+      ecs.removeEntity(this.paintHullSelection)
+      this.drawHull(this.paintHullSelection)
+      this.paintHullSelection = null
+      frameScheduler.requestFrame(() => ecs.run())
+    },
+
+    cancelPaintHullSelection() {
+      ecs.removeEntity(this.paintHullSelection)
+      this.paintHullSelection = null
+      frameScheduler.requestFrame(() => ecs.run())
+    },
 
     drawHull({ 'selection': {p0, p1}}) {
       let [x0, x1] = [p0.x, p1.x].sort()
@@ -91,6 +120,7 @@ export const createInputManager = (canvas, cameraResource, gridResource, tilesRe
     panCamera(e) {
       cameraResource.offsetX += e.movementX
       cameraResource.offsetY += e.movementY
+      frameScheduler.requestFrame(() => ecs.run())
     },
   }
 }
