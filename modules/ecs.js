@@ -1,5 +1,6 @@
 export function createEcs() {
   return {
+    idSequence: 0,
     resources: {},
     entities: [],
     systems: [],
@@ -13,14 +14,15 @@ export function createEcs() {
 
     /* components: { string => obj } => Entity */
     newEntity(components) {
-      let entity = { ...components, id: this.entities.length }
+      let entity = { ...components, id: this.idSequence++ }
       this.entities.push(entity)
       return entity
     },
 
     /* Entity => void */
     removeEntity(e) {
-      this.entities.splice(e.id, 1)
+      let index = this.entities.findIndex(x => x.id === e.id)
+      this.entities.splice(index, 1)
     },
 
     /* args: [ [ name: String, resourceSignature: [string], componentSignature: [string], f: function arity resources.length + components.length ] ] => void */

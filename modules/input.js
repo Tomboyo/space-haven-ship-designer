@@ -8,6 +8,7 @@ export const createInputManager = (canvas, cameraResource, gridResource, tilesRe
     },
     isPaintHullToggleActive: false,
     paintHullSelection: null,
+    eraseHullSelection: null,
     
     onPaintHullToggle(e) {
       if (this.isPaintHullToggleActive) {
@@ -24,12 +25,16 @@ export const createInputManager = (canvas, cameraResource, gridResource, tilesRe
       else if (e.button === 2) this.pointer.b2 = true
 
       if (e.button === 0) {
-	if (this.isPaintHullToggleActive) {
+	if (this.isPaintHullToggleActive && this.eraseHullSelection) {
+	  this.cancelEraseHullSelection(e)
+	} else if (this.isPaintHullToggleActive) {
 	  this.beginPaintHullSelection(e)
 	}
       } else if (e.button === 2) {
 	if (this.isPaintHullToggleActive && this.paintHullSelection) {
 	  this.cancelPaintHullSelection()
+	} else {
+	  this.beginEraseHullSelection(e)
 	}
       }
     },
@@ -41,12 +46,18 @@ export const createInputManager = (canvas, cameraResource, gridResource, tilesRe
 	} else {
 	  this.panCamera(e)
 	}
+      } else if (this.pointer.b2) {
+	if (this.eraseHullSelection) {
+	  this.expandEraseHullSelection(e)
+	}
       }
     },
 
     onPointerUp(e) {
       if (this.pointer.b0 && e.button === 0 && this.paintHullSelection) {
 	this.commitPaintHullSelection(e)
+      } else if (this.pointer.b2 && e.button === 2 && this.eraseHullSelection) {
+	this.commitEraseHullSelection(e)
       }
 
       if (e.button === 0) this.pointer.b0 = false
@@ -92,6 +103,34 @@ export const createInputManager = (canvas, cameraResource, gridResource, tilesRe
       frameScheduler.requestFrame(() => ecs.run())
     },
 
+    beginEraseHullSelection(e) {
+      if (this.eraseHullSelection)
+	throw new Error('Tried to create eraseHullSelection but it already exists')
+
+      let p = this.getTileCoordinates(e)
+      this.eraseHullSelection = ecs.newEntity({ 'selection': {p0: p, p1: p}})
+
+      frameScheduler.requestFrame(() => ecs.run())
+    },
+
+    expandEraseHullSelection(e) {
+      this.eraseHullSelection.selection.p1 = this.getTileCoordinates(e)
+      frameScheduler.requestFrame(() => ecs.run())
+    },
+
+    commitEraseHullSelection(e) {
+      ecs.removeEntity(this.eraseHullSelection)
+      this.eraseHull(this.eraseHullSelection)
+      this.eraseHullSelection = null
+      frameScheduler.requestFrame(() => ecs.run())
+    },
+
+    cancelEraseHullSelection() {
+      ecs.removeEntity(this.eraseHullSelection)
+      this.eraseHullSelection = null
+      frameScheduler.requestFrame(() => ecs.run())
+    },
+
     drawHull({ 'selection': {p0, p1}}) {
       let [x0, x1] = p0.x < p1.x ? [p0.x, p1.x] : [p1.x, p0.x]
       let [y0, y1] = p0.y < p1.y ? [p0.y, p1.y] : [p1.y, p0.y]
@@ -99,7 +138,23 @@ export const createInputManager = (canvas, cameraResource, gridResource, tilesRe
       for (let x = x0; x <= x1; x++) {
 	tilesResource[x] ||= []
 	for (let y = y0; y <= y1; y++) {
+	  if (tilesResource[x][y]) continue
 	  tilesResource[x][y] = ecs.newEntity(this.newHullBlock(x, y))
+	}
+      }
+    },
+
+    eraseHull({ 'selection': {p0, p1}}) {
+      let [x0, x1] = p0.x < p1.x ? [p0.x, p1.x] : [p1.x, p0.x]
+      let [y0, y1] = p0.y < p1.y ? [p0.y, p1.y] : [p1.y, p0.y]
+
+      for (let x = x0; x <= x1; x++) {
+	if (!tilesResource[x]) continue
+	for (let y = y0; y <= y1; y++) {
+	  let entity = tilesResource[x][y]
+	  if (!entity) continue
+	  ecs.removeEntity(entity)
+	  tilesResource[x][y] = null
 	}
       }
     },
