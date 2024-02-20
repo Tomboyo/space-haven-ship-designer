@@ -7,8 +7,8 @@ export default [
     ctx.save()
     ctx.fillStyle = '#66ccff44'
     entities.forEach(([{p0, p1}]) => {
-      let [x0, x1] = [p0.x, p1.x].sort()
-      let [y0, y1] = [p0.y, p1.y].sort()
+      let [x0, x1] = p0.x < p1.x ? [p0.x, p1.x] : [p1.x, p0.x]
+      let [y0, y1] = p0.y < p1.y ? [p0.y, p1.y] : [p1.y, p0.y]
       ctx.fillRect(
 	x0 * grid.s + camera.offsetX,
 	y0 * grid.s + camera.offsetY,

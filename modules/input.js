@@ -76,6 +76,7 @@ export const createInputManager = (canvas, cameraResource, gridResource, tilesRe
 
     expandPaintHullSelection(e) {
       this.paintHullSelection.selection.p1 = this.getTileCoordinates(e)
+      console.log(JSON.stringify(this.paintHullSelection.selection))
       frameScheduler.requestFrame(() => ecs.run())
     },
 
@@ -93,8 +94,8 @@ export const createInputManager = (canvas, cameraResource, gridResource, tilesRe
     },
 
     drawHull({ 'selection': {p0, p1}}) {
-      let [x0, x1] = [p0.x, p1.x].sort()
-      let [y0, y1] = [p0.y, p1.y].sort()
+      let [x0, x1] = p0.x < p1.x ? [p0.x, p1.x] : [p1.x, p0.x]
+      let [y0, y1] = p0.y < p1.y ? [p0.y, p1.y] : [p1.y, p0.y]
 
       for (let x = x0; x <= x1; x++) {
 	tilesResource[x] ||= []
