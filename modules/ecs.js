@@ -13,7 +13,7 @@ export function createEcs() {
 
     /* components: { string => obj } => Entity */
     newEntity(components) {
-      let entity = { ...components, id: this.entities.lenth }
+      let entity = { ...components, id: this.entities.length }
       this.entities.push(entity)
       return entity
     },
