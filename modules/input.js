@@ -76,7 +76,6 @@ export const createInputManager = (canvas, cameraResource, gridResource, tilesRe
 
     expandPaintHullSelection(e) {
       this.paintHullSelection.selection.p1 = this.getTileCoordinates(e)
-      console.log(JSON.stringify(this.paintHullSelection.selection))
       frameScheduler.requestFrame(() => ecs.run())
     },
 
