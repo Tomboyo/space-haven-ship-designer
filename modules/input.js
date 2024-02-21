@@ -8,10 +8,12 @@ export const createInputManager = (canvas, cameraResource, gridResource, tilesRe
     pointer: {
       b0: false
     },
+    selectionEntity: {
+      paint: null,
+      erase: null
+    },
     isPaintHullToggleActive: false,
     isEraseHullToggleActive: false,
-    paintHullSelection: null,
-    eraseHullSelection: null,
     
     onPaintHullToggle(e) {
       if (this.isPaintHullToggleActive) {
@@ -42,25 +44,25 @@ export const createInputManager = (canvas, cameraResource, gridResource, tilesRe
 	this.pointer.b0 = true
 
 	if (this.isPaintHullToggleActive) {
-	  this.beginPaintHullSelection(e)
+	  this.beginSelection('paint', e)
 	} else if (this.isEraseHullToggleActive) {
-	  this.beginEraseHullSelection(e)
+	  this.beginSelection('erase', e)
 	}
       } else if (e.button === 2) {
-	if (this.paintHullSelection) {
-	  this.cancelPaintHullSelection()
-	} else if (this.eraseHullSelection) {
-	  this.cancelEraseHullSelection()
+	if (this.selectionEntity.paint) {
+	  this.cancelSelection('paint')
+	} else if (this.selectionEntity.erase) {
+	  this.cancelSelection('erase')
 	}
       }
     },
 
     onPointerMove(e) {
       if (this.pointer.b0) {
-	if (this.paintHullSelection) {
-	  this.expandPaintHullSelection(e)
-	} else if (this.eraseHullSelection) {
-	  this.expandEraseHullSelection(e)
+	if (this.selectionEntity['paint']) {
+	  this.expandSelection('paint', e)
+	} else if (this.selectionEntity['erase']) {
+	  this.expandSelection('erase', e)
 	} else {
 	  this.panCamera(e)
 	}
@@ -70,10 +72,10 @@ export const createInputManager = (canvas, cameraResource, gridResource, tilesRe
     onPointerUp(e) {
       if (e.button === 0) {
 	this.pointer.b0 = false
-	if (this.paintHullSelection) {
-	  this.commitPaintHullSelection(e)
-	} else if (this.eraseHullSelection) {
-	  this.commitEraseHullSelection(e)
+	if (this.selectionEntity['paint']) {
+	  this.commitSelection('paint', e, selection => this.drawHull(selection))
+	} else if (this.selectionEntity['erase']) {
+	  this.commitSelection('erase', e, selection => this.eraseHull(selection))
 	}
       }
     },
@@ -89,59 +91,31 @@ export const createInputManager = (canvas, cameraResource, gridResource, tilesRe
       frameScheduler.requestFrame(() => ecs.run())
     },
 
-    beginPaintHullSelection(e) {
-      if (this.paintHullSelection)
+    beginSelection(name, e) {
+      if (this.selectionEntity[name])
 	throw new Error('Tried to create paintHullSelection but it already exists')
 
       let p = this.getTileCoordinates(e)
-      this.paintHullSelection = ecs.newEntity({ 'selection': {p0: p, p1: p}})
+      this.selectionEntity[name] = ecs.newEntity({ 'selection': {p0: p, p1: p}})
 
       frameScheduler.requestFrame(() => ecs.run())
     },
 
-    expandPaintHullSelection(e) {
-      this.paintHullSelection.selection.p1 = this.getTileCoordinates(e)
+    expandSelection(name, e) {
+      this.selectionEntity[name].selection.p1 = this.getTileCoordinates(e)
       frameScheduler.requestFrame(() => ecs.run())
     },
 
-    commitPaintHullSelection(e) {
-      ecs.removeEntity(this.paintHullSelection)
-      this.drawHull(this.paintHullSelection)
-      this.paintHullSelection = null
+    commitSelection(name, e, action) {
+      ecs.removeEntity(this.selectionEntity[name])
+      action(this.selectionEntity[name])
+      this.selectionEntity[name] = null
       frameScheduler.requestFrame(() => ecs.run())
     },
 
-    cancelPaintHullSelection() {
-      ecs.removeEntity(this.paintHullSelection)
-      this.paintHullSelection = null
-      frameScheduler.requestFrame(() => ecs.run())
-    },
-
-    beginEraseHullSelection(e) {
-      if (this.eraseHullSelection)
-	throw new Error('Tried to create eraseHullSelection but it already exists')
-
-      let p = this.getTileCoordinates(e)
-      this.eraseHullSelection = ecs.newEntity({ 'selection': {p0: p, p1: p}})
-
-      frameScheduler.requestFrame(() => ecs.run())
-    },
-
-    expandEraseHullSelection(e) {
-      this.eraseHullSelection.selection.p1 = this.getTileCoordinates(e)
-      frameScheduler.requestFrame(() => ecs.run())
-    },
-
-    commitEraseHullSelection(e) {
-      ecs.removeEntity(this.eraseHullSelection)
-      this.eraseHull(this.eraseHullSelection)
-      this.eraseHullSelection = null
-      frameScheduler.requestFrame(() => ecs.run())
-    },
-
-    cancelEraseHullSelection() {
-      ecs.removeEntity(this.eraseHullSelection)
-      this.eraseHullSelection = null
+    cancelSelection(name) {
+      ecs.removeEntity(this.selectionEntity[name])
+      this.selectionEntity[name] = null
       frameScheduler.requestFrame(() => ecs.run())
     },
 
