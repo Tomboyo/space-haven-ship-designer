@@ -1,40 +1,56 @@
 import { rem } from "./css.js"
 
+const paintHullToggle = document.querySelector('#btn-draw-hull')
+const eraseHullToggle = document.querySelector('#btn-erase-hull')
+
 export const createInputManager = (canvas, cameraResource, gridResource, tilesResource, frameScheduler, ecs) => {
   return {
     pointer: {
-      b0: false,
-      b2: false
+      b0: false
     },
     isPaintHullToggleActive: false,
+    isEraseHullToggleActive: false,
     paintHullSelection: null,
     eraseHullSelection: null,
     
     onPaintHullToggle(e) {
       if (this.isPaintHullToggleActive) {
 	this.isPaintHullToggleActive = false
-	e.target.classList.remove('active')
+	paintHullToggle.classList.remove('active')
       } else {
 	this.isPaintHullToggleActive = true
-	e.target.classList.add('active')
+	this.isEraseHullToggleActive = false
+        paintHullToggle.classList.add('active')
+	eraseHullToggle.classList.remove('active')
+      }
+    },
+
+    onEraseHullToggle(e) {
+      if (this.isEraseHullToggleActive) {
+	this.isEraseHullToggleActive = false
+	eraseHullToggle.classList.remove('active')
+      } else {
+	this.isPaintHullToggleActive = false
+	this.isEraseHullToggleActive = true
+	eraseHullToggle.classList.add('active')
+	paintHullToggle.classList.remove('active')
       }
     },
 
     onPointerDown(e) {
-      if (e.button === 0) this.pointer.b0 = true
-      else if (e.button === 2) this.pointer.b2 = true
-
       if (e.button === 0) {
-	if (this.isPaintHullToggleActive && this.eraseHullSelection) {
-	  this.cancelEraseHullSelection(e)
-	} else if (this.isPaintHullToggleActive) {
+	this.pointer.b0 = true
+
+	if (this.isPaintHullToggleActive) {
 	  this.beginPaintHullSelection(e)
+	} else if (this.isEraseHullToggleActive) {
+	  this.beginEraseHullSelection(e)
 	}
       } else if (e.button === 2) {
-	if (this.isPaintHullToggleActive && this.paintHullSelection) {
+	if (this.paintHullSelection) {
 	  this.cancelPaintHullSelection()
-	} else {
-	  this.beginEraseHullSelection(e)
+	} else if (this.eraseHullSelection) {
+	  this.cancelEraseHullSelection()
 	}
       }
     },
@@ -43,25 +59,23 @@ export const createInputManager = (canvas, cameraResource, gridResource, tilesRe
       if (this.pointer.b0) {
 	if (this.paintHullSelection) {
 	  this.expandPaintHullSelection(e)
+	} else if (this.eraseHullSelection) {
+	  this.expandEraseHullSelection(e)
 	} else {
 	  this.panCamera(e)
-	}
-      } else if (this.pointer.b2) {
-	if (this.eraseHullSelection) {
-	  this.expandEraseHullSelection(e)
 	}
       }
     },
 
     onPointerUp(e) {
-      if (this.pointer.b0 && e.button === 0 && this.paintHullSelection) {
-	this.commitPaintHullSelection(e)
-      } else if (this.pointer.b2 && e.button === 2 && this.eraseHullSelection) {
-	this.commitEraseHullSelection(e)
+      if (e.button === 0) {
+	this.pointer.b0 = false
+	if (this.paintHullSelection) {
+	  this.commitPaintHullSelection(e)
+	} else if (this.eraseHullSelection) {
+	  this.commitEraseHullSelection(e)
+	}
       }
-
-      if (e.button === 0) this.pointer.b0 = false
-      else if (e.button === 2) this.pointer.b2 = false
     },
 
     onResize(_e) {

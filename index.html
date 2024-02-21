@@ -17,21 +17,28 @@
 	height: 100vh;
       }
 
-      #btn-draw-hull {
-	font-size: inherit;
+      #controls {
 	position: absolute;
-	left: 2rem;
-	bottom: 2rem;
+	left: 1rem;
+	bottom: 1rem;
+      }
+      #controls button {
+	font-size: inherit;
+	margin-left: 1rem;
+	margin-bottom: 1rem;
 	padding: 0.5rem;
 	border: none;
       }
-      #btn-draw-hull.active {
+      #controls button.active {
 	background-color: #66ccff;
       }
     </style>
   </head>
   <body oncontextmenu="return false;">
     <canvas>Space Haven ship designer</canvas>
-    <button id="btn-draw-hull">Draw Hull</button>
+    <span id="controls">
+      <button id="btn-draw-hull">Draw Hull</button>
+      <button id="btn-erase-hull">Erase Hull</button>
+    </span>
   </body>
 </html>

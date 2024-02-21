@@ -33,6 +33,7 @@ canvas.addEventListener('mouseup', (e) => {
   save()
 })
 document.querySelector('#btn-draw-hull').addEventListener('click', (e) => inputManager.onPaintHullToggle(e))
+document.querySelector('#btn-erase-hull').addEventListener('click', (e) => inputManager.onEraseHullToggle(e))
 
 inputManager.onResize()
 
