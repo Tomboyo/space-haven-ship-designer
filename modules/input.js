@@ -14,7 +14,7 @@ function getTileCoordinates(e) {
 const ui = {
   paintHullToggle: document.querySelector('#btn-draw-hull'),
   eraseHullToggle: document.querySelector('#btn-erase-hull'),
-  paintModuleToggle: document.querySelector('#btn-paint-module'),
+  paintModuleToggle: document.querySelector('#btn-draw-module'),
 }
 
 export class InputManager {
