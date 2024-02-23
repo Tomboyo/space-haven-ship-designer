@@ -3,6 +3,7 @@ import { getTileCoordinates } from '../util.js'
 import { newHullBlock } from '../component/hullBlock.js'
 
 import { PanState } from './panState.js'
+import { EraseHullInitialState } from './eraseHullStates.js'
 
 export class PaintHullInitialState {
   constructor (manager) {
@@ -12,6 +13,12 @@ export class PaintHullInitialState {
   onPaintHullToggleClick() {
     styleButtonInactive(this.manager.ui.paintHullToggle)
     return new PanState(this.manager)
+  }
+
+  onEraseHullToggleClick() {
+    styleButtonActive(this.manager.ui.eraseHullToggle)
+    styleButtonInactive(this.manager.ui.paintHullToggle)
+    return new EraseHullInitialState(this.manager)
   }
 
   onCanvasLeftMouseDown(e) {
