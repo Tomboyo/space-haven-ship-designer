@@ -22,10 +22,10 @@ export class PaintHullInitialState {
     return new EraseHullInitialState(this.manager)
   }
 
-  onPaintModuleToggleClick() {
+  onPaintModuleToggleClick(e) {
     styleButtonInactive(this.manager.ui.paintHullToggle)
     styleButtonActive(this.manager.ui.paintModuleToggle)
-    return new PaintModuleInitialState(this.manager)
+    return new PaintModuleInitialState(this.manager, e)
   }
 
   onCanvasLeftMouseDown(e) {

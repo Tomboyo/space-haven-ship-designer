@@ -2,6 +2,7 @@ import { styleButtonActive } from '../css.js'
 
 import { PaintHullInitialState } from './paintHullStates.js'
 import { EraseHullInitialState } from './eraseHullStates.js'
+import { PaintModuleInitialState } from './paintModuleStates.js'
 
 export class PanState {
   constructor(manager) {
@@ -17,6 +18,11 @@ export class PanState {
   onEraseHullToggleClick() {
     styleButtonActive(this.manager.ui.eraseHullToggle)
     return new EraseHullInitialState(this.manager)
+  }
+
+  onPaintModuleToggleClick(e) {
+    styleButtonActive(this.manager.ui.paintModuleToggle)
+    return new PaintModuleInitialState(this.manager, e)
   }
 
   onCanvasLeftMouseDown(e) {

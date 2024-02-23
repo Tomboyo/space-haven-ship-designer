@@ -21,10 +21,10 @@ export class EraseHullInitialState {
     return new PanState(this.manager)
   }
 
-  onPaintModuleToggleClick() {
+  onPaintModuleToggleClick(e) {
     styleButtonActive(this.manager.ui.paintModuleToggle)
     styleButtonInactive(this.manager.ui.eraseHullToggle)
-    return new PaintModuleInitialState(this.manager)
+    return new PaintModuleInitialState(this.manager, e)
   }
 
   onCanvasLeftMouseDown(e) {

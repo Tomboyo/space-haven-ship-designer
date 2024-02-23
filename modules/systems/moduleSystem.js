@@ -1,7 +1,7 @@
 export default [
-  "GhostModuleSystem",
+  "ModuleSystem",
   ['canvas', 'camera', 'grid'],
-  ['ghost', 'position'],
+  ['module', 'position'],
   (canvas, camera, grid, entities) => {
     let ctx = canvas.getContext('2d')
     ctx.save()

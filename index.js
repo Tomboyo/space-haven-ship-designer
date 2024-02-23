@@ -3,7 +3,7 @@ import { InputManager } from './modules/input.js'
 import frameScheduler from "./modules/frameScheduler.js"
 import { rem } from "./modules/css.js"
 import { ClearCanvasSystem } from "./modules/systems/clearCanvasSystem.js"
-import GhostModuleSystem from './modules/systems/ghostModuleSystem.js'
+import ModuleSystem from './modules/systems/moduleSystem.js'
 import { GridRenderSystem } from "./modules/systems/gridRenderSystem.js"
 import SelectionSystem from './modules/systems/selectionSystem.js'
 import { TileRenderSystem } from "./modules/systems/tileRenderSystem.js" 
@@ -21,7 +21,7 @@ ecs.registerSystems([
   ClearCanvasSystem,
   TileRenderSystem,
   GridRenderSystem,
-  GhostModuleSystem,
+  ModuleSystem,
   SelectionSystem
 ])
 
