@@ -1,8 +1,90 @@
-import { rem } from "./css.js"
+import { rem, styleButtonActive, styleButtonInactive } from './css.js'
+import { PanState } from './input/panState.js'
 
 const paintHullToggle = document.querySelector('#btn-draw-hull')
 const eraseHullToggle = document.querySelector('#btn-erase-hull')
 
+
+function getTileCoordinates(e) {
+  let x = Math.floor((e.offsetX - cameraResource.offsetX) / gridResource.s)
+  let y = Math.floor((e.offsetY - cameraResource.offsetY) / gridResource.s)
+  return { x, y }
+}
+
+const ui = {
+  paintHullToggle: document.querySelector('#btn-draw-hull'),
+  eraseHullToggle: document.querySelector('#btn-erase-hull'),
+  paintModuleToggle: document.querySelector('#btn-paint-module'),
+}
+
+export class InputManager {
+  constructor(ecs, frameScheduler) {
+    this.ecs = ecs
+    this.frameScheduler = frameScheduler
+
+    this.ui = ui
+    this.state = new PanState(this)
+  }
+
+  handle(which, e) {
+    this.state = this.state[which]?.(e) || this.state
+    if (this.ecs.isDirty) {
+      this.frameScheduler.requestFrame(() => this.ecs.run())
+    }
+  }
+
+  onWheel(e) {
+    this.ecs.updateResource('grid', g => {
+      g.s += rem() * e.deltaY * -0.00075
+    })
+
+    this.handle('onWheel', e)
+  }
+
+  onResize(e) {
+    this.ecs.updateResource('canvas', c => {
+      c.width = window.innerWidth
+      c.height = window.innerHeight
+    })
+
+    this.handle('onResize', e)
+  }
+
+  onPaintHullToggleClick(e) {
+    this.handle('onPaintHullToggleClick', e)
+  }
+
+  onEraseHullToggleClick(e) {
+    this.handle('onEraseHullToggleClick', e)
+  }
+
+  onPaintModuleToggleClick(e) {
+    this.handle('onPaintModuleToggleClick', e)
+  }
+
+
+  onCanvasMouseDown(e) {
+    if (e.button === 0) {
+      this.handle('onCanvasLeftMouseDown', e)
+    } else if (e.button === 2) {
+      this.handle('onCanvasRightMouseDown', e)
+    }
+  }
+
+  onCanvasMouseUp(e) {
+    if (e.button === 0) {
+      this.handle('onCanvasLeftMouseUp', e)
+    } else if (e.button === 2) {
+      this.handle('onCanvasRightMouseUp', e)
+    }
+  }
+
+  onCanvasMouseMove(e) {
+    this.handle('onCanvasMouseMove', e)
+  }
+}
+
+/*
 export const createInputManager = (canvas, cameraResource, gridResource, tilesResource, frameScheduler, ecs) => {
   return {
     pointer: {
@@ -12,8 +94,19 @@ export const createInputManager = (canvas, cameraResource, gridResource, tilesRe
       paint: null,
       erase: null
     },
+    ghostModule: null,
     isPaintHullToggleActive: false,
     isEraseHullToggleActive: false,
+
+    onPaintModuleClick(e) {
+      if (this.ghostModule) {
+	this.cancelGhostModule()
+      } else {
+	if (this.selectionEntity.paint || this.selectionEntity.erase)
+	  return
+	this.createGhostModule(e)
+      }
+    },
     
     onPaintHullToggle(e) {
       if (this.isPaintHullToggleActive) {
@@ -43,13 +136,17 @@ export const createInputManager = (canvas, cameraResource, gridResource, tilesRe
       if (e.button === 0) {
 	this.pointer.b0 = true
 
-	if (this.isPaintHullToggleActive) {
+	if (this.ghostModule) {
+	  this.commitGhostModule()
+	} else if (this.isPaintHullToggleActive) {
 	  this.beginSelection('paint', e)
 	} else if (this.isEraseHullToggleActive) {
 	  this.beginSelection('erase', e)
 	}
       } else if (e.button === 2) {
-	if (this.selectionEntity.paint) {
+	if (this.ghostModule) {
+	  this.cancelGhostModule()
+	} else if (this.selectionEntity.paint) {
 	  this.cancelSelection('paint')
 	} else if (this.selectionEntity.erase) {
 	  this.cancelSelection('erase')
@@ -59,12 +156,16 @@ export const createInputManager = (canvas, cameraResource, gridResource, tilesRe
 
     onPointerMove(e) {
       if (this.pointer.b0) {
-	if (this.selectionEntity['paint']) {
+	if (this.selectionEntity.paint) {
 	  this.expandSelection('paint', e)
-	} else if (this.selectionEntity['erase']) {
+	} else if (this.selectionEntity.erase) {
 	  this.expandSelection('erase', e)
 	} else {
 	  this.panCamera(e)
+	}
+      } else {
+	if (this.ghostModule) {
+	  this.moveGhostModule(e)
 	}
       }
     },
@@ -88,6 +189,39 @@ export const createInputManager = (canvas, cameraResource, gridResource, tilesRe
 
     onWheel(e) {
       gridResource.s += rem() * e.deltaY * -0.00075
+      frameScheduler.requestFrame(() => ecs.run())
+    },
+
+    createGhostModule(e) {
+      let position = this.getTileCoordinates(e)
+      this.ghostModule = ecs.newEntity({
+	'ghost': {
+	  'border': '#fff8',
+	  'fill': '#f008',
+	},
+	position,
+      })
+      frameScheduler.requestFrame(() => ecs.run())
+    },
+
+    moveGhostModule(e) {
+      let position = this.getTileCoordinates(e)
+      this.ghostModule.position = position
+      frameScheduler.requestFrame(() => ecs.run())
+    },
+
+    cancelGhostModule() {
+      ecs.removeEntity(this.ghostModule)
+      this.ghostModule = null;
+      frameScheduler.requestFrame(() => ecs.run())
+    },
+
+    commitGhostModule() {
+      /*ecs.newEntity({
+	'module': this.ghostModule.ghost,
+	'position': this.ghostModule.position
+      })*\/
+      cancelGhostModule()
       frameScheduler.requestFrame(() => ecs.run())
     },
 
@@ -167,5 +301,5 @@ export const createInputManager = (canvas, cameraResource, gridResource, tilesRe
     },
   }
 }
-
+*/
 
