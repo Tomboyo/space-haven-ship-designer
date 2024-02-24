@@ -33,6 +33,11 @@ export class PaintHullInitialState {
     let entity = this.manager.ecs.newEntity({ 'selection': {p0: p, p1: p}})
     return new PaintHullSelectingState(this.manager, entity)
   }
+
+  onCanvasRightMouseDown(e) {
+    styleButtonInactive(this.manager.ui.paintHullToggle)
+    return new PanState(this.manager)
+  }
 }
 
 class PaintHullSelectingState {

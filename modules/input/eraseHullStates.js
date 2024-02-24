@@ -32,6 +32,11 @@ export class EraseHullInitialState {
     let entity = this.manager.ecs.newEntity({ 'selection': { p0: p, p1: p }})
     return new EraseHullSelectingState(this.manager, entity)
   }
+
+  onCanvasRightMouseDown(e) {
+    styleButtonInactive(this.manager.ui.eraseHullToggle)
+    return new PanState(this.manager)
+  }
 }
 
 class EraseHullSelectingState {
