@@ -39,12 +39,25 @@ canvas.addEventListener('mouseup', (e) => {
 })
 document.querySelector('#btn-paint-hull').addEventListener('click', (e) => inputManager.onPaintHullToggleClick(e))
 document.querySelector('#btn-erase-hull').addEventListener('click', (e) => inputManager.onEraseHullToggleClick(e))
+document.querySelector('#btn-clear-all').addEventListener('click', (d) => {
+  if (confirm('This will delete you ship and saved data. Are you sure?')) {
+    clearSaveData()
+  }
+})
 
 inputManager.onResize()
 
 function save() {
   localStorage.setItem('tiles', JSON.stringify(tilesResource))
   localStorage.setItem('entities', JSON.stringify(ecs.entities))
+}
+
+function clearSaveData() {
+  localStorage.removeItem('tiles')
+  localStorage.removeItem('entities')
+  ecs.removeAllEntities()
+  ecs.updateResource('tiles', tiles => tiles.splice(0))
+  ecs.run()
 }
 
 function loadModules() {

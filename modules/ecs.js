@@ -54,6 +54,11 @@ export function createEcs() {
       this.isDirty = true
     },
 
+    removeAllEntities() {
+      this.entities = []
+      this.isDirty = true
+    },
+
     /* args: [ [ name: String, resourceSignature: [string], componentSignature: [string], f: function arity resources.length + components.length ] ] => void */
     registerSystems(args) {
       args.forEach(([ name, resourceSignature, componentSignature, f ]) => {
