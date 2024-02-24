@@ -1,20 +1,10 @@
 import { rem, styleButtonActive, styleButtonInactive } from './css.js'
 import { PanState } from './input/panState.js'
 
-const paintHullToggle = document.querySelector('#btn-draw-hull')
-const eraseHullToggle = document.querySelector('#btn-erase-hull')
-
-
-function getTileCoordinates(e) {
-  let x = Math.floor((e.offsetX - cameraResource.offsetX) / gridResource.s)
-  let y = Math.floor((e.offsetY - cameraResource.offsetY) / gridResource.s)
-  return { x, y }
-}
-
 const ui = {
-  paintHullToggle: document.querySelector('#btn-draw-hull'),
+  paintHullToggle: document.querySelector('#btn-paint-hull'),
   eraseHullToggle: document.querySelector('#btn-erase-hull'),
-  paintModuleToggle: document.querySelector('#btn-draw-module'),
+  paintModuleToggle: document.querySelector('#btn-paint-module'),
 }
 
 export class InputManager {

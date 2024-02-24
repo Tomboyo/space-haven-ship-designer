@@ -34,9 +34,9 @@ canvas.addEventListener('mouseup', (e) => {
   inputManager.onCanvasMouseUp(e)
   save()
 })
-document.querySelector('#btn-draw-hull').addEventListener('click', (e) => inputManager.onPaintHullToggleClick(e))
+document.querySelector('#btn-paint-hull').addEventListener('click', (e) => inputManager.onPaintHullToggleClick(e))
 document.querySelector('#btn-erase-hull').addEventListener('click', (e) => inputManager.onEraseHullToggleClick(e))
-document.querySelector('#btn-draw-module').addEventListener('click', (e) => inputManager.onPaintModuleToggleClick(e))
+document.querySelector('#btn-paint-module').addEventListener('click', (e) => inputManager.onPaintModuleToggleClick(e))
 
 inputManager.onResize()
 
