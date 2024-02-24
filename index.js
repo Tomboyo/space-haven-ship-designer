@@ -6,7 +6,10 @@ import { ClearCanvasSystem } from "./modules/systems/clearCanvasSystem.js"
 import ModuleSystem from './modules/systems/moduleSystem.js'
 import { GridRenderSystem } from "./modules/systems/gridRenderSystem.js"
 import SelectionSystem from './modules/systems/selectionSystem.js'
-import { TileRenderSystem } from "./modules/systems/tileRenderSystem.js" 
+import { TileRenderSystem } from "./modules/systems/tileRenderSystem.js"
+import { modules } from './modules/component/modules.js'
+
+loadModules()
 
 const canvas = document.querySelector("canvas")
 const ecs = createEcs()
@@ -27,7 +30,7 @@ ecs.registerSystems([
 
 const inputManager = new InputManager(ecs, frameScheduler)
 window.addEventListener('resize', e => inputManager.onResize(e))
-window.addEventListener('wheel', e => inputManager.onWheel(e))
+canvas.addEventListener('wheel', e => inputManager.onCanvasWheel(e))
 canvas.addEventListener('mousedown', (e) => inputManager.onCanvasMouseDown(e))
 canvas.addEventListener('mousemove', (e) => inputManager.onCanvasMouseMove(e))
 canvas.addEventListener('mouseup', (e) => {
@@ -36,11 +39,28 @@ canvas.addEventListener('mouseup', (e) => {
 })
 document.querySelector('#btn-paint-hull').addEventListener('click', (e) => inputManager.onPaintHullToggleClick(e))
 document.querySelector('#btn-erase-hull').addEventListener('click', (e) => inputManager.onEraseHullToggleClick(e))
-document.querySelector('#btn-paint-module').addEventListener('click', (e) => inputManager.onPaintModuleToggleClick(e))
 
 inputManager.onResize()
 
 function save() {
   localStorage.setItem('tiles', JSON.stringify(tilesResource))
   localStorage.setItem('entities', JSON.stringify(ecs.entities))
+}
+
+function loadModules() {
+  let select = document.querySelector('#select-module-kind')
+  let modulesList = document.querySelector('#modules-list')
+  Object.keys(modules).forEach(category => {
+    let option = document.createElement('option')
+    option.value = category
+    option.innerHTML = category
+    select.appendChild(option)
+
+    Object.keys(modules[category]).forEach(name => {
+      let button = document.createElement('button')
+      button.innerHTML = name
+      button.addEventListener('click', (e) => inputManager.onPaintModuleToggleClick(e, { category, name }))
+      modulesList.appendChild(button)
+    })
+  })
 }

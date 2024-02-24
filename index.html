@@ -11,35 +11,61 @@
 	margin: 0;
 	background-color: black;
       }
-      canvas {
-	display: block;
+
+      #flex-container {
 	width: 100vw;
 	height: 100vh;
-      }
+	flex-direction: column;
+	display: flex;
 
-      #controls {
-	position: absolute;
-	left: 1rem;
-	bottom: 1rem;
       }
-      #controls button {
+      #flex-container * {
 	font-size: inherit;
-	margin-left: 1rem;
-	margin-bottom: 1rem;
+      }
+      #flex-container select,
+      #flex-container button {
+	margin: 0.5rem;
 	padding: 0.5rem;
 	border: none;
       }
-      #controls button.active {
+      #flex-container .active {
 	background-color: #66ccff;
+      }
+      #canvas-wrapper {
+	flex-grow: 1;
+	flex-shrink: 1;
+	overflow: hidden;
+      }
+      #controls {
+	display: flex;
+	flex-direction: row;
+	border: 1px solid white;
+	gap: 2rem;
+      }
+      #controls-list {
+	white-space: nowrap;
+	flex-shrink: 0;
+      }
+      #modules-list {
+	overflow-x: scroll;
+	white-space: nowrap;
+	flex-shrink: 1;
       }
     </style>
   </head>
   <body oncontextmenu="return false;">
-    <canvas>Space Haven ship designer</canvas>
-    <span id="controls">
-      <button id="btn-paint-hull">Draw Hull</button>
-      <button id="btn-erase-hull">Erase Hull</button>
-      <button id="btn-paint-module">X1 Hyperdrive</button>
-    </span>
+    <div id="flex-container">
+      <div id="canvas-wrapper">
+        <canvas id="canvas">Space Haven ship designer</canvas>
+      </div>
+      <div id="controls">
+	<div id="controls-list">
+	  <button id="btn-paint-hull">Paint Hull</button>
+	  <button id="btn-erase-hull">Erase Hull</button>
+	  <select id="select-module-kind"></select>
+	</div>
+	<div id="modules-list"></div>
+      </div>
+    </div>
   </body>
 </html>

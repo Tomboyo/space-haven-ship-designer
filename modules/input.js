@@ -16,60 +16,61 @@ export class InputManager {
     this.state = new PanState(this)
   }
 
-  handle(which, e) {
-    this.state = this.state[which]?.(e) || this.state
+  handle(which) {
+    this.state = this.state[which]?.(...Array.prototype.slice.call(arguments, 1)) || this.state
     if (this.ecs.isDirty) {
       this.frameScheduler.requestFrame(() => this.ecs.run())
     }
   }
 
-  onWheel(e) {
+  onCanvasWheel(e) {
     this.ecs.updateResource('grid', g => {
       g.s += rem() * e.deltaY * -0.00075
     })
 
-    this.handle('onWheel', e)
+    this.handle('onCanvasWheel', ...arguments)
   }
 
-  onResize(e) {
+  onResize() {
     this.ecs.updateResource('canvas', c => {
-      c.width = window.innerWidth
-      c.height = window.innerHeight
+      let rect = c.parentNode.getBoundingClientRect()
+      c.width = rect.width
+      c.height = rect.height
     })
 
-    this.handle('onResize', e)
+    this.handle('onResize', ...arguments)
   }
 
-  onPaintHullToggleClick(e) {
-    this.handle('onPaintHullToggleClick', e)
+  onPaintHullToggleClick() {
+    this.handle('onPaintHullToggleClick', ...arguments)
   }
 
-  onEraseHullToggleClick(e) {
-    this.handle('onEraseHullToggleClick', e)
+  onEraseHullToggleClick() {
+    this.handle('onEraseHullToggleClick', ...arguments)
   }
 
-  onPaintModuleToggleClick(e) {
-    this.handle('onPaintModuleToggleClick', e)
+  onPaintModuleToggleClick() {
+    this.handle('onPaintModuleToggleClick', ...arguments)
   }
 
   onCanvasMouseDown(e) {
     if (e.button === 0) {
-      this.handle('onCanvasLeftMouseDown', e)
+      this.handle('onCanvasLeftMouseDown', ...arguments)
     } else if (e.button === 2) {
-      this.handle('onCanvasRightMouseDown', e)
+      this.handle('onCanvasRightMouseDown', ...arguments)
     }
   }
 
   onCanvasMouseUp(e) {
     if (e.button === 0) {
-      this.handle('onCanvasLeftMouseUp', e)
+      this.handle('onCanvasLeftMouseUp', ...arguments)
     } else if (e.button === 2) {
-      this.handle('onCanvasRightMouseUp', e)
+      this.handle('onCanvasRightMouseUp', ...arguments)
     }
   }
 
   onCanvasMouseMove(e) {
-    this.handle('onCanvasMouseMove', e)
+    this.handle('onCanvasMouseMove', ...arguments)
   }
 }
 
