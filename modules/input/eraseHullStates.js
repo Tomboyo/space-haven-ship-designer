@@ -1,9 +1,12 @@
 import { styleButtonActive, styleButtonInactive } from '../css.js'
 import { getTileCoordinates } from '../util.js'
 
+import { modules } from '../component/modules.js'
+
 import { PanState } from './panState.js'
 import { PaintHullInitialState } from './paintHullStates.js'
 import { PaintModuleInitialState } from './paintModuleStates.js'
+
 
 export class EraseHullInitialState {
   constructor(manager) {
@@ -63,15 +66,35 @@ class EraseHullSelectingState {
     let [y0, y1] = p0.y < p1.y ? [p0.y, p1.y] : [p1.y, p0.y]
     let tilesResource = this.manager.ecs.getResource('tiles')
 
-    for (let x = x0; x <= x1; x++) {
-      if (!tilesResource[x]) continue
-      for (let y = y0; y <= y1; y++) {
-	let entity = tilesResource[x][y]
-	if (!entity) continue
-	this.manager.ecs.removeEntity(entity)
-	this.manager.ecs.updateResource('tiles', t => t[x][y] = null)
-      }
-    }
+    this.manager.ecs.entityQuery(
+      ['tiles'],
+      ['id', 'position', 'tile'],
+      (tiles, {id, position: {x, y}}, buffer) => {
+	if (x0 <= x && x <= x1 && y0 <= y && y <= y1) {
+	  buffer.removeEntity(id)
+	  if (tiles[x]) delete tiles[x][y]
+	}
+      })
+
+    this.manager.ecs.entityQuery(
+      [],
+      ['id', 'position', 'module'],
+      ({id, position: {x, y}, module: {category, name}}, buffer) => {
+	/* Note: not checking isGhost because there shouldn't be any during erase, and
+	 * if there are, the user may as well have a way to remove them. */
+	let proto = modules[category][name]
+	let intersection = Object.values(proto).flat().find(box => {
+	  let bx0 = x + (box.offsetX || 0)
+	  let bx1 = x + (box.offsetX || 0) + box.width - 1
+	  let by0 = y + (box.offsetY || 0)
+	  let by1 = y + (box.offsetY || 0) + box.height - 1
+	  return x0 <= bx1 && x1 >= bx0 && y0 <= by1 && y1 >= by0
+	})
+	if (intersection) {
+          buffer.removeEntity(id)
+	}
+      })
+
     this.manager.ecs.removeEntity(this.entity)
     return new EraseHullInitialState(this.manager)
   }

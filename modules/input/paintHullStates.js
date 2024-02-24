@@ -63,7 +63,8 @@ class PaintHullSelectingState {
       tilesResource[x] ||= []
       for (let y = y0; y <= y1; y++) {
 	if (tilesResource[x][y]) continue
-	tilesResource[x][y] = this.manager.ecs.newEntity(newHullBlock(x, y))
+	this.manager.ecs.newEntity(newHullBlock(x, y))
+	tilesResource[x][y] = true
       }
     }
 

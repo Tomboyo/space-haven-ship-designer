@@ -3,7 +3,7 @@ import { PanState } from './input/panState.js'
 
 const ui = {
   paintHullToggle: document.querySelector('#btn-paint-hull'),
-  eraseHullToggle: document.querySelector('#btn-erase-hull'),
+  eraseHullToggle: document.querySelector('#btn-erase'),
   paintModuleToggle: document.querySelector('#btn-paint-module'),
 }
 

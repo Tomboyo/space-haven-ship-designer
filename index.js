@@ -38,7 +38,7 @@ canvas.addEventListener('mouseup', (e) => {
   save()
 })
 document.querySelector('#btn-paint-hull').addEventListener('click', (e) => inputManager.onPaintHullToggleClick(e))
-document.querySelector('#btn-erase-hull').addEventListener('click', (e) => inputManager.onEraseHullToggleClick(e))
+document.querySelector('#btn-erase').addEventListener('click', (e) => inputManager.onEraseHullToggleClick(e))
 document.querySelector('#btn-clear-all').addEventListener('click', (d) => {
   if (confirm('This will delete you ship and saved data. Are you sure?')) {
     clearSaveData()

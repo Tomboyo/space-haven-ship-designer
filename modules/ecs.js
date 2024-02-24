@@ -27,7 +27,7 @@ export function createEcs() {
 	this.isDirty = true
 	return f(this.resources[name])
       } else {
-	throw new Error('ECS does not have resource named ' + name)
+	throw new Error(`No such resource ${name}`)
       }
     },
 
@@ -47,9 +47,25 @@ export function createEcs() {
       return f(e)
     },
 
+    entityQuery(resourceSignature, componentSignature, f) {
+      let buffer = new CommandBuffer()
+      let resources = resourceSignature
+	.map(name => {
+	  if (!this.resources[name])
+	    throw new Error(`No such resource ${name}`)
+	  return this.resources[name]
+	})
+      this.entities
+        .filter(e => this.hasComponentSignature(e, componentSignature))
+        .forEach(entity => f(...resources, entity, buffer))
+      buffer.applyCommands(this)
+      // If there were any changes, applyCommands sets isDirty via removeEntity.
+    },
+
     /* Entity => void */
-    removeEntity(e) {
-      let index = this.entities.findIndex(x => x.id === e.id)
+    removeEntity(x) {
+      let id = typeof x === 'object' ? x.id : x
+      let index = this.entities.findIndex(e => e.id === id)
       this.entities.splice(index, 1)
       this.isDirty = true
     },
@@ -71,13 +87,33 @@ export function createEcs() {
       this.systems.forEach(({ name, resourceSignature, componentSignature, f }) => {
 	let resources = resourceSignature.map(name => this.resources[name])
 	let components = this.entities
-	  .filter(e => componentSignature.every(
-	      name => e.hasOwnProperty(name)))
-	  .map(e => componentSignature.map(
-	      name => e[name]))
+	  .filter(e => this.hasComponentSignature(e, componentSignature))
+	  .map(e => this.entityToComponents(e, componentSignature))
 	f(...resources, components)
       })
       this.isDirty = false
     },
+
+    hasComponentSignature(entity, signature) {
+      return signature.every(name => entity.hasOwnProperty(name))
+    },
+
+    entityToComponents(entity, signature) {
+      return signature.map(name => entity[name])
+    },
+  }
+}
+
+class CommandBuffer {
+  constructor() {
+    this.toRemove = []
+  }
+
+  removeEntity(e) {
+    this.toRemove.push(e)
+  }
+
+  applyCommands(ecs) {
+    this.toRemove.forEach(e => ecs.removeEntity(e))
   }
 }
