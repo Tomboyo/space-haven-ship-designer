@@ -154,6 +154,51 @@ export const modules = [
       empty: [{width: 1, height: 1, offsetX: 0, offsetY: 0}],
       solid: [{width: 1, height: 2, offsetX: 0, offsetY: 1}]
     }
+  },
+  {
+    category: 'Storage',
+    name: 'Cargo Port',
+    boundingRect: {width: 11, height: 7},
+    tiles: {
+      clearance: [
+	// Note: this overlaps with the forks. This may or may not be "correct."
+	{width: 8, height: 7, offsetX: 0, offsetY: 0},
+      ],
+      striped: [
+	{width: 6, height: 1, offsetX: 2, offsetY: 1},
+	{width: 6, height: 1, offsetX: 2, offsetY: 5},
+      ],
+      wall: [{ width: 1, height: 5, offsetX: 8, offsetY: 1 }],
+      solid: [{ width: 1, height: 5, offsetX: 9, offsetY: 1 }],
+      empty: [{ width: 1, height: 5, offsetX: 10, offsetY: 1 }],
+    }
+  },
+  {
+    category: 'Storage',
+    name: 'Body Storage',
+    boundingRect: {width: 2, height: 3},
+    tiles: {
+      solid: [{width: 2, height: 2, offsetX: 0, offsetY: 0}],
+      empty: [{width: 2, height: 1, offsetX: 0, offsetY: 2}]
+    }
+  },
+  {
+    category: 'Storage',
+    name: 'Large Storage',
+    boundingRect: {width: 3, height: 3},
+    tiles: {
+      solid: [{width: 3, height: 2, offsetX: 0, offsetY: 0}],
+      striped: [{width: 1, height: 1, offsetX: 1, offsetY: 2}]
+    }
+  },
+  {
+    category: 'Storage',
+    name: 'Small Storage',
+    boundingRect: {width: 1, height: 3},
+    tiles: {
+      solid: [{width: 1, height: 2, offsetX: 0, offsetY: 0}],
+      striped: [{width: 1, height: 1, offsetX: 0, offsetY: 2}]
+    }
   }
 ]
 
