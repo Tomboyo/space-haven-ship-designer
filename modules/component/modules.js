@@ -221,6 +221,66 @@ export const modules = [
       solid: [{width: 2, height: 1, offsetX: 0, offsetY: 0}],
       empty: [{width: 2, height: 1, offsetX: 0, offsetY: 1}]
     }
+  },
+  {
+    category: 'Resource',
+    name: 'Recycler',
+    boundingRect: {width: 3, height: 4},
+    tiles: {
+      solid: [
+	{width: 3, height: 2, offsetX: 0, offsetY: 0},
+	{width: 2, height: 1, offsetX: 0, offsetY: 2}
+      ],
+      empty: [
+	{width: 1, height: 1, offsetX: 2, offsetY: 2},
+	{width: 3, height: 1, offsetX: 0, offsetY: 3}
+      ]
+    }
+  },
+  {
+    category: 'Resource',
+    name: 'Ore Processor',
+    boundingRect: {width: 3, height: 6},
+    tiles: {
+      solid: [{width: 3, height: 5, offsetX: 0, offsetY: 0}],
+      empty: [{width: 3, height: 1, offsetX: 0, offsetY: 5}]
+    }
+  },
+  {
+    category: 'Resource',
+    name: 'Water Collector',
+    boundingRect: {width: 1, height: 2},
+    tiles: {
+      solid: [{width: 1, height: 1, offsetX: 0, offsetY: 0}],
+      empty: [{width: 1, height: 1, offsetX: 0, offsetY: 1}]
+    }
+  },
+  {
+    category: 'Resource',
+    name: 'Water Purifier',
+    boundingRect: {width: 2, height: 2},
+    tiles: {
+      solid: [{width: 2, height: 1, offsetX: 0, offsetY: 0}],
+      empty: [{width: 2, height: 1, offsetX: 0, offsetY: 1}]
+    }
+  },
+  {
+    category: 'Resource',
+    name: 'Tools Facility',
+    boundingRect: {width: 2, height: 2},
+    tiles: {
+      solid: [{width: 2, height: 1, offsetX: 0, offsetY: 0}],
+      empty: [{width: 2, height: 1, offsetX: 0, offsetY: 1}]
+    }
+  },
+  {
+    category: 'Resource',
+    name: 'Item Workbench',
+    boundingRect: {width: 2, height: 2},
+    tiles: {
+      solid: [{width: 2, height: 1, offsetX: 0, offsetY: 0}],
+      empty: [{width: 2, height: 1, offsetX: 0, offsetY: 1}]
+    }
   }
 ]
 
