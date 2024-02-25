@@ -422,6 +422,140 @@ export const modules = [
     tiles: {
       solid: [{width: 1, height: 1, offsetX: 0, offsetY: 0}],
     }
+  },
+  {
+    category: 'Furniture',
+    name: 'X1 Couch (L)',
+    boundingRect: {width: 3, height: 2},
+    tiles: {
+      solid: [
+	{width: 3, height: 1, offsetX: 0, offsetY: 0},
+	{width: 1, height: 1, offsetX: 2, offsetY: 1}
+      ]
+    }
+  },
+  {
+    category: 'Furniture',
+    name: 'X1 Couch (L, Mirrored)',
+    boundingRect: {width: 3, height: 2},
+    tiles: {
+      solid: [
+	{width: 1, height: 1, offsetX: 2, offsetY: 0},
+	{width: 3, height: 1, offsetX: 0, offsetY: 1}
+      ]
+    }
+  },
+  {
+    category: 'Furniture',
+    name: 'X1 Couch (Single)',
+    boundingRect: {width: 1, height: 1},
+    tiles: {
+      solid: [{width: 1, height: 1, offsetX: 0, offsetY: 0}]
+    }
+  },
+  {
+    category: 'Furniture',
+    name: 'X1 Couch (Corner)',
+    boundingRect: {width: 2, height: 2},
+    tiles: {
+      solid: [
+	{width: 2, height: 1, offsetX: 0, offsetY: 0},
+	{width: 1, height: 1, offsetX: 1, offsetY: 1}
+      ]
+    }
+  },
+  {
+    category: 'Furniture',
+    name: 'X1 Couch (U)',
+    boundingRect: {width: 2, height: 3},
+    tiles: {
+      solid: [
+	{width: 2, height: 1, offsetX: 0, offsetY: 0},
+	{width: 1, height: 1, offsetX: 1, offsetY: 1},
+	{width: 2, height: 1, offsetX: 0, offsetY: 2},
+      ]
+    }
+  },
+  {
+    category: 'Furniture',
+    name: 'X1 Couch',
+    boundingRect: {width: 2, height: 1},
+    tiles: {
+      solid: [{width: 2, height: 1, offsetX: 0, offsetY: 0}]
+    }
+  },
+  {
+    category: 'Furniture',
+    name: 'X1 Chair',
+    boundingRect: {width: 1, height: 1},
+    tiles: {
+      solid: [{width: 1, height: 1, offsetX: 0, offsetY: 0}]
+    }
+  },
+  {
+    category: 'Furniture',
+    name: 'X1 Table',
+    boundingRect: {width: 1, height: 1},
+    tiles: {
+      solid: [{width: 1, height: 1, offsetX: 0, offsetY: 0}]
+    }
+  },
+  {
+    category: 'Furniture',
+    name: 'Cover Object',
+    boundingRect: {width: 1, height: 1},
+    tiles: {
+      solid: [{width: 1, height: 1, offsetX: 0, offsetY: 0}]
+    }
+  },
+  {
+    category: 'Furniture',
+    name: 'Light',
+    boundingRect: {width: 1, height: 1},
+    tiles: {
+      solid: [{width: 1, height: 1, offsetX: 0, offsetY: 0}]
+    }
+  },
+  {
+    category: 'Furniture',
+    name: 'In-Floor Light',
+    boundingRect: {width: 1, height: 1},
+    tiles: {
+      empty: [{width: 1, height: 1, offsetX: 0, offsetY: 0}]
+    }
+  },
+  {
+    category: 'Furniture',
+    name: 'Wall Light',
+    boundingRect: {width: 1, height: 2},
+    tiles: {
+      wall: [{width: 1, height: 1, offsetX: 0, offsetY: 0}],
+      empty: [{width: 1, height: 1, offsetX: 0, offsetY: 1}]
+    }
+  },
+  {
+    category: 'Furniture',
+    name: 'Bedside Table',
+    boundingRect: {width: 1, height: 1},
+    tiles: {
+      solid: [{width: 1, height: 1, offsetX: 0, offsetY: 0}]
+    }
+  },
+  {
+    category: 'Furniture',
+    name: 'Bunk Bed',
+    boundingRect: {width: 2, height: 1},
+    tiles: {
+      solid: [{width: 2, height: 1, offsetX: 0, offsetY: 0}]
+    }
+  },
+  {
+    category: 'Furniture',
+    name: 'Bed',
+    boundingRect: {width: 2, height: 1},
+    tiles: {
+      solid: [{width: 2, height: 1, offsetX: 0, offsetY: 0}]
+    }
   }
 ]
 
