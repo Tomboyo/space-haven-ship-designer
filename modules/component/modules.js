@@ -345,7 +345,7 @@ export const modules = [
   {
     category: 'Life Support',
     name: 'Oxygen Generator',
-    boundingRect: {wdith: 2, height: 2},
+    boundingRect: {width: 2, height: 2},
     tiles: {
       solid: [{width: 2, height: 1, offsetX: 0, offsetY: 0}],
       striped: [{width: 1, height: 1, offsetX: 0, offsetY: 1}],
@@ -382,11 +382,45 @@ export const modules = [
   {
     category: 'Facility',
     name: 'X1 Toilet',
-    boundingRect: {wdith: 2, height: 2},
+    boundingRect: {width: 2, height: 2},
     tiles: {
       solid: [{width: 2, height: 1, offsetX: 0, offsetY: 0}],
       empty: [{width: 1, height: 1, offsetX: 0, offsetY: 1}],
       striped: [{width: 1, height: 1, offsetX: 1, offsetY: 1}],
+    }
+  },
+  {
+    category: 'Decorations',
+    name: 'Decorative Object',
+    boundingRect: {width: 1, height: 1},
+    tiles: {
+      solid: [{width: 1, height: 1, offsetX: 0, offsetY: 0}]
+    }
+  },
+  {
+    category: 'Decorations',
+    name: 'Decorative Screen',
+    boundingRect: {width: 1, height: 2},
+    tiles: {
+      wall: [{width: 1, height: 1, offsetX: 0, offsetY: 0}],
+      empty: [{width: 1, height: 1, offsetX: 0, offsetY: 1}]
+    }
+  },
+  {
+    category: 'Decorations',
+    name: 'Green Wall',
+    boundingRect: {width: 1, height: 2},
+    tiles: {
+      wall: [{width: 1, height: 1, offsetX: 0, offsetY: 0}],
+      empty: [{width: 1, height: 1, offsetX: 0, offsetY: 1}]
+    }
+  },
+  {
+    category: 'Decorations',
+    name: 'Decorative Plant',
+    boundingRect: {width: 1, height: 1},
+    tiles: {
+      solid: [{width: 1, height: 1, offsetX: 0, offsetY: 0}],
     }
   }
 ]
