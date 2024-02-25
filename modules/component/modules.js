@@ -199,6 +199,28 @@ export const modules = [
       solid: [{width: 1, height: 2, offsetX: 0, offsetY: 0}],
       striped: [{width: 1, height: 1, offsetX: 0, offsetY: 2}]
     }
+  },
+  {
+    category: 'Food',
+    name: 'Kitchen',
+    boundingRect: {width: 3, height: 2},
+    tiles: {
+      solid: [{width: 3, height: 1, offsetX: 0, offsetY: 0}],
+      empty: [
+	{width: 1, height: 1, offsetX: 0, offsetY: 1},
+	{width: 1, height: 1, offsetX: 2, offsetY: 1},
+      ],
+      striped: [{width: 1, height: 1, offsetX: 1, offsetY: 1}]
+    }
+  },
+  {
+    category: 'Food',
+    name: 'Algae Dispenser',
+    boundingRect: {width: 2, height: 2},
+    tiles: {
+      solid: [{width: 2, height: 1, offsetX: 0, offsetY: 0}],
+      empty: [{width: 2, height: 1, offsetX: 0, offsetY: 1}]
+    }
   }
 ]
 
