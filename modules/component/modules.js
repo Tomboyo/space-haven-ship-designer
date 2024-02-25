@@ -103,5 +103,57 @@ export const modules = [
       solid: [{width: 2, height: 2, offsetX: 1, offsetY: 0}]
     }
   },
+  {
+    category: 'Airlock',
+    name: 'Shuttle Hanger',
+    boundingRect: {width: 7, height: 6},
+    tiles: {
+      empty: [
+	{width: 5, height: 1, offsetX: 1, offsetY: 0},
+	{width: 4, height: 1, offsetX: 1, offsetY: 5},
+	{width: 1, height: 6, offsetX: 0, offsetY: 0},
+	{width: 1, height: 6, offsetX: 6, offsetY: 0},
+      ],
+      solid: [{width: 5, height: 4, offsetX: 1, offsetY: 1}],
+      striped: [{width: 1, height: 1, offsetX: 5, offsetY: 5}]
+    }
+  },
+  {
+    category: 'Airlock',
+    name: 'Pod Hangler',
+    boundingRect: {width: 3, height: 4},
+    tiles: {
+      solid: [{width: 3, height: 3, offsetX: 0, offsetY: 0}],
+      empty: [{width: 2, height: 1, offsetX: 0, offsetY: 3}],
+      striped: [{width: 1, height: 1, offsetX: 2, offsetY: 3}]
+    }
+  },
+  {
+    category: 'Airlock',
+    name: 'X1 Airlock',
+    boundingRect: {width: 11, height: 7},
+    tiles: {
+      clearance: [{width: 7, height: 7, offsetX: 0, offsetY: 0}],
+      wall: [{width: 1, height: 1, offsetX: 7, offsetY: 3}],
+      solid: [
+	{width: 1, height: 3, offsetX: 8, offsetY: 2},
+	{width: 1, height: 1, offsetX: 9, offsetY: 2},
+	{width: 1, height: 1, offsetX: 9, offsetY: 4}
+      ],
+      striped: [
+	{width: 1, height: 1, offsetX: 9, offsetY: 3},
+	{width: 1, height: 3, offsetX: 10, offsetY: 2}
+      ],
+    }
+  },
+  {
+    category: 'Airlock',
+    name: 'Space Suit Locker',
+    boundingRect: {width: 1, height: 3},
+    tiles: {
+      empty: [{width: 1, height: 1, offsetX: 0, offsetY: 0}],
+      solid: [{width: 1, height: 2, offsetX: 0, offsetY: 1}]
+    }
+  }
 ]
 

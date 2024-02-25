@@ -45,6 +45,12 @@ document.querySelector('#btn-clear-all').addEventListener('click', (d) => {
     clearSaveData()
   }
 })
+document.querySelector('#select-module-kind').addEventListener('change', (e) => {
+  let carousel = document.querySelector('#modules-carousel').children
+  for (let child of carousel)
+    child.style.display = 'none'
+  document.querySelector(`#carousel-shelf-${e.target.value}`).style.display = null
+})
 
 inputManager.onResize()
 
@@ -63,7 +69,7 @@ function clearSaveData() {
 
 function loadModules() {
   let select = document.querySelector('#select-module-kind')
-  let modulesList = document.querySelector('#modules-list')
+  let carousel = document.querySelector('#modules-carousel')
   
   modules
     .reduce((acc, el) => acc.add(el.category), new Set())
@@ -72,12 +78,22 @@ function loadModules() {
       option.value = category
       option.innerHTML = category
       select.appendChild(option)
+
+      let carouselShelf = document.createElement('div')
+      carouselShelf.setAttribute('id', `carousel-shelf-${category}`)
+      carouselShelf.style.display = 'none'
+      carousel.appendChild(carouselShelf)
     })
 
   modules.forEach(module => {
     let button = document.createElement('button')
     button.innerHTML = module.name
     button.addEventListener('click', (e) => inputManager.onPaintModuleToggleClick(e, module))
-    modulesList.appendChild(button)
+    document.querySelector(`#carousel-shelf-${module.category}`)
+      .appendChild(button)
   })
+
+  // Reveal one tab
+  carousel.value = modules[0].category
+  document.querySelector(`#carousel-shelf-${carousel.value}`).style.display = null
 }
