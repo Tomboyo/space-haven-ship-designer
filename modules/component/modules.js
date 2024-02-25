@@ -281,6 +281,31 @@ export const modules = [
       solid: [{width: 2, height: 1, offsetX: 0, offsetY: 0}],
       empty: [{width: 2, height: 1, offsetX: 0, offsetY: 1}]
     }
+  },
+  {
+    category: 'Power',
+    name: 'Large Power Node',
+    boundingRect: {width: 1, height: 2},
+    tiles: {
+      solid: [{width: 1, height: 2, offsetX: 0, offsetY: 0}]
+    }
+  },,
+  {
+    category: 'Power',
+    name: 'Small Power Node',
+    boundingRect: {width: 1, height: 1},
+    tiles: {
+      solid: [{width: 1, height: 1, offsetX: 0, offsetY: 0}]
+    }
+  },
+  {
+    category: 'Power',
+    name: 'Energium Power Generator',
+    boundingRect: {width: 2, height: 4},
+    tiles: {
+      solid: [{width: 2, height: 3, offsetX: 0, offsetY: 0}],
+      empty: [{width: 2, height: 1, offsetX: 0, offsetY: 3}]
+    }
   }
 ]
 
