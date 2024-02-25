@@ -306,6 +306,51 @@ export const modules = [
       solid: [{width: 2, height: 3, offsetX: 0, offsetY: 0}],
       empty: [{width: 2, height: 1, offsetX: 0, offsetY: 3}]
     }
+  },
+  {
+    category: 'Life Support',
+    name: 'Air Vent',
+    boundingRect: {width: 1, height: 2},
+    tiles: {
+      wall: [{width: 1, height: 1, offsetX: 0, offsetY: 0}],
+      empty: [{width: 1, height: 1, offsetX: 0, offsetY: 1}]
+    }
+  },
+  {
+    category: 'Life Support',
+    name: 'Thermal Regulator',
+    boundingRect: {width: 1, height: 1},
+    tiles: {
+      solid: [{width: 1, height: 1, offsetX: 0, offsetY: 0}]
+    }
+  },
+  {
+    category: 'Life Support',
+    name: 'Wall Thermal Regulator',
+    boundingRect: {width: 1, height: 2},
+    tiles: {
+      wall: [{width: 1, height: 1, offsetX: 0, offsetY: 0}],
+      empty: [{width: 1, height: 1, offsetX: 0, offsetY: 1}]
+    }
+  },
+  {
+    category: 'Life Support',
+    name: 'Gas Scrubber',
+    boundingRect: {width: 1, height: 2},
+    tiles: {
+      solid: [{width: 1, height: 1, offsetX: 0, offsetY: 0}],
+      striped: [{width: 1, height: 1, offsetX: 0, offsetY: 1}]
+    }
+  },
+  {
+    category: 'Life Support',
+    name: 'Oxygen Generator',
+    boundingRect: {wdith: 2, height: 2},
+    tiles: {
+      solid: [{width: 2, height: 1, offsetX: 0, offsetY: 0}],
+      striped: [{width: 1, height: 1, offsetX: 0, offsetY: 1}],
+      empty: [{width: 1, height: 1, offsetX: 1, offsetY: 1}]
+    }
   }
 ]
 

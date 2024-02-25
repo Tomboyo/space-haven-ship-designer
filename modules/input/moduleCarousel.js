@@ -3,6 +3,10 @@ import { modules } from '../component/modules.js'
 const select = document.querySelector('#select-module-kind')
 const carousel = document.querySelector('#modules-carousel')
 
+function categoryId(category) {
+  return category.toLowerCase().replaceAll(' ', '-')
+}
+
 export class ModulesCarousel {
   constructor(inputManager) {
     this.loadModules(inputManager)
@@ -19,7 +23,7 @@ export class ModulesCarousel {
 	select.appendChild(option)
 
 	let carouselShelf = document.createElement('div')
-	carouselShelf.setAttribute('id', `carousel-shelf-${category}`)
+	carouselShelf.setAttribute('id', `carousel-shelf-${categoryId(category)}`)
 	carouselShelf.style.display = 'none'
 	carousel.appendChild(carouselShelf)
       })
@@ -28,18 +32,18 @@ export class ModulesCarousel {
       let button = document.createElement('button')
       button.innerHTML = module.name
       button.addEventListener('click', (e) => inputManager.onPaintModuleToggleClick(e, module))
-      document.querySelector(`#carousel-shelf-${module.category}`)
+      document.querySelector(`#carousel-shelf-${categoryId(module.category)}`)
 	.appendChild(button)
     })
 
     // Reveal one tab
     carousel.value = modules[0].category
-    document.querySelector(`#carousel-shelf-${carousel.value}`).style.display = null
+    document.querySelector(`#carousel-shelf-${categoryId(carousel.value)}`).style.display = null
   }
 
   onSelectChange(e) {
     for (let child of carousel.children)
       child.style.display = 'none'
-    document.querySelector(`#carousel-shelf-${e.target.value}`).style.display = null
+    document.querySelector(`#carousel-shelf-${categoryId(e.target.value)}`).style.display = null
   }
 }
