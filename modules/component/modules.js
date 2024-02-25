@@ -351,6 +351,43 @@ export const modules = [
       striped: [{width: 1, height: 1, offsetX: 0, offsetY: 1}],
       empty: [{width: 1, height: 1, offsetX: 1, offsetY: 1}]
     }
+  },
+  {
+    category: 'Facility',
+    name: 'Research Workbench',
+    boundingRect: {width: 2, height: 2},
+    tiles: {
+      solid: [{width: 2, height: 1, offsetX: 0, offsetY: 0}],
+      empty: [{width: 2, height: 1, offsetX: 0, offsetY: 1}]
+    }
+  },
+  {
+    category: 'Facility',
+    name: 'Research Lab',
+    boundingRect: {width: 3, height: 3},
+    tiles: {
+      solid: [{width: 3, height: 2, offsetX: 0, offsetY: 0}],
+      empty: [{width: 3, height: 1, offsetX: 0, offsetY: 2}]
+    }
+  },
+  {
+    category: 'Facility',
+    name: 'ISP Dispenser',
+    boundingRect: {width: 1, height: 2},
+    tiles: {
+      wall: [{width: 1, height: 1, offsetX: 0, offsetY: 0}],
+      empty: [{width: 1, height: 1, offsetX: 0, offsetY: 1}]
+    }
+  },
+  {
+    category: 'Facility',
+    name: 'X1 Toilet',
+    boundingRect: {wdith: 2, height: 2},
+    tiles: {
+      solid: [{width: 2, height: 1, offsetX: 0, offsetY: 0}],
+      empty: [{width: 1, height: 1, offsetX: 0, offsetY: 1}],
+      striped: [{width: 1, height: 1, offsetX: 1, offsetY: 1}],
+    }
   }
 ]
 
