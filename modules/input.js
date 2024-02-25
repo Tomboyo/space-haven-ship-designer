@@ -14,6 +14,23 @@ export class InputManager {
 
     this.ui = ui
     this.state = new PanState(this)
+
+    this.addEventListeners()
+  }
+
+  addEventListeners() {
+    let canvas = document.querySelector('#canvas')
+
+    window.addEventListener('keydown', e => this.onKeyDown(e))
+    window.addEventListener('resize', e => this.onResize(e))
+
+    canvas.addEventListener('wheel', e => this.onCanvasWheel(e))
+    canvas.addEventListener('mousedown', (e) => this.onCanvasMouseDown(e))
+    canvas.addEventListener('mousemove', (e) => this.onCanvasMouseMove(e))
+    canvas.addEventListener('mouseup', (e) => this.onCanvasMouseUp(e))
+
+    document.querySelector('#btn-paint-hull').addEventListener('click', (e) => this.onPaintHullToggleClick(e))
+    document.querySelector('#btn-erase').addEventListener('click', (e) => this.onEraseHullToggleClick(e))
   }
 
   handle(which) {

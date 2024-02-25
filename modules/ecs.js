@@ -72,6 +72,7 @@ export function createEcs() {
 
     removeAllEntities() {
       this.entities = []
+      this.sequenceId = 0
       this.isDirty = true
     },
 
@@ -100,6 +101,20 @@ export function createEcs() {
 
     entityToComponents(entity, signature) {
       return signature.map(name => entity[name])
+    },
+
+    getSaveData() {
+      return {
+	entities: this.entities
+      }
+    },
+
+    loadSaveData(obj) {
+      this.entities = obj?.entities || []
+      /* Reset ids rather than save/load them so that related bugs can be fixed
+       * with a refresh. */ 
+      this.entities.forEach((entity, i) => entity.id = i)
+      this.idSequence = this.entities.length
     },
   }
 }
