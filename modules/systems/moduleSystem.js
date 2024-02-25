@@ -1,4 +1,20 @@
-import { modules } from '../component/modules.js'
+function rectArgs({x, y}, rect, grid, camera) {
+  return [
+    (x + rect.offsetX) * grid.s + camera.offsetX,
+    (y + rect.offsetY) * grid.s + camera.offsetY,
+    rect.width * grid.s,
+    rect.height * grid.s
+  ]
+}
+
+function insetRectArgs({x, y}, rect, grid, camera, lineWidth) {
+  return [
+    (x + rect.offsetX) * grid.s + camera.offsetX + (lineWidth / 2),
+    (y + rect.offsetY) * grid.s + camera.offsetY + (lineWidth / 2),
+    rect.width * grid.s - lineWidth,
+    rect.height * grid.s - lineWidth
+  ]
+}
 
 export default [
   "ModuleSystem",
@@ -7,42 +23,27 @@ export default [
   (canvas, camera, grid, entities) => {
     let ctx = canvas.getContext('2d')
 
-    entities.forEach(([{category, name, isGhost}, {x: x0, y: y0}]) => {
-      
-      let proto = modules[category][name]
-      Object.keys(proto).forEach(kind => {
+    entities.forEach(([{tiles, isGhost}, p]) => {
+      Object.entries(tiles).forEach(([kind, rects]) => {
 	switch (kind) {
 	  case 'solid':
 	    ctx.save()
 	    ctx.fillStyle = isGhost ? '#0e6e1dbb' : '#0e6e1d'
-	    proto[kind].forEach(box => ctx.fillRect(
-	      (x0 + (box.offsetX || 0)) * grid.s + camera.offsetX,
-	      (y0 + (box.offsetY || 0)) * grid.s + camera.offsetY,
-	      box.width * grid.s,
-	      box.height * grid.s))
+	    rects.forEach(rect => ctx.fillRect(...rectArgs(p, rect, grid, camera)))
 	    ctx.restore()
 	    break
 	  case 'wall':
 	    ctx.save()
 	    ctx.fillStyle = isGhost ? '#0e316ebb' : '#0e316e'
-	    proto[kind].forEach(box => ctx.fillRect(
-	      (x0 + (box.offsetX || 0)) * grid.s + camera.offsetX,
-	      (y0 + (box.offsetY || 0)) * grid.s + camera.offsetY,
-	      box.width * grid.s,
-	      box.height * grid.s))
+	    rects.forEach(rect => ctx.fillRect(...rectArgs(p, rect, grid, camera)))
 	    ctx.restore()
 	    break
 	  case 'striped':
 	    ctx.save()
+	    let m = grid.s / 5
 	    ctx.lineWidth = grid.s / 5
 	    ctx.beginPath()
-	    proto[kind].forEach(box => {
-	      ctx.rect(
-		(x0 + (box.offsetX || 0)) * grid.s + camera.offsetX + (ctx.lineWidth / 2),
-		(y0 + (box.offsetY || 0)) * grid.s + camera.offsetY + (ctx.lineWidth / 2),
-		box.width * grid.s - ctx.lineWidth,
-		box.height * grid.s - ctx.lineWidth)
-	    })
+	    rects.forEach(rect => ctx.rect(...insetRectArgs(p, rect, grid, camera, ctx.lineWidth)))
 	    ctx.setLineDash([grid.s / 5, grid.s / 5])
 	    ctx.strokeStyle = isGhost ? '#0008' : '#000'
 	    ctx.stroke()
@@ -57,12 +58,7 @@ export default [
 	    ctx.setLineDash([grid.s / 5, grid.s / 5])
 	    ctx.lineWidth = grid.s / 7
 	    ctx.strokeStyle = isGhost ? '#aaa8' : '#aaa'
-	    proto[kind].forEach(box =>
-	      ctx.rect(
-		(x0 + (box.offsetX || 0)) * grid.s + camera.offsetX + (ctx.lineWidth / 2),
-		(y0 + (box.offsetY || 0)) * grid.s + camera.offsetY + (ctx.lineWidth / 2),
-		box.width * grid.s - ctx.lineWidth,
-		box.height * grid.s - ctx.lineWidth))
+	    rects.forEach(rect => ctx.rect(...insetRectArgs(p, rect, grid, camera, ctx.lineWidth)))
 	    ctx.stroke()
 	    ctx.restore()
 	    break
@@ -70,12 +66,7 @@ export default [
 	    ctx.save()
 	    ctx.lineWidth = grid.s / 5
 	    ctx.beginPath()
-	    proto[kind].forEach(box =>
-	      ctx.rect(
-		(x0 + (box.offsetX || 0)) * grid.s + camera.offsetX + (ctx.lineWidth / 2),
-		(y0 + (box.offsetY || 0)) * grid.s + camera.offsetY + (ctx.lineWidth / 2),
-		box.width * grid.s - ctx.lineWidth,
-		box.height * grid.s - ctx.lineWidth))
+	    rects.forEach(rect => ctx.rect(...insetRectArgs(p, rect, grid, camera, ctx.lineWidth)))
 	    ctx.strokeStyle = isGhost ? '#69030388' : '#690303'
 	    ctx.setLineDash([grid.s / 5, grid.s / 5])
 	    ctx.stroke()

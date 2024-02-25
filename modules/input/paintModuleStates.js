@@ -12,11 +12,13 @@ export class PaintModuleInitialState {
     this.manager = manager
     this.activeButton = e.target
     this.module = module
+    this.rotation = 0
     this.entity = this.manager.ecs.newEntity(
       newModule(
 	module,
         true,
-	getTileCoordinates(e, this.manager.ecs)))
+	getTileCoordinates(e, this.manager.ecs),
+	this.rotation))
   }
 
   onPaintHullToggleClick() {
@@ -47,8 +49,8 @@ export class PaintModuleInitialState {
   onCanvasLeftMouseDown(e) {
     this.manager.ecs.removeEntity(this.entity)
     let p = getTileCoordinates(e, this.manager.ecs)
-    this.manager.ecs.newEntity(newModule(this.module, false, p))
-    this.entity = this.manager.ecs.newEntity(newModule(this.module, true, p))
+    this.manager.ecs.newEntity(newModule(this.module, false, p, this.rotation))
+    this.entity = this.manager.ecs.newEntity(newModule(this.module, true, p, this.rotation))
   }
 
   onCanvasRightMouseDown(e) {
@@ -61,5 +63,18 @@ export class PaintModuleInitialState {
     let p = getTileCoordinates(e, this.manager.ecs)
     this.manager.ecs.updateEntity(this.entity, entity => entity.position = p)
     return this
+  }
+
+  onKeyDown(e) {
+    if (e.key === 'e') { // clockwise
+      this.rotation = (this.rotation + 1) % 4
+      this.manager.ecs.removeEntity(this.entity)
+      this.entity = this.manager.ecs.newEntity(newModule(this.module, true, this.entity.position, this.rotation))
+    } else if (e.key === 'q') { // counter-clockwise
+      this.rotation = (this.rotation - 1)
+      if (this.rotation < 0) this.rotation += 4
+      this.manager.ecs.removeEntity(this.entity)
+      this.entity = this.manager.ecs.newEntity(newModule(this.module, true, this.entity.position, this.rotation))
+    }
   }
 }

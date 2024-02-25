@@ -72,5 +72,9 @@ export class InputManager {
   onCanvasMouseMove(e) {
     this.handle('onCanvasMouseMove', ...arguments)
   }
+
+  onKeyDown(e) {
+    this.handle('onKeyDown', ...arguments)
+  }
 }
 

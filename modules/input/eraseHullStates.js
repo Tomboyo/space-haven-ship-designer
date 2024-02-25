@@ -1,8 +1,6 @@
 import { styleButtonActive, styleButtonInactive } from '../css.js'
 import { getTileCoordinates } from '../util.js'
 
-import { modules } from '../component/modules.js'
-
 import { PanState } from './panState.js'
 import { PaintHullInitialState } from './paintHullStates.js'
 import { PaintModuleInitialState } from './paintModuleStates.js'
@@ -79,15 +77,14 @@ class EraseHullSelectingState {
     this.manager.ecs.entityQuery(
       [],
       ['id', 'position', 'module'],
-      ({id, position: {x, y}, module: {category, name}}, buffer) => {
+      ({id, position: {x, y}, module: {tiles}}, buffer) => {
 	/* Note: not checking isGhost because there shouldn't be any during erase, and
 	 * if there are, the user may as well have a way to remove them. */
-	let proto = modules[category][name]
-	let intersection = Object.values(proto).flat().find(box => {
-	  let bx0 = x + (box.offsetX || 0)
-	  let bx1 = x + (box.offsetX || 0) + box.width - 1
-	  let by0 = y + (box.offsetY || 0)
-	  let by1 = y + (box.offsetY || 0) + box.height - 1
+	let intersection = Object.values(tiles).flat().find(rect => {
+	  let bx0 = x + rect.offsetX
+	  let bx1 = x + rect.offsetX + rect.width - 1
+	  let by0 = y + rect.offsetY
+	  let by1 = y + rect.offsetY+ rect.height - 1
 	  return x0 <= bx1 && x1 >= bx0 && y0 <= by1 && y1 >= by0
 	})
 	if (intersection) {

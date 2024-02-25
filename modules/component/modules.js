@@ -16,53 +16,92 @@
  *
  *   Each tile kind key maps to an array of rectangles filled with tiles of that
  *   kind. Each rectangle object consists of a width and height and optionally
- *   of an offsetX and an offsetY. If either offset is omitted, 0 is inferred.
- *   If a module does not contain a kind of tile, it can omit the key rather
- *   than map to an empty array. E.g. the X1 Hyperdrive has no 'striped' key.
+ *   of an offsetX and an offsetY. If a module does not contain a kind of tile,
+ *   it can omit the key rather than map to an empty array. E.g. the X1
+ *   Hyperdrive has no 'striped' key.
  */
-export const modules = {
-  system: {
-    'Point Defence Turret': {
-      solid: [{width: 2, height: 2}]
-    },
-    'X1 Hyperdrive': {
+export const modules = [
+  {
+    category: 'System',
+    name: 'Point Defence Turret',
+    boundingRect: { width: 2, height: 2},
+    tiles: {
+      solid: [{width: 2, height: 2, offsetX: 0, offsetY: 0}]
+    }
+  },
+  {
+    category: 'System',
+    name: 'X1 Hyperdrive',
+    boundingRect: { width: 6, height: 17},
+    tiles: {
       solid: [
-	{width: 2, height: 4, offsetX: 2}
+	{width: 2, height: 4, offsetX: 2, offsetY: 0}
       ],
       wall: [
 	{width: 2, height: 1, offsetX: 2, offsetY: 4}
       ],
       empty: [
-	{width: 1, height: 4, offsetX: 1},
-	{width: 1, height: 4, offsetX: 4}
+	{width: 1, height: 4, offsetX: 1, offsetY: 0},
+	{width: 1, height: 4, offsetX: 4, offsetY: 0}
       ],
       clearance: [
-	{width: 6, height: 12, offsetY: 5}
+	{width: 6, height: 12, offsetX: 0, offsetY: 5}
       ]
-    },
-    'Operations Console': {
-      solid: [{width: 3, height: 2}],
+    }
+  },
+  {
+    category: 'System',
+    name: 'Operations Console',
+    boundingRect: {width: 3, height: 3},
+    tiles: {
+      solid: [{width: 3, height: 2, offsetX: 0, offsetY: 0}],
       striped: [{width: 1, height: 1, offsetX: 1, offsetY: 2}]
-    },
-    'Navigation Console': {
-      solid: [{width: 3, height: 2}],
+    }
+  },
+  {
+    category: 'System',
+    name: 'Navigation Console',
+    boundingRect: {width: 3, height: 3},
+    tiles: {
+      solid: [{width: 3, height: 2, offsetX: 0, offsetY: 0}],
       striped: [{width: 1, height: 1, offsetX: 1, offsetY: 2}]
-    },
-    'Hull Stabilizer': {
-      solid: [{width: 2, height: 1}],
-      striped: [{width: 2, height: 1, offsetY: 1}]
-    },
-    'X3 System Core': {
-      empty: [{width: 1, height: 4}],
-      solid: [{width: 2, height: 4, offsetX: 1}]
-    },
-    'X2 System Core': {
-      empty: [{width: 1, height: 3}],
-      solid: [{width: 2, height: 3, offsetX: 1}]
-    },
-    'X1 System Core': {
-      empty: [{width: 1, height: 2}],
-      solid: [{width: 2, height: 2, offsetX: 1}]
-    },
-  }
-}
+    }
+  },
+  {
+    category: 'System',
+    name: 'Hull Stabilizer',
+    boundingRect: {width: 2, height: 2},
+    tiles: {
+      solid: [{width: 2, height: 1, offsetX: 0, offsetY: 0}],
+      striped: [{width: 2, height: 1, offsetX: 0, offsetY: 1}]
+    }
+  },
+  {
+    category: 'System',
+    name: 'X3 System Core',
+    boundingRect: { width: 3, height: 4},
+    tiles: {
+      empty: [{width: 1, height: 4, offsetX: 0, offsetY: 0}],
+      solid: [{width: 2, height: 4, offsetY: 0, offsetX: 1}]
+    }
+  },
+  {
+    category: 'System',
+    name: 'X2 System Core',
+    boundingRect: { width: 3, height: 3},
+    tiles: {
+      empty: [{width: 1, height: 3, offsetX: 0, offsetY: 0}],
+      solid: [{width: 2, height: 3, offsetX: 1, offsetY: 0}]
+    }
+  },
+  {
+    category: 'System',
+    name: 'X1 System Core',
+    boundingRect: { width: 3, height: 2},
+    tiles: {
+      empty: [{width: 1, height: 2, offsetX: 0, offsetY: 0}],
+      solid: [{width: 2, height: 2, offsetX: 1, offsetY: 0}]
+    }
+  },
+]
+

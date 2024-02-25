@@ -29,6 +29,7 @@ ecs.registerSystems([
 ])
 
 const inputManager = new InputManager(ecs, frameScheduler)
+window.addEventListener('keydown', e => inputManager.onKeyDown(e))
 window.addEventListener('resize', e => inputManager.onResize(e))
 canvas.addEventListener('wheel', e => inputManager.onCanvasWheel(e))
 canvas.addEventListener('mousedown', (e) => inputManager.onCanvasMouseDown(e))
@@ -63,17 +64,20 @@ function clearSaveData() {
 function loadModules() {
   let select = document.querySelector('#select-module-kind')
   let modulesList = document.querySelector('#modules-list')
-  Object.keys(modules).forEach(category => {
-    let option = document.createElement('option')
-    option.value = category
-    option.innerHTML = category
-    select.appendChild(option)
-
-    Object.keys(modules[category]).forEach(name => {
-      let button = document.createElement('button')
-      button.innerHTML = name
-      button.addEventListener('click', (e) => inputManager.onPaintModuleToggleClick(e, { category, name }))
-      modulesList.appendChild(button)
+  
+  modules
+    .reduce((acc, el) => acc.add(el.category), new Set())
+    .forEach(category => {
+      let option = document.createElement('option')
+      option.value = category
+      option.innerHTML = category
+      select.appendChild(option)
     })
+
+  modules.forEach(module => {
+    let button = document.createElement('button')
+    button.innerHTML = module.name
+    button.addEventListener('click', (e) => inputManager.onPaintModuleToggleClick(e, module))
+    modulesList.appendChild(button)
   })
 }
