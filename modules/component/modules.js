@@ -556,6 +556,52 @@ export const modules = [
     tiles: {
       solid: [{width: 2, height: 1, offsetX: 0, offsetY: 0}]
     }
+  },
+  {
+    category: 'Wall',
+    name: 'X1 Door',
+    boundingRect: {width: 3, height: 1},
+    tiles: {
+      solid: [{width: 1, height: 1, offsetX: 1, offsetY: 0}],
+      empty: [
+	{width: 1, height: 1, offsetX: 0, offsetY: 0},
+	{width: 1, height: 1, offsetX: 2, offsetY: 0},
+      ]
+    }
+  },
+  {
+    category: 'Wall',
+    name: 'X2 Door',
+    boundingRect: {width: 3, height: 2},
+    tiles: {
+      solid: [{width: 1, height: 2, offsetX: 1, offsetY: 0}],
+      empty: [
+	{width: 1, height: 2, offsetX: 0, offsetY: 0},
+	{width: 1, height: 2, offsetX: 2, offsetY: 0},
+      ]
+    }
+  },
+  {
+    category: 'Wall',
+    name: 'X1 Wall',
+    boundingRect: {width: 1, height: 1},
+    tiles: {
+      solid: [{width: 1, height: 1, offsetX: 0, offsetY: 0}]
+    }
+  },
+  {
+    category: 'Wall',
+    name: 'Spacesuit Door',
+    boundingRect: {width: 3, height: 3},
+    tiles: {
+      empty: [
+	{width: 1, height: 1, offsetX: 1, offsetY: 0},
+	{width: 1, height: 1, offsetX: 0, offsetY: 1},
+	{width: 1, height: 1, offsetX: 2, offsetY: 1}
+      ],
+      solid: [{width: 1, height: 1, offsetX: 1, offsetY: 1}],
+      wall: [{width: 1, height: 1, offsetX: 1, offsetY: 2}],
+    }
   }
 ]
 
