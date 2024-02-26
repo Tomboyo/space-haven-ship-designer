@@ -13,3 +13,10 @@ export function getTileCoordinates(e, ecs) {
   return { x, y }
 }
 
+export function rectContainsPoint(rect, {x, y}) {
+  return rect.x <= x
+    && (rect.x + rect.width) > x
+    && rect.y <= y
+    && (rect.y + rect.height) > y
+}
+

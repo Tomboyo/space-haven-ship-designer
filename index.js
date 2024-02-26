@@ -5,6 +5,7 @@ import { InputManager } from './modules/input.js'
 import { save, load, clearSaveData } from './modules/save.js'
 
 import { ModulesCarousel } from './modules/input/moduleCarousel.js'
+import { ThingsHereOverlay } from './modules/input/thingsHereOverlay.js'
 
 import { modules } from './modules/component/modules.js'
 
@@ -44,6 +45,7 @@ ecs.registerSystems([
 // N.B. these registered event listeners.
 const inputManager = new InputManager(ecs, frameScheduler)
 const modulesCarousel = new ModulesCarousel(inputManager)
+const thingsHereOverlay = new ThingsHereOverlay(canvas, ecs)
 
 /* Register these after all other listeners to ensure save always reflects most
  * recent modification. */
