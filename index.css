@@ -1,0 +1,105 @@
+html, body {
+  font-size: 12pt;
+  font-family: "Tahoma", sans-serif;
+  padding: 0;
+  margin: 0;
+  background-color: black;
+}
+
+button.active {
+  background-color: #66ccff;
+}
+
+.flex-button-row {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+
+#flex-container {
+  width: 100vw;
+  height: 100vh;
+  flex-direction: column;
+  display: flex;
+}
+
+#flex-container * {
+  font-size: inherit;
+}
+
+#canvas-wrapper {
+  flex-grow: 1;
+  flex-shrink: 1;
+  /* When the screen resizes smaller, the canvas will not shrink because its
+   * width and height are programmatically assigned. We hide the overflow so
+   * that the flex wrapper can shrink around it, giving the JS an opportunity
+   * to resize the canvas. */
+  overflow: hidden;
+}
+
+
+
+#tab-panel .tabs {
+  /* The tab header is a flex to remove the whitespace text node that appears
+   * between inline elements. */
+  display: flex;
+  flex-direction: row;
+}
+#tab-panel .tab-header {
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  border: none;
+  border-radius: 20% 20% 0% 0%;
+  margin-right: 0.1rem;
+}
+#tab-panel .tab-body {
+  display: none;
+  height: 6.5rem;
+  border: 1px solid white;
+  padding: 0.5rem;
+}
+#tab-panel .tab-body.active {
+  display: block;
+}
+
+
+
+#paint-tab select,
+#paint-tab button {
+  padding: 0.5rem;
+  border: none;
+}
+#paint-tab-flex-container {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+}
+#paint-tab-controls-list-container  {
+  flex-shrink: 0;
+}
+#modules-carousel {
+  flex-shrink: 1;
+  height: 6.5rem;
+  overflow-y: scroll;
+}
+#modules-carousel > .flex-button-row {
+  flex-wrap: wrap;
+}
+
+
+#layout-tab-flex-container {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  color: white;
+}
+
+
+
+#things-here-overlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 0.5rem;
+  color: white;
+}
+
