@@ -4,7 +4,9 @@ import frameScheduler from "./modules/frameScheduler.js"
 import { InputManager } from './modules/input.js'
 import { save, load, clearSaveData } from './modules/save.js'
 
+import { LayoutManager } from './modules/input/layoutManager.js'
 import { ModulesCarousel } from './modules/input/moduleCarousel.js'
+import { initializeTabBar } from './modules/input/tabBar.js'
 import { ThingsHereOverlay } from './modules/input/thingsHereOverlay.js'
 
 import { modules } from './modules/component/modules.js'
@@ -32,7 +34,7 @@ const ecs = createEcs()
 load(ecs)
 ecs.newResource("canvas", canvas)
 const cameraResource = ecs.newResource("camera", { offsetX: 0, offsetY: 0 })
-const gridResource = ecs.newResource("grid", { s: rem() })
+const gridResource = ecs.newResource("grid", { s: rem(), w: 0, h: 0})
 const tilesResource = ecs.newResource('tiles', initializeTiles())
 ecs.registerSystems([
   ClearCanvasSystem,
@@ -42,15 +44,18 @@ ecs.registerSystems([
   SelectionSystem
 ])
 
-// N.B. these registered event listeners.
+// N.B. these register event listeners.
 const inputManager = new InputManager(ecs, frameScheduler)
+const layoutManager = new LayoutManager(gridResource, ecs, frameScheduler);
 const modulesCarousel = new ModulesCarousel(inputManager)
 const thingsHereOverlay = new ThingsHereOverlay(canvas, ecs)
+initializeTabBar()
 
 /* Register these after all other listeners to ensure save always reflects most
  * recent modification. */
 canvas.addEventListener('mouseup', e => save(ecs))
 document.querySelector('#btn-clear-all').addEventListener('click', e => clearSaveData(ecs))
 
+layoutManager.onLayoutChange()
 inputManager.onResize()
 

@@ -24,6 +24,7 @@ export class ModulesCarousel {
 
 	let carouselShelf = document.createElement('div')
 	carouselShelf.setAttribute('id', `carousel-shelf-${categoryId(category)}`)
+	carouselShelf.classList.add('flex-button-row')
 	carouselShelf.style.display = 'none'
 	carousel.appendChild(carouselShelf)
       })

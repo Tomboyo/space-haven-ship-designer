@@ -4,28 +4,24 @@ export const GridRenderSystem = [
   [],
   (canvas, camera, grid) => {
     let ctx = canvas.getContext("2d")
-    let offsetX = camera.offsetX % grid.s
-    let offsetY = camera.offsetY % grid.s
-    // The number of squares is the minimum number to cover the screen + 1 to
-    // slide in as the grid pans.
-    var w = 1 + Math.ceil(canvas.width / grid.s)
-    var h = 1 + Math.ceil(canvas.height / grid.s)
+    let offsetX = camera.offsetX
+    let offsetY = camera.offsetY
 
     ctx.save();
     ctx.beginPath()
 
     // Render vertical grid lines
-    for (let i = 0; i < w; i++) {
-      var x = offsetX + (i * grid.s)
-      ctx.moveTo(x, 0)
-      ctx.lineTo(x, canvas.height)
+    for (let i = 0; i <= grid.w; i++) {
+      let x = offsetX + (i * grid.s)
+      ctx.moveTo(x, offsetY)
+      ctx.lineTo(x, offsetY + (grid.h * grid.s))
     }
 
     // Render horizontal grid lines
-    for (let i = 0; i < h; i++) {
-      var y = offsetY + (i * grid.s)
-      ctx.moveTo(0, y)
-      ctx.lineTo(canvas.width, y)
+    for (let i = 0; i <= grid.h; i++) {
+      let y = offsetY + (i * grid.s)
+      ctx.moveTo(offsetX, y)
+      ctx.lineTo(offsetX + (grid.w * grid.s), y)
     }
 
     ctx.strokeStyle = "#66ccff88"

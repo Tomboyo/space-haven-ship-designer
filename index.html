@@ -4,83 +4,46 @@
     <meta charset="UTF-8"/>
     <title>Space Haven Ship Designer</title>
     <script type="module" src="./index.js" defer></script>
-    <style>
-      html, body {
-	font-size: 12pt;
-	font-family: "Tahoma", sans-serif;
-	padding: 0;
-	margin: 0;
-	background-color: black;
-      }
-
-      #flex-container {
-	width: 100vw;
-	height: 100vh;
-	flex-direction: column;
-	display: flex;
-
-      }
-
-      #flex-container * {
-	font-size: inherit;
-      }
-
-      #flex-container select,
-      #flex-container button {
-	margin: 0.5rem;
-	padding: 0.5rem;
-	border: none;
-      }
-
-      #flex-container .active {
-	background-color: #66ccff;
-      }
-
-      #canvas-wrapper {
-	flex-grow: 1;
-	flex-shrink: 1;
-	overflow: hidden;
-      }
-
-      #controls {
-	display: flex;
-	flex-direction: row;
-	border: 1px solid white;
-	gap: 2rem;
-      }
-
-      #controls-list {
-	flex-shrink: 0;
-      }
-
-      #modules-carousel {
-	flex-shrink: 1;
-	height: 6.5rem;
-	overflow-y: scroll;
-      }
-
-      #things-here-overlay {
-	position: absolute;
-        left: 0;
-	top: 0;
-	padding: 0.5rem;
-	color: white;
-      }
-    </style>
+    <link rel="stylesheet" type="text/css" href="index.css"/>
   </head>
   <body oncontextmenu="return false;">
     <div id="flex-container">
       <div id="canvas-wrapper">
         <canvas id="canvas">Space Haven ship designer</canvas>
       </div>
-      <div id="controls">
-	<div id="controls-list">
-	  <button id="btn-paint-hull">Paint Hull</button>
-	  <button id="btn-erase">Erase</button>
-	  <button id="btn-clear-all">Clear All</button>
-	  <select id="select-module-kind"></select>
+      <div id="tab-panel">
+	<div class="tabs">
+	  <button class="tab-header active" data-tab-id="paint-tab">Paint</button>
+	  <button class="tab-header" data-tab-id="layout-tab">Layout</button>
 	</div>
-	<div id="modules-carousel"></div>
+	<div id="paint-tab" class="tab-body active">
+	  <div id="paint-tab-flex-container">
+	    <div id="paint-tab-controls-list-container">
+	      <div class="flex-button-row">
+		<button id="btn-paint-hull">Paint Hull</button>
+		<button id="btn-erase">Erase</button>
+		<button id="btn-clear-all">Clear All</button>
+		<select id="select-module-kind"></select>
+	      </div>
+	    </div>
+	    <div id="modules-carousel"></div>
+	  </div>
+	</div>
+	<div id="layout-tab" class="tab-body">
+	  <div id="layout-tab-flex-container">
+            <label for="layout-select">Layout</label>
+            <select id="layout-select">
+              <option value="26x26" selected>1x1: 26x26</option>
+              <option value="54x26">2x1: 54x26</option>
+              <option value="26x54">1x2: 26x54</option>
+              <option value="82x26">3x1: 82x26</option>
+              <option value="26x82">1x3: 26x82</option>
+              <option value="54x54">2x2: 54x54</option>
+              <option value="54x82">2x3: 54x82</option>
+              <option value="82x54">3x2: 82x54</option>
+            </select>
+	  </div>
+	</div>
       </div>
     </div>
     <div id="things-here-overlay">
