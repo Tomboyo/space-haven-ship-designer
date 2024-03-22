@@ -45,6 +45,12 @@ button.active {
   display: flex;
   flex-direction: row;
 }
+#tab-panel select,
+#tab-panel button {
+  /* Note: impacts tab headers, but they override these properties */
+  padding: 0.5rem;
+  border: none;
+}
 #tab-panel .tab-header {
   padding: 0.5rem 1rem 0.5rem 1rem;
   border: none;
@@ -60,19 +66,14 @@ button.active {
 #tab-panel .tab-body.active {
   display: block;
 }
-
-
-
-#paint-tab select,
-#paint-tab button {
-  padding: 0.5rem;
-  border: none;
-}
-#paint-tab-flex-container {
+.tab-flex-container {
   display: flex;
   flex-direction: row;
   gap: 2rem;
+  color: white;
 }
+
+
 #paint-tab-controls-list-container  {
   flex-shrink: 0;
 }
@@ -83,14 +84,6 @@ button.active {
 }
 #modules-carousel > .flex-button-row {
   flex-wrap: wrap;
-}
-
-
-#layout-tab-flex-container {
-  display: flex;
-  flex-direction: row;
-  gap: 2rem;
-  color: white;
 }
 
 

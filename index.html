@@ -15,9 +15,10 @@
 	<div class="tabs">
 	  <button class="tab-header active" data-tab-id="paint-tab">Paint</button>
 	  <button class="tab-header" data-tab-id="layout-tab">Layout</button>
+          <button class="tab-header" data-tab-id="pathing-tab">Pathing</button>
 	</div>
 	<div id="paint-tab" class="tab-body active">
-	  <div id="paint-tab-flex-container">
+	  <div class="tab-flex-container">
 	    <div id="paint-tab-controls-list-container">
 	      <div class="flex-button-row">
 		<button id="btn-paint-hull">Paint Hull</button>
@@ -30,7 +31,7 @@
 	  </div>
 	</div>
 	<div id="layout-tab" class="tab-body">
-	  <div id="layout-tab-flex-container">
+	  <div class="tab-flex-container">
             <label for="layout-select">Layout</label>
             <select id="layout-select">
               <option value="26x26" selected>1x1: 26x26</option>
@@ -44,6 +45,11 @@
             </select>
 	  </div>
 	</div>
+        <div id="pathing-tab" class="tab-body">
+          <div class="tab-flex-container">
+            <button id="btn-measure">Measure</button>
+          </div>
+        </div>
       </div>
     </div>
     <div id="things-here-overlay">
