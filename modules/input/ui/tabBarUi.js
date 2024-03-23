@@ -1,4 +1,4 @@
-export function initializeTabBar() {
+function install() {
   let buttons = document.querySelectorAll("#tab-panel .tab-header")
   let panels = document.querySelectorAll("#tab-panel .tab-body")
   buttons.forEach(button => {
@@ -13,3 +13,6 @@ export function initializeTabBar() {
   })
 }
 
+export default {
+  install
+}

@@ -1,59 +1,60 @@
-import { styleButtonActive, styleButtonInactive } from '../css.js'
-import { getTileCoordinates } from '../util.js'
+import { styleButtonActive, styleButtonInactive } from '/modules/css.js'
+import { getTileCoordinates } from '/modules/util.js'
+
+import paintPanelUi from '../ui/paintPanelUi.js'
 
 import { PanState } from './panState.js'
 import { PaintHullInitialState } from './paintHullStates.js'
 import { PaintModuleInitialState } from './paintModuleStates.js'
 
-
 export class EraseHullInitialState {
-  constructor(manager) {
-    this.manager = manager
+  constructor(ecs) {
+    this.ecs = ecs
   }
 
   onPaintHullToggleClick() {
-    styleButtonActive(this.manager.ui.paintHullToggle)
-    styleButtonInactive(this.manager.ui.eraseHullToggle)
-    return new PaintHullInitialState(this.manager)
+    styleButtonActive(paintPanelUi.dom.paintHullToggle)
+    styleButtonInactive(paintPanelUi.dom.eraseToggle)
+    return new PaintHullInitialState(this.ecs)
   }
 
   onEraseHullToggleClick() {
-    styleButtonInactive(this.manager.ui.eraseHullToggle)
-    return new PanState(this.manager)
+    styleButtonInactive(paintPanelUi.dom.eraseToggle)
+    return new PanState(this.ecs)
   }
 
   onPaintModuleToggleClick(e, module) {
     styleButtonActive(e.target)
-    styleButtonInactive(this.manager.ui.eraseHullToggle)
-    return new PaintModuleInitialState(this.manager, e, module)
+    styleButtonInactive(paintPanelUi.dom.eraseToggle)
+    return new PaintModuleInitialState(this.ecs, e, module)
   }
 
   onCanvasLeftMouseDown(e) {
-    let p = getTileCoordinates(e, this.manager.ecs)
-    let entity = this.manager.ecs.newEntity({ 'selection': { p0: p, p1: p }})
-    return new EraseHullSelectingState(this.manager, entity)
+    let p = getTileCoordinates(e, this.ecs)
+    let entity = this.ecs.newEntity({ 'selection': { p0: p, p1: p }})
+    return new EraseHullSelectingState(this.ecs, entity)
   }
 
   onCanvasRightMouseDown(e) {
-    styleButtonInactive(this.manager.ui.eraseHullToggle)
-    return new PanState(this.manager)
+    styleButtonInactive(paintPanelUi.dom.eraseToggle)
+    return new PanState(this.ecs)
   }
 }
 
 class EraseHullSelectingState {
-  constructor(manager, entity) {
-    this.manager = manager
+  constructor(ecs, entity) {
+    this.ecs = ecs
     this.entity = entity
   }
 
   onCanvasRightMouseDown(e) {
-    this.manager.ecs.removeEntity(this.entity)
-    return new EraseHullInitialState(this.manager)
+    this.ecs.removeEntity(this.entity)
+    return new EraseHullInitialState(this.ecs)
   }
 
   onCanvasMouseMove(e) {
-    let p = getTileCoordinates(e, this.manager.ecs)
-    this.manager.ecs.updateEntity(this.entity, entity => entity.selection.p1 = p)
+    let p = getTileCoordinates(e, this.ecs)
+    this.ecs.updateEntity(this.entity, entity => entity.selection.p1 = p)
     return this
   }
 
@@ -62,9 +63,9 @@ class EraseHullSelectingState {
     let p1 = this.entity.selection.p1
     let [x0, x1] = p0.x < p1.x ? [p0.x, p1.x] : [p1.x, p0.x]
     let [y0, y1] = p0.y < p1.y ? [p0.y, p1.y] : [p1.y, p0.y]
-    let tilesResource = this.manager.ecs.getResource('tiles')
+    let tilesResource = this.ecs.getResource('tiles')
 
-    this.manager.ecs.entityQuery(
+    this.ecs.entityQuery(
       ['tiles'],
       ['id', 'position', 'tile'],
       (tiles, {id, position: {x, y}}, buffer) => {
@@ -74,7 +75,7 @@ class EraseHullSelectingState {
 	}
       })
 
-    this.manager.ecs.entityQuery(
+    this.ecs.entityQuery(
       [],
       ['id', 'position', 'module'],
       ({id, position: {x, y}, module: {tiles}}, buffer) => {
@@ -92,7 +93,7 @@ class EraseHullSelectingState {
 	}
       })
 
-    this.manager.ecs.removeEntity(this.entity)
-    return new EraseHullInitialState(this.manager)
+    this.ecs.removeEntity(this.entity)
+    return new EraseHullInitialState(this.ecs)
   }
 }

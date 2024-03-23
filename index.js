@@ -1,15 +1,16 @@
 import { rem } from "./modules/css.js"
 import { createEcs } from "./modules/ecs.js"
 import frameScheduler from "./modules/frameScheduler.js"
-import { InputManager } from './modules/input.js'
-import { save, load, clearSaveData } from './modules/save.js'
+import { load } from './modules/save.js'
 
-import { LayoutManager } from './modules/input/layoutManager.js'
-import { ModulesCarousel } from './modules/input/moduleCarousel.js'
-import { initializeTabBar } from './modules/input/tabBar.js'
-import { ThingsHereOverlay } from './modules/input/thingsHereOverlay.js'
+import StateMachine from './modules/input/state/stateMachine.js'
 
-import { modules } from './modules/component/modules.js'
+import canvasUi from './modules/input/ui/canvasUi.js'
+import layoutPanelUi from './modules/input/ui/layoutPanelUi.js'
+import paintPanelUi from './modules/input/ui/paintPanelUi.js'
+import tabBarUi from './modules/input/ui/tabBarUi.js'
+import thingsHereUi from './modules/input/ui/thingsHereUi.js'
+import windowUi from './modules/input/ui/windowUi.js'
 
 import { ClearCanvasSystem } from "./modules/systems/clearCanvasSystem.js"
 import ModuleSystem from './modules/systems/moduleSystem.js'
@@ -28,11 +29,9 @@ function initializeTiles() {
   return tiles
 }
 
-const canvas = document.querySelector("canvas")
-
 const ecs = createEcs()
 load(ecs)
-ecs.newResource("canvas", canvas)
+ecs.newResource("canvas", canvasUi.dom.canvas)
 const cameraResource = ecs.newResource("camera", { offsetX: 0, offsetY: 0 })
 const gridResource = ecs.newResource("grid", { s: rem(), w: 0, h: 0})
 const tilesResource = ecs.newResource('tiles', initializeTiles())
@@ -44,18 +43,12 @@ ecs.registerSystems([
   SelectionSystem
 ])
 
-// N.B. these register event listeners.
-const inputManager = new InputManager(ecs, frameScheduler)
-const layoutManager = new LayoutManager(gridResource, ecs, frameScheduler);
-const modulesCarousel = new ModulesCarousel(inputManager)
-const thingsHereOverlay = new ThingsHereOverlay(canvas, ecs)
-initializeTabBar()
+const stateMachine = new StateMachine(ecs, frameScheduler)
 
-/* Register these after all other listeners to ensure save always reflects most
- * recent modification. */
-canvas.addEventListener('mouseup', e => save(ecs))
-document.querySelector('#btn-clear-all').addEventListener('click', e => clearSaveData(ecs))
-
-layoutManager.onLayoutChange()
-inputManager.onResize()
+canvasUi.install(stateMachine, ecs)
+layoutPanelUi.install(ecs, frameScheduler)
+paintPanelUi.install(stateMachine, ecs)
+tabBarUi.install()
+thingsHereUi.install(ecs)
+windowUi.install(stateMachine, ecs)
 

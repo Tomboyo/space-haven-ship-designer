@@ -1,28 +1,30 @@
-import { styleButtonActive } from '../css.js'
+import { styleButtonActive } from '/modules/css.js'
+
+import paintPanelUi from '../ui/paintPanelUi.js'
 
 import { PaintHullInitialState } from './paintHullStates.js'
 import { EraseHullInitialState } from './eraseHullStates.js'
 import { PaintModuleInitialState } from './paintModuleStates.js'
 
 export class PanState {
-  constructor(manager) {
-    this.manager = manager
+  constructor(ecs) {
+    this.ecs = ecs
     this.isDrag = false
   }
 
   onPaintHullToggleClick() {
-    styleButtonActive(this.manager.ui.paintHullToggle)
-    return new PaintHullInitialState(this.manager)
+    styleButtonActive(paintPanelUi.dom.paintHullToggle)
+    return new PaintHullInitialState(this.ecs)
   }
 
   onEraseHullToggleClick() {
-    styleButtonActive(this.manager.ui.eraseHullToggle)
-    return new EraseHullInitialState(this.manager)
+    styleButtonActive(paintPanelUi.dom.eraseToggle)
+    return new EraseHullInitialState(this.ecs)
   }
 
   onPaintModuleToggleClick(e, module) {
     styleButtonActive(e.target)
-    return new PaintModuleInitialState(this.manager, e, module)
+    return new PaintModuleInitialState(this.ecs, e, module)
   }
 
   onCanvasLeftMouseDown(e) {
@@ -31,7 +33,7 @@ export class PanState {
 
   onCanvasMouseMove(e) {
     if (this.isDrag) {
-      this.manager.ecs.updateResource('camera', c => {
+      this.ecs.updateResource('camera', c => {
 	c.offsetX += e.movementX
         c.offsetY += e.movementY
       })
