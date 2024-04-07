@@ -41,20 +41,10 @@ export class InputManager {
   }
 
   onCanvasWheel(e) {
-    this.ecs.updateResource('grid', g => {
-      g.s += rem() * e.deltaY * -0.00075
-    })
-
     this.handle('onCanvasWheel', ...arguments)
   }
 
   onResize() {
-    this.ecs.updateResource('canvas', c => {
-      let rect = c.parentNode.getBoundingClientRect()
-      c.width = rect.width
-      c.height = rect.height
-    })
-
     this.handle('onResize', ...arguments)
   }
 

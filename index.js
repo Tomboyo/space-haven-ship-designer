@@ -4,6 +4,8 @@ import frameScheduler from "./modules/frameScheduler.js"
 import { InputManager } from './modules/input.js'
 import { save, load, clearSaveData } from './modules/save.js'
 
+import * as canvasUi from './modules/ui/canvas.js'
+
 import { LayoutManager } from './modules/input/layoutManager.js'
 import { ModulesCarousel } from './modules/input/moduleCarousel.js'
 import { initializeTabBar } from './modules/input/tabBar.js'
@@ -45,6 +47,8 @@ ecs.registerSystems([
 ])
 
 // N.B. these register event listeners.
+let resources = { ecs }
+canvasUi.install(resources)
 const inputManager = new InputManager(ecs, frameScheduler)
 const layoutManager = new LayoutManager(gridResource, ecs, frameScheduler);
 const modulesCarousel = new ModulesCarousel(inputManager)
@@ -57,5 +61,5 @@ canvas.addEventListener('mouseup', e => save(ecs))
 document.querySelector('#btn-clear-all').addEventListener('click', e => clearSaveData(ecs))
 
 layoutManager.onLayoutChange()
-inputManager.onResize()
+canvasUi.refitCanvas(ecs)
 
