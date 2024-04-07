@@ -13,10 +13,20 @@
       </div>
       <div id="tab-panel">
 	<div class="tabs">
-	  <button class="tab-header active" data-tab-id="paint-tab">Paint</button>
-	  <button class="tab-header" data-tab-id="layout-tab">Layout</button>
+	  <button
+            id="paint-tab"
+            class="tab-header active"
+            data-tab-body-id="paint-tab-body">
+              Paint
+          </button>
+	  <button
+            id="layout-tab"
+            class="tab-header"
+            data-tab-body-id="layout-tab-body">
+              Layout
+          </button>
 	</div>
-	<div id="paint-tab" class="tab-body active">
+	<div id="paint-tab-body" class="tab-body active">
 	  <div id="paint-tab-flex-container">
 	    <div id="paint-tab-controls-list-container">
 	      <div class="flex-button-row">
@@ -29,7 +39,7 @@
 	    <div id="modules-carousel"></div>
 	  </div>
 	</div>
-	<div id="layout-tab" class="tab-body">
+	<div id="layout-tab-body" class="tab-body">
 	  <div id="layout-tab-flex-container">
             <label for="layout-select">Layout</label>
             <select id="layout-select">

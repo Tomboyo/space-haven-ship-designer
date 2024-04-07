@@ -5,11 +5,11 @@ import { InputManager } from './modules/input.js'
 import { save, load, clearSaveData } from './modules/save.js'
 
 import * as canvasUi from './modules/ui/canvas.js'
+import * as editorUi from './modules/ui/editor.js'
 import * as thingsHereUi from './modules/ui/thingsHere.js'
 
 import { LayoutManager } from './modules/input/layoutManager.js'
 import { ModulesCarousel } from './modules/input/moduleCarousel.js'
-import { initializeTabBar } from './modules/input/tabBar.js'
 
 import { modules } from './modules/component/modules.js'
 
@@ -53,7 +53,7 @@ const inputManager = new InputManager(ecs, frameScheduler)
 const layoutManager = new LayoutManager(gridResource, ecs, frameScheduler);
 const modulesCarousel = new ModulesCarousel(inputManager)
 thingsHereUi.install(resources)
-initializeTabBar()
+editorUi.install(resources)
 
 /* Register these after all other listeners to ensure save always reflects most
  * recent modification. */
