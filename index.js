@@ -46,6 +46,7 @@ ecs.registerSystems([
   SelectionSystem
 ])
 
+
 // N.B. these register event listeners.
 let resources = { ecs }
 canvasUi.install(resources)
@@ -62,4 +63,12 @@ document.querySelector('#btn-clear-all').addEventListener('click', e => clearSav
 
 layoutManager.onLayoutChange()
 canvasUi.refitCanvas(ecs)
+
+let renderLoop = () => {
+  if (ecs.isDirty) {
+    ecs.run()
+  }
+  window.requestAnimationFrame(renderLoop)
+}
+renderLoop()
 

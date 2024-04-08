@@ -10,8 +10,6 @@ const ui = {
 export class InputManager {
   constructor(ecs, frameScheduler) {
     this.ecs = ecs
-    this.frameScheduler = frameScheduler
-
     this.ui = ui
     this.state = new PanState(this)
 
@@ -35,9 +33,6 @@ export class InputManager {
 
   handle(which) {
     this.state = this.state[which]?.(...Array.prototype.slice.call(arguments, 1)) || this.state
-    if (this.ecs.isDirty) {
-      this.frameScheduler.requestFrame(() => this.ecs.run())
-    }
   }
 
   onCanvasWheel(e) {

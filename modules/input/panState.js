@@ -11,7 +11,6 @@ export class PanState {
   }
 
   onPaintHullToggleClick() {
-    styleButtonActive(this.manager.ui.paintHullToggle)
     return new PaintHullInitialState(this.manager)
   }
 
@@ -23,22 +22,5 @@ export class PanState {
   onPaintModuleToggleClick(e, module) {
     styleButtonActive(e.target)
     return new PaintModuleInitialState(this.manager, e, module)
-  }
-
-  onCanvasLeftMouseDown(e) {
-    this.isDrag = true
-  }
-
-  onCanvasMouseMove(e) {
-    if (this.isDrag) {
-      this.manager.ecs.updateResource('camera', c => {
-	c.offsetX += e.movementX
-        c.offsetY += e.movementY
-      })
-    }
-  }
-
-  onCanvasLeftMouseUp(e) {
-    this.isDrag = false
   }
 }

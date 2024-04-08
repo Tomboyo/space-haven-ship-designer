@@ -9,39 +9,50 @@
  */
 
 import * as css from '/modules/css.js'
+import * as util from '/modules/util.js'
+
+import * as paintPanelUi from './paintPanel.js'
 
 const paintTab = document.querySelector('#paint-tab')
 const layoutTab = document.querySelector('#layout-tab')
 
 export function install(resources) {
-  let activeTab = paintTab
-  activateTab(activeTab)
-
+  let editor = new Editor(paintTab)
   let a = [ paintTab, layoutTab ]
   a.forEach(it =>
-    it.addEventListener('click', e => activeTab = changeActiveTab(activeTab, e)))
+    it.addEventListener('click', e => editor.changeActiveTab(activeTab, e)))
+
+  paintPanelUi.install(resources)
 }
 
-function changeActiveTab(activeTab, e) {
-  if (e.target === activeTab) {
-    return activeTab
+class Editor {
+  constructor(activeTab) {
+    this.activeTab = activeTab 
+    this.activateTab(this.activeTab)
   }
 
-  deactivateTab(activeTab)
-  activateTab(e.target)
-  return e.target
+  changeActiveTab(activeTab, e) {
+    if (e.target === this.activeTab) {
+      return
+    }
+
+    this.deactivateTab(activeTab)
+    this.activateTab(e.target)
+    this.activeTab = e.target
+  }
+
+  activateTab(tab) {
+    css.styleButtonActive(tab)
+    css.styleButtonActive(this.panelForTab(tab))
+  }
+
+  deactivateTab(tab) {
+    css.styleButtonInactive(tab)
+    css.styleButtonInactive(this.panelForTab(tab))
+  }
+
+  panelForTab(target) {
+    return document.querySelector('#' + target.getAttribute('data-tab-body-id'))
+  }
 }
 
-function activateTab(tab) {
-  css.styleButtonActive(tab)
-  css.styleButtonActive(panelForTab(tab))
-}
-
-function deactivateTab(tab) {
-  css.styleButtonInactive(tab)
-  css.styleButtonInactive(panelForTab(tab))
-}
-
-function panelForTab(target) {
-  return document.querySelector('#' + target.getAttribute('data-tab-body-id'))
-}

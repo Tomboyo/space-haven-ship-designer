@@ -23,7 +23,6 @@ export class PaintModuleInitialState {
 
   onPaintHullToggleClick() {
     styleButtonInactive(this.activeButton)
-    styleButtonActive(this.manager.ui.paintHullToggle)
     this.manager.ecs.removeEntity(this.entity)
     return new PaintHullInitialState(this.manager)
   }

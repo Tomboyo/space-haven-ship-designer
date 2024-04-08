@@ -12,7 +12,6 @@ export class EraseHullInitialState {
   }
 
   onPaintHullToggleClick() {
-    styleButtonActive(this.manager.ui.paintHullToggle)
     styleButtonInactive(this.manager.ui.eraseHullToggle)
     return new PaintHullInitialState(this.manager)
   }
