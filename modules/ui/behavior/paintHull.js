@@ -1,17 +1,7 @@
 import * as util from '/modules/util.js'
 import * as hullBlocks from '/modules/component/hullBlock.js'
 
-export function startPaintHullSelection(ecs, e) {
-  let p = util.getTileCoordinates(e, ecs)
-  return ecs.newEntity({ 'selection': {p0: p, p1: p} })
-}
-
-export function updatePaintHullSelection(ecs, entity, e) {
-  let p = util.getTileCoordinates(e, ecs)
-  ecs.updateEntity(entity, it => it.selection.p1 = p)
-}
-
-export function commitPaintHullSelection(ecs, entity, e) {
+export function paintHull(ecs, entity) {
   let p0 = entity.selection.p0
   let p1 = entity.selection.p1
   let [x0, x1] = p0.x < p1.x ? [p0.x, p1.x] : [p1.x, p0.x]
@@ -30,10 +20,5 @@ export function commitPaintHullSelection(ecs, entity, e) {
       }
     }
   })
-
-  ecs.removeEntity(entity)
 }
 
-export function cancelPaintHullSelection(ecs, entity) {
-  ecs.removeEntity(entity)
-}

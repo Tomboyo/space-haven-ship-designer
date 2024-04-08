@@ -3,9 +3,7 @@ import { getTileCoordinates } from '../util.js'
 
 import { newModule } from '../component/module.js'
 
-import { PaintHullInitialState } from './paintHullStates.js'
-import { EraseHullInitialState } from './eraseHullStates.js'
-import { PanState } from './panState.js'
+import { DefaultState } from './defaultState.js'
 
 export class PaintModuleInitialState {
   constructor(manager, e, module) {
@@ -24,21 +22,20 @@ export class PaintModuleInitialState {
   onPaintHullToggleClick() {
     styleButtonInactive(this.activeButton)
     this.manager.ecs.removeEntity(this.entity)
-    return new PaintHullInitialState(this.manager)
+    return new DefaultState(this.manager)
   }
 
   onEraseHullToggleClick() {
     styleButtonInactive(this.activeButton)
-    styleButtonActive(this.manager.ui.eraseHullToggle)
     this.manager.ecs.removeEntity(this.entity)
-    return new EraseHullInitialState(this.manager)
+    return new DefaultState(this.manager)
   }
 
   onPaintModuleToggleClick(e, module) {
     styleButtonInactive(this.activeButton)
     this.manager.ecs.removeEntity(this.entity)
     if (e.target === this.activeButton) {
-      return new PanState(this.manager)
+      return new DefaultState(this.manager)
     } else {
       styleButtonActive(e.target)
       return new PaintModuleInitialState(this.manager, e, module)
@@ -55,7 +52,7 @@ export class PaintModuleInitialState {
   onCanvasRightMouseDown(e) {
     styleButtonInactive(this.activeButton)
     this.manager.ecs.removeEntity(this.entity)
-    return new PanState(this.manager)
+    return new DefaultState(this.manager)
   }
 
   onCanvasMouseMove(e) {

@@ -20,7 +20,7 @@ export function install(resources) {
   let editor = new Editor(paintTab)
   let a = [ paintTab, layoutTab ]
   a.forEach(it =>
-    it.addEventListener('click', e => editor.changeActiveTab(activeTab, e)))
+    it.addEventListener('click', e => editor.changeActiveTab(e)))
 
   paintPanelUi.install(resources)
 }
@@ -31,12 +31,12 @@ class Editor {
     this.activateTab(this.activeTab)
   }
 
-  changeActiveTab(activeTab, e) {
+  changeActiveTab(e) {
     if (e.target === this.activeTab) {
       return
     }
 
-    this.deactivateTab(activeTab)
+    this.deactivateTab(this.activeTab)
     this.activateTab(e.target)
     this.activeTab = e.target
   }

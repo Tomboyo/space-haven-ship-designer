@@ -1,6 +1,8 @@
 import * as css from '/modules/css.js'
 
-import * as paintHull from './behavior/paintHull.js'
+import * as selection from './behavior/selection.js'
+import { paintHull } from './behavior/paintHull.js'
+import { erase } from './behavior/erase.js'
 
 const canvas = document.querySelector('#canvas')
 const paintHullToggle = document.querySelector('#btn-paint-hull')
@@ -24,25 +26,51 @@ class PaintPanel {
   }
 
   togglePaintHull(ecs) {
-    if (this.state === 'paintHull' || this.state === 'external') {
-      css.styleButtonInactive(paintHullToggle)
-      this.state = 'pan'
-      this.mouseBehavior = panMouseBehavior(ecs, this)
-    } else {
-      css.styleButtonActive(paintHullToggle)
-      this.state = 'paintHull'
-      this.mouseBehavior = paintHullMouseBehavior(ecs, this)
+    switch (this.state) {
+      case 'paintHull':
+        css.styleButtonInactive(paintHullToggle)
+        this.state = 'pan'
+        this.mouseBehavior = panMouseBehavior(ecs, this)
+        return
+      case 'erase':
+        css.styleButtonInactive(eraseToggle)
+        // fall through
+      case 'pan':
+        css.styleButtonActive(paintHullToggle)
+        this.state = 'paintHull'
+        this.mouseBehavior = paintHullMouseBehavior(ecs, this)
+        return
     }
   }
 
   toggleErase(ecs) {
-    if (this.state === 'paintHull' || this.state === 'pan') {
-      css.styleButtonInactive(paintHullToggle)
-      this.state = 'external'
-      this.mouseBehavior = emptyMouseBehavior()
-    } else if (this.state === 'external') {
-      this.state = 'pan'
-      this.mouseBehavior = panMouseBehavior(ecs, this)
+    switch (this.state) {
+      case 'erase':
+        css.styleButtonInactive(eraseToggle)
+        this.state = 'pan'
+        this.mouseBehavior = panMouseBehavior(ecs, this)
+        return
+      case 'paintHull':
+        css.styleButtonInactive(paintHullToggle)
+        // fall through
+      case 'pan':
+        css.styleButtonActive(eraseToggle)
+        this.state = 'erase'
+        this.mouseBehavior = eraseMouseBehavior(ecs, this)
+        return
+    }
+  }
+
+  cancel(ecs) {
+    switch (this.state) {
+      case 'erase':
+        css.styleButtonInactive(eraseToggle)
+        // fall through
+      case 'paintHull':
+        css.styleButtonInactive(paintHullToggle)
+        this.mouseBehavior = panMouseBehavior(ecs, this)
+        this.state = 'pan'
+        return
     }
   }
 
@@ -95,30 +123,39 @@ function panMouseBehavior(ecs, panel) {
 }
 
 function paintHullMouseBehavior(ecs, panel) {
+  return withSelection(ecs, panel, paintHull)
+}
+
+function eraseMouseBehavior(ecs, panel) {
+  return withSelection(ecs, panel, erase)
+}
+
+function withSelection(ecs, panel, commit) {
   return {
     mousedown(e) {
       if (e.button === 0) {
-        this.entity = paintHull.startPaintHullSelection(ecs, e)
+        this.selection = selection.create(ecs, e)
       }
     },
 
     mouseup(e) {
-      if (this.entity) {
+      if (this.selection) {
         if (e.button === 0) {
-          paintHull.commitPaintHullSelection(ecs, this.entity, e)
-          this.entity = null
+          commit(ecs, this.selection)
+          selection.remove(ecs, this.selection)
+          this.selection = null
         } else if (e.button === 2) {
-          paintHull.cancelPaintHullSelection(ecs, this.entity)
-          this.entity = null
+          selection.remove(ecs, this.selection)
+          this.selection = null
         }
       } else {
-        panel.togglePaintHull(ecs)
+        panel.cancel(ecs)
       }
     },
 
     mousemove(e) {
-      if (this.entity) {
-        paintHull.updatePaintHullSelection(ecs, this.entity, e)
+      if (this.selection) {
+        selection.expand(ecs, this.selection, e)
       }
     },
   }

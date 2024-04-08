@@ -1,5 +1,5 @@
 import { rem, styleButtonActive, styleButtonInactive } from './css.js'
-import { PanState } from './input/panState.js'
+import { DefaultState } from './input/defaultState.js'
 
 const ui = {
   paintHullToggle: document.querySelector('#btn-paint-hull'),
@@ -11,7 +11,7 @@ export class InputManager {
   constructor(ecs, frameScheduler) {
     this.ecs = ecs
     this.ui = ui
-    this.state = new PanState(this)
+    this.state = new DefaultState(this)
 
     this.addEventListeners()
   }
