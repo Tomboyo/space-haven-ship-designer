@@ -5,13 +5,17 @@ const ul = document.querySelector('#things-here-overlay-ul')
 const nothing = li('Nothing.')
 
 export function install({ ecs }) {
-  let hovered = []
-  canvas.addEventListener('mousemove', e => {
-    hovered = displayHoveredModule(ecs, hovered, e)
-  })
+  let thingsHere = new ThingsHere([])
+  ul.replaceChildren(nothing)
+  canvas.addEventListener('mousemove', e => thingsHere.updateList(ecs, e))
 }
 
-function displayHoveredModule(ecs, hovered, e) {
+class ThingsHere {
+  constructor(hovered) {
+    this.hovered = hovered
+  }
+
+  updateList(ecs, e) {
     let next = []
     ecs.entityQuery([], ['module'], ({module, position: {x, y}}) => {
       if (module.isGhost) {
@@ -26,17 +30,18 @@ function displayHoveredModule(ecs, hovered, e) {
       }
     })
 
-    if (next === hovered) {
+    if (next === this.hovered) {
       return
     }
 
-    if (hovered.length) {
+    if (this.hovered.length) {
       ul.replaceChildren(...hovered.map(li))
     } else {
       ul.replaceChildren(nothing)
     }
 
     return next
+  }
 }
 
 function li(text) {
