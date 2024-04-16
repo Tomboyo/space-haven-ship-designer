@@ -9,94 +9,90 @@ const paintHullToggle = document.querySelector('#btn-paint-hull')
 const eraseToggle = document.querySelector('#btn-erase')
 
 export function install({ ecs }) {
-  let panel = new PaintPanel(ecs)
-
-  paintHullToggle.addEventListener('click', e => panel.togglePaintHull(ecs))
-  eraseToggle.addEventListener('click', e => panel.toggleErase(ecs))
-
-  canvas.addEventListener('mousedown', e => panel.mousedown(e))
-  canvas.addEventListener('mousemove', e => panel.mousemove(e))
-  canvas.addEventListener('mouseup', e => panel.mouseup(e))
+  new Panel(ecs)
 }
 
-class PaintPanel {
+/* Note: Panel is two things:
+ * 1: The paint panel and all of its buttons
+ * 2: A tool palette that switches between brushes, with at most one active
+ * Consider extracting 2 in the future if we need a second palette
+ */
+class Panel {
   constructor(ecs) {
-    this.state = 'pan'
-    this.mouseBehavior = panMouseBehavior(ecs, this)
+    let cancel = () => this.onBrushCancel()
+
+    this.defaultBrush = panBrush(ecs)
+    this.defaultBrush.activate()
+    this.active = this.defaultBrush
+
+    let buttons = [
+      new BrushButton(paintHullToggle, selectionBrush(ecs, cancel, paintHull)),
+      new BrushButton(eraseToggle, selectionBrush(ecs, cancel, erase))
+    ]
+   
+    buttons.forEach(brushButton => brushButton.element.addEventListener(
+      'click',
+      e => this.onClickBrushButton(brushButton)))
   }
 
-  togglePaintHull(ecs) {
-    switch (this.state) {
-      case 'paintHull':
-        css.styleButtonInactive(paintHullToggle)
-        this.state = 'pan'
-        this.mouseBehavior = panMouseBehavior(ecs, this)
-        return
-      case 'erase':
-        css.styleButtonInactive(eraseToggle)
-        // fall through
-      case 'pan':
-        css.styleButtonActive(paintHullToggle)
-        this.state = 'paintHull'
-        this.mouseBehavior = paintHullMouseBehavior(ecs, this)
-        return
+  onClickBrushButton(button) {
+    if (this.active === button) {
+      button.deactivate()
+      this.defaultBrush.activate()
+      this.active = this.defaultBrush
+    } else {
+      this.active?.deactivate()
+      this.active = button
+      button.activate()
     }
   }
 
-  toggleErase(ecs) {
-    switch (this.state) {
-      case 'erase':
-        css.styleButtonInactive(eraseToggle)
-        this.state = 'pan'
-        this.mouseBehavior = panMouseBehavior(ecs, this)
-        return
-      case 'paintHull':
-        css.styleButtonInactive(paintHullToggle)
-        // fall through
-      case 'pan':
-        css.styleButtonActive(eraseToggle)
-        this.state = 'erase'
-        this.mouseBehavior = eraseMouseBehavior(ecs, this)
-        return
-    }
-  }
-
-  cancel(ecs) {
-    switch (this.state) {
-      case 'erase':
-        css.styleButtonInactive(eraseToggle)
-        // fall through
-      case 'paintHull':
-        css.styleButtonInactive(paintHullToggle)
-        this.mouseBehavior = panMouseBehavior(ecs, this)
-        this.state = 'pan'
-        return
-    }
-  }
-
-  mousedown(e) {
-    this.mouseBehavior.mousedown(e)
-  }
-
-  mousemove(e) {
-    this.mouseBehavior.mousemove(e)
-  }
-
-  mouseup(e) {
-    this.mouseBehavior.mouseup(e)
+  onBrushCancel() {
+    this.active?.deactivate()
+    this.defaultBrush.activate()
+    this.active = this.defaultBrush
   }
 }
 
-function emptyMouseBehavior() {
-  return {
-    mousedown(e) {},
-    mouseup(e) {},
-    mousemove(e) {},
+class BrushButton {
+  constructor(element, brush) {
+    this.element = element
+    this.brush = brush
+  }
+
+  activate() {
+    css.styleButtonActive(this.element)
+    this.brush.activate()
+  }
+
+  deactivate() {
+    css.styleButtonInactive(this.element)
+    this.brush.deactivate()
   }
 }
 
-function panMouseBehavior(ecs, panel) {
-  return {
+class Brush {
+  constructor({ mousedown, mouseup, mousemove }) {
+    this.mousedown = mousedown
+    this.mouseup = mouseup
+    this.mousemove = mousemove
+  }
+
+  activate() {
+    canvas.addEventListener('mousedown', this.mousedown)
+    canvas.addEventListener('mouseup', this.mouseup)
+    canvas.addEventListener('mousemove', this.mousemove)
+  }
+
+  deactivate() {
+    canvas.removeEventListener('mousedown', this.mousedown)
+    canvas.removeEventListener('mouseup', this.mouseup)
+    canvas.removeEventListener('mousemove', this.mousemove)
+  }
+}
+
+function panBrush(ecs) {
+  return new Brush({
     mousedown(e) {
       if (e.button === 0) {
         this.drag = true
@@ -106,8 +102,6 @@ function panMouseBehavior(ecs, panel) {
     mouseup(e) {
       if (e.button === 0) {
         this.drag = false
-      } else if (e.button === 2) {
-        panel.togglePaintHull(ecs)
       }
     },
 
@@ -118,20 +112,12 @@ function panMouseBehavior(ecs, panel) {
           c.offsetY += e.movementY
         })
       }
-    },
-  }
+    }
+  })
 }
 
-function paintHullMouseBehavior(ecs, panel) {
-  return withSelection(ecs, panel, paintHull)
-}
-
-function eraseMouseBehavior(ecs, panel) {
-  return withSelection(ecs, panel, erase)
-}
-
-function withSelection(ecs, panel, commit) {
-  return {
+function selectionBrush(ecs, onCancel, onCommit) {
+  return new Brush({
     mousedown(e) {
       if (e.button === 0) {
         this.selection = selection.create(ecs, e)
@@ -141,7 +127,7 @@ function withSelection(ecs, panel, commit) {
     mouseup(e) {
       if (this.selection) {
         if (e.button === 0) {
-          commit(ecs, this.selection)
+          onCommit(ecs, this.selection)
           selection.remove(ecs, this.selection)
           this.selection = null
         } else if (e.button === 2) {
@@ -149,7 +135,7 @@ function withSelection(ecs, panel, commit) {
           this.selection = null
         }
       } else {
-        panel.cancel(ecs)
+        onCancel()
       }
     },
 
@@ -157,8 +143,8 @@ function withSelection(ecs, panel, commit) {
       if (this.selection) {
         selection.expand(ecs, this.selection, e)
       }
-    },
-  }
+    }
+  })
 }
 
 
