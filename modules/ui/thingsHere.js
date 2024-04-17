@@ -1,4 +1,4 @@
-import * as util from '/modules/util.js'
+import * as util from '../util.js'
 
 const canvas = document.querySelector('#canvas')
 const ul = document.querySelector('#things-here-overlay-ul')

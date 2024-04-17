@@ -1,4 +1,4 @@
-import * as css from '/modules/css.js'
+import * as css from '../css.js'
 
 export default class BrushButton {
   constructor(element, brush) {

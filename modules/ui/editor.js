@@ -8,8 +8,8 @@
  * panel.
  */
 
-import * as css from '/modules/css.js'
-import * as util from '/modules/util.js'
+import * as css from '../css.js'
+import * as util from '../util.js'
 
 import * as paintPanelUi from './paintPanel.js'
 import * as layoutPanelUi from './layoutPanel.js'

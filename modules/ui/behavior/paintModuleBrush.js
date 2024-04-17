@@ -1,5 +1,5 @@
-import { newModule } from '/modules/component/module.js'
-import { getTileCoordinates } from '/modules/util.js'
+import { newModule } from '../../component/module.js'
+import { getTileCoordinates } from '../../util.js'
 
 import Brush from './brush.js'
 

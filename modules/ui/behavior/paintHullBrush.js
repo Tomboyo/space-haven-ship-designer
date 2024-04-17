@@ -1,5 +1,5 @@
-import * as util from '/modules/util.js'
-import * as hullBlocks from '/modules/component/hullBlock.js'
+import * as util from '../../util.js'
+import * as hullBlocks from '../../component/hullBlock.js'
 
 import selectionBrush from './selectionBrush.js'
 

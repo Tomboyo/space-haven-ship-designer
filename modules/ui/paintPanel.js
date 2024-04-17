@@ -1,4 +1,4 @@
-import { modules } from '/modules/component/modules.js'
+import { modules } from '../component/modules.js'
 
 import BrushButton from './brushButton.js'
 

@@ -1,4 +1,4 @@
-import * as util from '/modules/util.js'
+import * as util from '../../util.js'
 
 export function create(ecs, e) {
   let p = util.getTileCoordinates(e, ecs)

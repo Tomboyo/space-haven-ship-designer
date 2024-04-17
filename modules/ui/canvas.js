@@ -1,4 +1,4 @@
-import * as css from '/modules/css.js'
+import * as css from '../css.js'
 
 const canvas = document.querySelector('canvas')
 
