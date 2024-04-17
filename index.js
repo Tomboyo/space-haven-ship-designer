@@ -1,6 +1,5 @@
 import { rem } from "./modules/css.js"
 import { createEcs } from "./modules/ecs.js"
-import frameScheduler from "./modules/frameScheduler.js"
 import { save, load, clearSaveData } from './modules/save.js'
 
 import * as canvasUi from './modules/ui/canvas.js'
