@@ -12,6 +12,7 @@ import * as css from '/modules/css.js'
 import * as util from '/modules/util.js'
 
 import * as paintPanelUi from './paintPanel.js'
+import * as layoutPanelUi from './layoutPanel.js'
 
 const paintTab = document.querySelector('#paint-tab')
 const layoutTab = document.querySelector('#layout-tab')
@@ -23,6 +24,7 @@ export function install(resources) {
     it.addEventListener('click', e => editor.changeActiveTab(e)))
 
   paintPanelUi.install(resources)
+  layoutPanelUi.install(resources)
 }
 
 class Editor {

@@ -7,8 +7,6 @@ import * as canvasUi from './modules/ui/canvas.js'
 import * as editorUi from './modules/ui/editor.js'
 import * as thingsHereUi from './modules/ui/thingsHere.js'
 
-import { LayoutManager } from './modules/input/layoutManager.js'
-
 import { ClearCanvasSystem } from "./modules/systems/clearCanvasSystem.js"
 import ModuleSystem from './modules/systems/moduleSystem.js'
 import { GridRenderSystem } from "./modules/systems/gridRenderSystem.js"
@@ -46,7 +44,6 @@ ecs.registerSystems([
 // N.B. these register event listeners.
 let resources = { ecs }
 canvasUi.install(resources)
-const layoutManager = new LayoutManager(gridResource, ecs, frameScheduler);
 thingsHereUi.install(resources)
 editorUi.install(resources)
 
@@ -55,7 +52,6 @@ editorUi.install(resources)
 canvas.addEventListener('mouseup', e => save(ecs))
 document.querySelector('#btn-clear-all').addEventListener('click', e => clearSaveData(ecs))
 
-layoutManager.onLayoutChange()
 canvasUi.refitCanvas(ecs)
 
 let renderLoop = () => {
