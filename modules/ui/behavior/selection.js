@@ -10,7 +10,6 @@ export function expand(ecs, entity, e) {
   ecs.updateEntity(entity, it => it.selection.p1 = p)
 }
 
-
 export function remove(ecs, entity) {
   ecs.removeEntity(entity)
 }

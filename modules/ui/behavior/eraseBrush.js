@@ -1,4 +1,10 @@
-export function erase(ecs, entity, e) {
+import selectionBrush from './selectionBrush.js'
+
+export default function(ecs, cancel) {
+  return selectionBrush(ecs, cancel, erase)
+}
+
+function erase(ecs, entity, e) {
   let p0 = entity.selection.p0
   let p1 = entity.selection.p1
   let [x0, x1] = p0.x < p1.x ? [p0.x, p1.x] : [p1.x, p0.x]

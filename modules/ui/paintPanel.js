@@ -1,13 +1,11 @@
 import * as css from '/modules/css.js'
 
-import { getTileCoordinates } from '/modules/util.js'
-
 import { modules } from '/modules/component/modules.js'
-import { newModule } from '/modules/component/module.js'
 
-import * as selection from './behavior/selection.js'
-import { paintHull } from './behavior/paintHull.js'
-import { erase } from './behavior/erase.js'
+import paintModuleBrush from './behavior/paintModuleBrush.js'
+import panBrush from './behavior/panBrush.js'
+import paintHullBrush from './behavior/paintHullBrush.js'
+import eraseBrush  from './behavior/eraseBrush.js'
 
 const canvas = document.querySelector('#canvas')
 const paintHullToggle = document.querySelector('#btn-paint-hull')
@@ -32,8 +30,8 @@ class Panel {
 
     let moduleBrushButtons = installCarousel(modules, ecs, cancel)
     let buttons = [
-      new BrushButton(paintHullToggle, selectionBrush(ecs, cancel, paintHull)),
-      new BrushButton(eraseToggle, selectionBrush(ecs, cancel, erase)),
+      new BrushButton(paintHullToggle, paintHullBrush(ecs, cancel)),
+      new BrushButton(eraseToggle, eraseBrush(ecs, cancel)),
       ...moduleBrushButtons
     ]
    
@@ -76,86 +74,6 @@ class BrushButton {
     css.styleButtonInactive(this.element)
     this.brush.deactivate()
   }
-}
-
-class Brush {
-  constructor(strategy) {
-    let { mousedown, mouseup, mousemove, keydown } = strategy
-    this.mousedown = mousedown?.bind(strategy)
-    this.mouseup = mouseup?.bind(strategy)
-    this.mousemove = mousemove?.bind(strategy)
-    this.keydown = keydown?.bind(strategy)
-  }
-
-  activate() {
-    this.mousedown && canvas.addEventListener('mousedown', this.mousedown)
-    this.mouseup && canvas.addEventListener('mouseup', this.mouseup)
-    this.mousemove && canvas.addEventListener('mousemove', this.mousemove)
-    this.keydown && window.addEventListener('keydown', this.keydown)
-  }
-
-  deactivate() {
-    this.mousedown && canvas.removeEventListener('mousedown', this.mousedown)
-    this.mouseup && canvas.removeEventListener('mouseup', this.mouseup)
-    this.mousemove && canvas.removeEventListener('mousemove', this.mousemove)
-    this.keydown && window.removeEventListener('keydown', this.keydown)
-  }
-}
-
-function panBrush(ecs) {
-  return new Brush({
-    mousedown(e) {
-      if (e.button === 0) {
-        this.drag = true
-      }
-    },
-
-    mouseup(e) {
-      if (e.button === 0) {
-        this.drag = false
-      }
-    },
-
-    mousemove(e) {
-      if (this.drag) {
-        ecs.updateResource('camera', c => {
-          c.offsetX += e.movementX
-          c.offsetY += e.movementY
-        })
-      }
-    }
-  })
-}
-
-function selectionBrush(ecs, onCancel, onCommit) {
-  return new Brush({
-    mousedown(e) {
-      if (e.button === 0) {
-        this.selection = selection.create(ecs, e)
-      }
-    },
-
-    mouseup(e) {
-      if (this.selection) {
-        if (e.button === 0) {
-          onCommit(ecs, this.selection)
-          selection.remove(ecs, this.selection)
-          this.selection = null
-        } else if (e.button === 2) {
-          selection.remove(ecs, this.selection)
-          this.selection = null
-        }
-      } else {
-        onCancel()
-      }
-    },
-
-    mousemove(e) {
-      if (this.selection) {
-        selection.expand(ecs, this.selection, e)
-      }
-    }
-  })
 }
 
 function installCarousel(modules, ecs, onCancel) {
@@ -234,62 +152,6 @@ function categoryId(category) {
 function createCarouselModuleBrushButton(ecs, module, onCancel) {
   let button = document.createElement('button')
   button.innerHTML = module.name
-  return new BrushButton(button, new Brush(paintModuleBrush(ecs, module, onCancel)))
-}
-
-function paintModuleBrush(ecs, module, onCancel) {
-  return {
-    mousedown(e) {
-      if (e.button === 0) {
-        let p = getTileCoordinates(e, ecs)
-        ecs.newEntity(newModule(module, false, p, this.rotation))
-      } else if (e.button === 2) {
-        if (this.entity) {
-          ecs.removeEntity(this.entity)
-          this.entity = null
-          onCancel()
-        }
-      }
-    },
-
-    mousemove(e) {
-      let p = getTileCoordinates(e, ecs)
-      if (!this.entity) {
-        /* Create ghost when the cursor enters the canvas */
-        this.rotation = 0
-        this.entity = ecs.newEntity(newModule(
-          module,
-          true,
-          p,
-          this.rotation))
-      } else {
-        ecs.updateEntity(this.entity, it => it.position = p)
-      }
-    },
-
-    keydown(e) {
-      if (e.key === 'e' && this.entity) { // clockwise
-        this.rotation = (this.rotation + 1) % 4
-        ecs.removeEntity(this.entity)
-        this.entity = ecs.newEntity(newModule(
-          module,
-          true,
-          this.entity.position,
-          this.rotation))
-      } else if (e.key === 'q' && this.entity) { // anticlockwise
-        this.rotation = (this.rotation - 1)
-        if (this.rotation < 0) {
-          this.rotation += 4
-        }
-
-        ecs.removeEntity(this.entity)
-        this.entity = ecs.newEntity(newModule(
-          module,
-          true,
-          this.entity.position,
-          this.rotation))
-      }
-    }
-  }
+  return new BrushButton(button, paintModuleBrush(ecs, module, onCancel))
 }
 
