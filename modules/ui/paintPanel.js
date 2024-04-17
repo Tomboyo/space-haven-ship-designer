@@ -1,6 +1,6 @@
-import * as css from '/modules/css.js'
-
 import { modules } from '/modules/component/modules.js'
+
+import BrushButton from './brushButton.js'
 
 import paintModuleBrush from './behavior/paintModuleBrush.js'
 import panBrush from './behavior/panBrush.js'
@@ -56,23 +56,6 @@ class Panel {
     this.active?.deactivate()
     this.defaultBrush.activate()
     this.active = this.defaultBrush
-  }
-}
-
-class BrushButton {
-  constructor(element, brush) {
-    this.element = element
-    this.brush = brush
-  }
-
-  activate() {
-    css.styleButtonActive(this.element)
-    this.brush.activate()
-  }
-
-  deactivate() {
-    css.styleButtonInactive(this.element)
-    this.brush.deactivate()
   }
 }
 
