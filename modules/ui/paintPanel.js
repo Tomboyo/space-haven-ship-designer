@@ -1,5 +1,10 @@
 import * as css from '/modules/css.js'
 
+import { getTileCoordinates } from '/modules/util.js'
+
+import { modules } from '/modules/component/modules.js'
+import { newModule } from '/modules/component/module.js'
+
 import * as selection from './behavior/selection.js'
 import { paintHull } from './behavior/paintHull.js'
 import { erase } from './behavior/erase.js'
@@ -25,9 +30,11 @@ class Panel {
     this.defaultBrush.activate()
     this.active = this.defaultBrush
 
+    let moduleBrushButtons = installCarousel(modules, ecs, cancel)
     let buttons = [
       new BrushButton(paintHullToggle, selectionBrush(ecs, cancel, paintHull)),
-      new BrushButton(eraseToggle, selectionBrush(ecs, cancel, erase))
+      new BrushButton(eraseToggle, selectionBrush(ecs, cancel, erase)),
+      ...moduleBrushButtons
     ]
    
     buttons.forEach(brushButton => brushButton.element.addEventListener(
@@ -72,22 +79,26 @@ class BrushButton {
 }
 
 class Brush {
-  constructor({ mousedown, mouseup, mousemove }) {
-    this.mousedown = mousedown
-    this.mouseup = mouseup
-    this.mousemove = mousemove
+  constructor(strategy) {
+    let { mousedown, mouseup, mousemove, keydown } = strategy
+    this.mousedown = mousedown?.bind(strategy)
+    this.mouseup = mouseup?.bind(strategy)
+    this.mousemove = mousemove?.bind(strategy)
+    this.keydown = keydown?.bind(strategy)
   }
 
   activate() {
-    canvas.addEventListener('mousedown', this.mousedown)
-    canvas.addEventListener('mouseup', this.mouseup)
-    canvas.addEventListener('mousemove', this.mousemove)
+    this.mousedown && canvas.addEventListener('mousedown', this.mousedown)
+    this.mouseup && canvas.addEventListener('mouseup', this.mouseup)
+    this.mousemove && canvas.addEventListener('mousemove', this.mousemove)
+    this.keydown && window.addEventListener('keydown', this.keydown)
   }
 
   deactivate() {
-    canvas.removeEventListener('mousedown', this.mousedown)
-    canvas.removeEventListener('mouseup', this.mouseup)
-    canvas.removeEventListener('mousemove', this.mousemove)
+    this.mousedown && canvas.removeEventListener('mousedown', this.mousedown)
+    this.mouseup && canvas.removeEventListener('mouseup', this.mouseup)
+    this.mousemove && canvas.removeEventListener('mousemove', this.mousemove)
+    this.keydown && window.removeEventListener('keydown', this.keydown)
   }
 }
 
@@ -147,4 +158,138 @@ function selectionBrush(ecs, onCancel, onCommit) {
   })
 }
 
+function installCarousel(modules, ecs, onCancel) {
+  const select = document.querySelector('#select-module-kind')
+  const carousel = document.querySelector('#modules-carousel')
+  
+  installCarouselSelect(select, carousel)
+  
+  let map = modules
+    .reduce(
+      (acc, module) => {
+        if (!acc.get(module.category)) {
+          acc.set(module.category, [])
+        }
+        acc.get(module.category).push(module)
+        return acc
+      },
+      new Map())
+
+  let brushButtons = []
+  for (let item of map) {
+      let [category, catModules] = item
+      let option = createCarouselOption(category)
+      select.appendChild(option)
+
+      let shelf = createCarouselShelf(category)
+      carousel.appendChild(shelf)
+
+      if (brushButtons.length === 0) {
+        option.setAttribute('selected', true)
+        shelf.style.display = null
+      }
+
+      catModules
+        .map(module => createCarouselModuleBrushButton(ecs, module, onCancel))
+        .forEach(bb => {
+          shelf.appendChild(bb.element)
+          brushButtons.push(bb)
+        })
+  }
+
+  select.value = modules[0].category
+
+  return brushButtons
+}
+
+function installCarouselSelect(element, carousel) {
+  element.addEventListener('change', e => {
+    for (let child of carousel.children) {
+      child.style.display = 'none'
+    }
+    let category = e.target.value
+    document.querySelector(`#${categoryId(category)}`).style.display = null
+  })
+}
+
+function createCarouselOption(category) {
+  let element = document.createElement('option')
+  element.value = category
+  element.innerHTML = category
+  return element
+}
+
+function createCarouselShelf(category) {
+  let element = document.createElement('div')
+  element.setAttribute('id', categoryId(category))
+  element.classList.add('flex-button-row')
+  element.style.display = 'none'
+  return element
+}
+
+function categoryId(category) {
+  return `carousel-shelf-${category.toLowerCase().replace(' ', '-')}`
+}
+
+function createCarouselModuleBrushButton(ecs, module, onCancel) {
+  let button = document.createElement('button')
+  button.innerHTML = module.name
+  return new BrushButton(button, new Brush(paintModuleBrush(ecs, module, onCancel)))
+}
+
+function paintModuleBrush(ecs, module, onCancel) {
+  return {
+    mousedown(e) {
+      if (e.button === 0) {
+        let p = getTileCoordinates(e, ecs)
+        ecs.newEntity(newModule(module, false, p, this.rotation))
+      } else if (e.button === 2) {
+        if (this.entity) {
+          ecs.removeEntity(this.entity)
+          this.entity = null
+          onCancel()
+        }
+      }
+    },
+
+    mousemove(e) {
+      let p = getTileCoordinates(e, ecs)
+      if (!this.entity) {
+        /* Create ghost when the cursor enters the canvas */
+        this.rotation = 0
+        this.entity = ecs.newEntity(newModule(
+          module,
+          true,
+          p,
+          this.rotation))
+      } else {
+        ecs.updateEntity(this.entity, it => it.position = p)
+      }
+    },
+
+    keydown(e) {
+      if (e.key === 'e' && this.entity) { // clockwise
+        this.rotation = (this.rotation + 1) % 4
+        ecs.removeEntity(this.entity)
+        this.entity = ecs.newEntity(newModule(
+          module,
+          true,
+          this.entity.position,
+          this.rotation))
+      } else if (e.key === 'q' && this.entity) { // anticlockwise
+        this.rotation = (this.rotation - 1)
+        if (this.rotation < 0) {
+          this.rotation += 4
+        }
+
+        ecs.removeEntity(this.entity)
+        this.entity = ecs.newEntity(newModule(
+          module,
+          true,
+          this.entity.position,
+          this.rotation))
+      }
+    }
+  }
+}
 

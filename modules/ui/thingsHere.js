@@ -34,13 +34,13 @@ class ThingsHere {
       return
     }
 
+    this.hovered = next
+
     if (this.hovered.length) {
-      ul.replaceChildren(...hovered.map(li))
+      ul.replaceChildren(...this.hovered.map(li))
     } else {
       ul.replaceChildren(nothing)
     }
-
-    return next
   }
 }
 

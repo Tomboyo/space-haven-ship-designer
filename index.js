@@ -1,7 +1,6 @@
 import { rem } from "./modules/css.js"
 import { createEcs } from "./modules/ecs.js"
 import frameScheduler from "./modules/frameScheduler.js"
-import { InputManager } from './modules/input.js'
 import { save, load, clearSaveData } from './modules/save.js'
 
 import * as canvasUi from './modules/ui/canvas.js'
@@ -9,9 +8,6 @@ import * as editorUi from './modules/ui/editor.js'
 import * as thingsHereUi from './modules/ui/thingsHere.js'
 
 import { LayoutManager } from './modules/input/layoutManager.js'
-import { ModulesCarousel } from './modules/input/moduleCarousel.js'
-
-import { modules } from './modules/component/modules.js'
 
 import { ClearCanvasSystem } from "./modules/systems/clearCanvasSystem.js"
 import ModuleSystem from './modules/systems/moduleSystem.js'
@@ -50,9 +46,7 @@ ecs.registerSystems([
 // N.B. these register event listeners.
 let resources = { ecs }
 canvasUi.install(resources)
-const inputManager = new InputManager(ecs, frameScheduler)
 const layoutManager = new LayoutManager(gridResource, ecs, frameScheduler);
-const modulesCarousel = new ModulesCarousel(inputManager)
 thingsHereUi.install(resources)
 editorUi.install(resources)
 
