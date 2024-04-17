@@ -1,15 +1,10 @@
 import { rem } from "./modules/css.js"
 import { createEcs } from "./modules/ecs.js"
-import frameScheduler from "./modules/frameScheduler.js"
-import { InputManager } from './modules/input.js'
 import { save, load, clearSaveData } from './modules/save.js'
 
-import { LayoutManager } from './modules/input/layoutManager.js'
-import { ModulesCarousel } from './modules/input/moduleCarousel.js'
-import { initializeTabBar } from './modules/input/tabBar.js'
-import { ThingsHereOverlay } from './modules/input/thingsHereOverlay.js'
-
-import { modules } from './modules/component/modules.js'
+import * as canvasUi from './modules/ui/canvas.js'
+import * as editorUi from './modules/ui/editor.js'
+import * as thingsHereUi from './modules/ui/thingsHere.js'
 
 import { ClearCanvasSystem } from "./modules/systems/clearCanvasSystem.js"
 import ModuleSystem from './modules/systems/moduleSystem.js'
@@ -44,18 +39,25 @@ ecs.registerSystems([
   SelectionSystem
 ])
 
+
 // N.B. these register event listeners.
-const inputManager = new InputManager(ecs, frameScheduler)
-const layoutManager = new LayoutManager(gridResource, ecs, frameScheduler);
-const modulesCarousel = new ModulesCarousel(inputManager)
-const thingsHereOverlay = new ThingsHereOverlay(canvas, ecs)
-initializeTabBar()
+let resources = { ecs }
+canvasUi.install(resources)
+thingsHereUi.install(resources)
+editorUi.install(resources)
 
 /* Register these after all other listeners to ensure save always reflects most
  * recent modification. */
 canvas.addEventListener('mouseup', e => save(ecs))
 document.querySelector('#btn-clear-all').addEventListener('click', e => clearSaveData(ecs))
 
-layoutManager.onLayoutChange()
-inputManager.onResize()
+canvasUi.refitCanvas(ecs)
+
+let renderLoop = () => {
+  if (ecs.isDirty) {
+    ecs.run()
+  }
+  window.requestAnimationFrame(renderLoop)
+}
+renderLoop()
 

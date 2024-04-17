@@ -63,8 +63,8 @@ button.active {
 
 
 
-#paint-tab select,
-#paint-tab button {
+#paint-tab-body select,
+#paint-tab-body button {
   padding: 0.5rem;
   border: none;
 }
