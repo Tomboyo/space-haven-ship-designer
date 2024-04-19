@@ -1,0 +1,31 @@
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+      # Caches dependencies between workflows
+      - uses: bahmutov/npm-install@v1
+      - run: npm run build
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          - path: ./dist
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      # See github.com/actions/deploy-pages
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/deploy-pages@v4
+        id: deployment
+
