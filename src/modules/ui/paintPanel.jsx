@@ -19,15 +19,61 @@ export function install({ ecs }) {
 }
 
 function PaintToolPalette({ ecs }) {
-  const { activeTool, toggleTool, cancelTool } = useToolPalette({
+  const palette = useToolPalette({
     defaultTool: { name: 'pan', handler: panBrush(ecs) }
   })
+  const { activeTool, toggleTool, cancelTool } = palette
   const [ activeShelf, setActiveShelf ] = React.useState('System')
 
   const cm = categorizedModules()
-  const options = ([ ...cm.keys() ])
+  const paintTool = { name: 'paint', handler: paintHullBrush(ecs, cancelTool) }
+  const eraseTool = { name: 'erase', handler: eraseBrush(ecs, cancelTool) }
+  
+  function onCategorySelectChange(e) {
+    setActiveShelf(e.target.value)
+  }
+
+  return (
+    <div className="flex-button-row big-gap">
+      <div className="flex-button-row do-not-shrink">
+        <ToolButton
+            onClick={() => toggleTool(paintTool)}
+            active={activeTool.name === paintTool.name}>
+          Paint Hull
+        </ToolButton>
+        <ToolButton
+            onClick={() => toggleTool(eraseTool)}
+            active={activeTool.name === eraseTool.name}>
+          Erase
+        </ToolButton>
+        <ClearAll ecs={ecs}/>
+        <CarouselSelect onChange={onCategorySelectChange} modulesMap={cm} />
+      </div>
+      <div className='modules-carousel'>
+        <CarouselShelf
+          ecs={ecs}
+          modules={cm.get(activeShelf)}
+          palette={palette} />
+      </div>
+    </div>
+  )
+}
+
+function ClearAll({ ecs }) {
+  return (
+    <button id="btn-clear-all" onClick={() => clearSaveData(ecs)}>Clear All</button>
+  )
+}
+
+function CarouselSelect({ modulesMap, onChange }) {
+  const options = ([ ...modulesMap.keys() ])
       .map(category => <option key={category}>{category}</option>)
-  const moduleToolButtons = cm.get(activeShelf)
+  return <select onChange={onChange}>{ options }</select>
+}
+
+function CarouselShelf({ ecs, modules, palette }) {
+  const { activeTool, toggleTool, cancelTool } = palette
+  const tools = modules
       .map(module => {
         const tool = {
           name: `module ${module.name}`,
@@ -44,50 +90,9 @@ function PaintToolPalette({ ecs }) {
         )
       })
 
-  function onCategorySelectChange(e) {
-    setActiveShelf(e.target.value)
-  }
-
-  const paintTool = { name: 'paint', handler: paintHullBrush(ecs, cancelTool) }
-  const eraseTool = { name: 'erase', handler: eraseBrush(ecs, cancelTool) }
-
-  return (
-    <div className="flex-button-row big-gap">
-      <div className="flex-button-row do-not-shrink">
-        <ToolButton
-            onClick={() => toggleTool(paintTool)}
-            active={activeTool.name === paintTool.name}>
-          Paint Hull
-        </ToolButton>
-        <ToolButton
-            onClick={() => toggleTool(eraseTool)}
-            active={activeTool.name === eraseTool.name}>
-          Erase
-        </ToolButton>
-        <ClearAll ecs={ecs}/>
-        <select onChange={onCategorySelectChange}>
-          { options }
-        </select>
-      </div>
-      <div className='modules-carousel'>
-        <div className='flex-button-row carousel-shelf'>
-          { moduleToolButtons }
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function ClearAll({ ecs }) {
-  return (
-    <button id="btn-clear-all" onClick={() => clearSaveData(ecs)}>Clear All</button>
-  )
-}
-
-function CarouselShelf({ active, children }) {
   return (
     <div className={`flex-button-row carousel-shelf`}>
-      {children}
+      {tools}
     </div>
   )
 }
