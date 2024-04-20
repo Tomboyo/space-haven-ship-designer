@@ -11,7 +11,7 @@
 import * as css from '../css.js'
 import * as util from '../util.js'
 
-import * as paintPanelUi from './paintPanel.js'
+import * as paintPanelUi from './paintPanel.jsx'
 import * as layoutPanelUi from './layoutPanel.js'
 
 const paintTab = document.querySelector('#paint-tab')

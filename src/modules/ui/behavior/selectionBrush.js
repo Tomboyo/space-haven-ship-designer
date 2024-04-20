@@ -9,6 +9,8 @@ export default function(ecs, onCancel, onCommit) {
       }
     },
 
+    /* TODO: if you cancel a selection, the primary button mouseup is fired
+     * immediately afterwards causing onCancel as well. */
     mouseup(e) {
       if (this.selection) {
         if (e.button === 0) {

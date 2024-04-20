@@ -1,6 +1,6 @@
 import { rem } from "./modules/css.js"
 import { createEcs } from "./modules/ecs.js"
-import { save, load, clearSaveData } from './modules/save.js'
+import { save, load } from './modules/save.js'
 
 import * as canvasUi from './modules/ui/canvas.js'
 import * as editorUi from './modules/ui/editor.js'
@@ -46,10 +46,9 @@ canvasUi.install(resources)
 thingsHereUi.install(resources)
 editorUi.install(resources)
 
-/* Register these after all other listeners to ensure save always reflects most
+/* Register this after all other listeners to ensure save always reflects most
  * recent modification. */
 canvas.addEventListener('mouseup', e => save(ecs))
-document.querySelector('#btn-clear-all').addEventListener('click', e => clearSaveData(ecs))
 
 canvasUi.refitCanvas(ecs)
 

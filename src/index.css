@@ -5,16 +5,34 @@ html, body {
   margin: 0;
   background-color: black;
 }
-
+select,
+button {
+  padding: 0.5rem;
+  border: none;
+}
 button.active {
   background-color: #66ccff;
 }
 
+
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
 .flex-button-row {
   display: flex;
   flex-direction: row;
   gap: 0.5rem;
+  align-items: flex-start;
 }
+.big-gap {
+  gap: 2rem;
+}
+.do-not-shrink {
+  flex-shrink: 0;
+}
+
 
 #flex-container {
   width: 100vw;
@@ -39,51 +57,42 @@ button.active {
 
 
 
-#tab-panel .tabs {
+.tabs {
   /* The tab header is a flex to remove the whitespace text node that appears
    * between inline elements. */
   display: flex;
   flex-direction: row;
 }
-#tab-panel .tab-header {
+.tab-header {
   padding: 0.5rem 1rem 0.5rem 1rem;
   border: none;
   border-radius: 20% 20% 0% 0%;
   margin-right: 0.1rem;
 }
-#tab-panel .tab-body {
+.tab-body {
   display: none;
   height: 6.5rem;
+  max-height: 6.5rem;
   border: 1px solid white;
   padding: 0.5rem;
+  
 }
-#tab-panel .tab-body.active {
+.tab-body * {
+  max-height: inherit;
+}
+.tab-body.active {
   display: block;
 }
 
 
 
-#paint-tab-body select,
-#paint-tab-body button {
-  padding: 0.5rem;
-  border: none;
-}
-#paint-tab-flex-container {
-  display: flex;
-  flex-direction: row;
-  gap: 2rem;
-}
-#paint-tab-controls-list-container  {
-  flex-shrink: 0;
-}
-#modules-carousel {
-  flex-shrink: 1;
-  height: 6.5rem;
+.modules-carousel {
   overflow-y: scroll;
 }
-#modules-carousel > .flex-button-row {
+.carousel-shelf {
   flex-wrap: wrap;
 }
+
 
 
 #layout-tab-flex-container {
