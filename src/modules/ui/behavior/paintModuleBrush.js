@@ -5,6 +5,13 @@ import Brush from './brush.js'
 
 export default function paintModuleBrush(ecs, module, onCancel) {
   return new Brush({
+    deactivate() {
+      if (this.entity) {
+        ecs.removeEntity(this.entity)
+        this.entity = null
+      }
+    },
+
     mousedown(e) {
       if (e.button === 0) {
         let p = getTileCoordinates(e, ecs)
@@ -13,8 +20,8 @@ export default function paintModuleBrush(ecs, module, onCancel) {
         if (this.entity) {
           ecs.removeEntity(this.entity)
           this.entity = null
-          onCancel()
         }
+        onCancel()
       }
     },
 

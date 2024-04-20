@@ -1,5 +1,6 @@
 export default class Brush {
   constructor(strategy) {
+    this.strategy = strategy
     let { mousedown, mouseup, mousemove, keydown } = strategy
     this.mousedown = mousedown?.bind(strategy)
     this.mouseup = mouseup?.bind(strategy)
@@ -12,6 +13,7 @@ export default class Brush {
     this.mouseup && canvas.addEventListener('mouseup', this.mouseup)
     this.mousemove && canvas.addEventListener('mousemove', this.mousemove)
     this.keydown && window.addEventListener('keydown', this.keydown)
+    this.strategy.activate?.()
   }
 
   deactivate() {
@@ -19,5 +21,6 @@ export default class Brush {
     this.mouseup && canvas.removeEventListener('mouseup', this.mouseup)
     this.mousemove && canvas.removeEventListener('mousemove', this.mousemove)
     this.keydown && window.removeEventListener('keydown', this.keydown)
+    this.strategy.deactivate?.()
   }
 }

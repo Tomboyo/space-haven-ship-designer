@@ -5,6 +5,7 @@ import { modules } from '../component/modules.js'
 
 import { clearSaveData } from '../save.js'
 
+import useToolPalette from './useToolPalette.jsx'
 import ToolButton from './ToolButton.jsx'
 
 import paintModuleBrush from './behavior/paintModuleBrush.js'
@@ -18,8 +19,9 @@ export function install({ ecs }) {
 }
 
 function PaintToolPalette({ ecs }) {
-  const [ activeButton, setActiveButton ] = React.useState(null)
-  const [ activeTool, setActiveTool ] = React.useState(panBrush(ecs))
+  const { activeTool, toggleTool, cancelTool } = useToolPalette({
+    defaultTool: { name: 'pan', handler: panBrush(ecs) }
+  })
   const [ activeShelf, setActiveShelf ] = React.useState('System')
 
   const cm = categorizedModules()
@@ -27,57 +29,39 @@ function PaintToolPalette({ ecs }) {
       .map(category => <option key={category}>{category}</option>)
   const moduleToolButtons = cm.get(activeShelf)
       .map(module => {
-        const key = `module ${module.name}`
-        const brush = paintModuleBrush(ecs, module, onBrushCancel)
+        const tool = {
+          name: `module ${module.name}`,
+          handler: paintModuleBrush(ecs, module, cancelTool)
+        }
+
         return (
           <ToolButton
-              key={key}
-              active={activeButton === key}
-              onClick={onClickToolButton(key, brush)}>
+              key={tool.name}
+              active={ activeTool.name === tool.name }
+              onClick={() => toggleTool(tool)}>
             {module.name}
           </ToolButton>
         )
       })
 
-  React.useEffect(() => {
-    activeTool.activate()
-    return () => {
-      activeTool.deactivate()
-    }
-  }, [ activeTool ])
-
   function onCategorySelectChange(e) {
     setActiveShelf(e.target.value)
   }
 
-  function onClickToolButton(button, tool) {
-    return () => {
-      if (activeButton === button) {
-        setActiveButton(null)
-        setActiveTool(panBrush(ecs))
-      } else {
-        setActiveButton(button)
-        setActiveTool(tool)
-      }
-    }
-  }
-
-  function onBrushCancel() {
-    setActiveButton(null)
-    setActiveTool(panBrush(ecs))
-  }
+  const paintTool = { name: 'paint', handler: paintHullBrush(ecs, cancelTool) }
+  const eraseTool = { name: 'erase', handler: eraseBrush(ecs, cancelTool) }
 
   return (
     <div className="flex-button-row big-gap">
       <div className="flex-button-row do-not-shrink">
         <ToolButton
-            onClick={onClickToolButton('paint-hull', paintHullBrush(ecs, onBrushCancel))}
-            active={'paint-hull' === activeButton}>
+            onClick={() => toggleTool(paintTool)}
+            active={activeTool.name === paintTool.name}>
           Paint Hull
         </ToolButton>
         <ToolButton
-            onClick={onClickToolButton('erase', eraseBrush(ecs, onBrushCancel))}
-            active={'erase' === activeButton}>
+            onClick={() => toggleTool(eraseTool)}
+            active={activeTool.name === eraseTool.name}>
           Erase
         </ToolButton>
         <ClearAll ecs={ecs}/>

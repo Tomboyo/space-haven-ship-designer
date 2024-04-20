@@ -3,26 +3,29 @@ import * as selection from './selection.js'
 
 export default function(ecs, onCancel, onCommit) {
   return new Brush({
-    mousedown(e) {
-      if (e.button === 0) {
-        this.selection = selection.create(ecs, e)
+    deactivate() {
+      if (this.selection) {
+        ecs.removeEntity(this.selection)
+        this.selection = null
       }
     },
 
-    /* TODO: if you cancel a selection, the primary button mouseup is fired
-     * immediately afterwards causing onCancel as well. */
-    mouseup(e) {
-      if (this.selection) {
-        if (e.button === 0) {
-          onCommit(ecs, this.selection)
-          selection.remove(ecs, this.selection)
-          this.selection = null
-        } else if (e.button === 2) {
-          selection.remove(ecs, this.selection)
-          this.selection = null
-        }
-      } else {
+    mousedown(e) {
+      if (e.button === 0 && !this.selection) {
+        this.selection = selection.create(ecs, e)
+      } else if (e.button === 2 && this.selection) {
+        selection.remove(ecs, this.selection)
+        this.selection = null
+      } else if (e.button === 2) {
         onCancel()
+      }
+    },
+
+    mouseup(e) {
+      if (this.selection && e.button === 0) {
+        onCommit(ecs, this.selection)
+        selection.remove(ecs, this.selection)
+        this.selection = null
       }
     },
 
