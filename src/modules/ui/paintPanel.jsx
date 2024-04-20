@@ -6,15 +6,11 @@ import { modules } from '../component/modules.js'
 import { clearSaveData } from '../save.js'
 
 import ToolButton from './ToolButton.jsx'
-import BrushButton from './brushButton.js'
 
 import paintModuleBrush from './behavior/paintModuleBrush.js'
 import panBrush from './behavior/panBrush.js'
 import paintHullBrush from './behavior/paintHullBrush.js'
 import eraseBrush  from './behavior/eraseBrush.js'
-
-const canvas = document.querySelector('#canvas')
-const eraseToggle = document.querySelector('#btn-erase')
 
 export function install({ ecs }) {
   const root = ReactDOM.createRoot(document.querySelector('#paint-tab-body'))
