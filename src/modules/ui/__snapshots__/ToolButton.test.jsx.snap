@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Does not use active styling when inactive 1`] = `
+<button
+  className=""
+  onClick={[Function]}
+/>
+`;
+
+exports[`Uses active styling when active 1`] = `
+<button
+  className="active"
+  onClick={[Function]}
+/>
+`;
