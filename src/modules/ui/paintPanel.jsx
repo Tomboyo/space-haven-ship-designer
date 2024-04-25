@@ -22,9 +22,8 @@ function PaintToolPalette({ ecs }) {
     defaultTool: { name: "pan", handler: panBrush(ecs) },
   });
   const [activeShelf, setActiveShelf] = React.useState("System");
-  const cm = categorizedModules();
 
-  function onCategorySelectChange(e) {
+  function changeShelf(e) {
     setActiveShelf(e.target.value);
   }
 
@@ -47,16 +46,12 @@ function PaintToolPalette({ ecs }) {
           <ClearAll ecs={ecs} />
         </div>
       </div>
-      <div className="flex-button-row">
-        <CarouselSelect onChange={onCategorySelectChange} modulesMap={cm} />
-        <div className="modules-carousel">
-          <CarouselShelf
-            ecs={ecs}
-            modules={cm.get(activeShelf)}
-            ToolButton={ToolButton}
-          />
-        </div>
-      </div>
+      <ModulesCarousel
+        ecs={ecs}
+        ToolButton={ToolButton}
+        changeShelf={changeShelf}
+        activeShelf={activeShelf}
+      />
     </div>
   );
 }
@@ -69,11 +64,25 @@ function ClearAll({ ecs }) {
   );
 }
 
-function CarouselSelect({ modulesMap, onChange }) {
-  const options = [...modulesMap.keys()].map((category) => (
+function ModulesCarousel({ ToolButton, ecs, changeShelf, activeShelf }) {
+  const cm = categorizedModules();
+
+  const options = [...cm.keys()].map((category) => (
     <option key={category}>{category}</option>
   ));
-  return <select onChange={onChange}>{options}</select>;
+
+  return (
+    <div className="flex-button-row">
+      <select onChange={changeShelf}>{options}</select>
+      <div className="modules-carousel">
+        <CarouselShelf
+          ecs={ecs}
+          modules={cm.get(activeShelf)}
+          ToolButton={ToolButton}
+        />
+      </div>
+    </div>
+  );
 }
 
 function CarouselShelf({ ecs, modules, ToolButton }) {
