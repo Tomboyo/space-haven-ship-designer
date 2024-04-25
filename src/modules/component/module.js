@@ -1,5 +1,3 @@
-import { modules } from "./modules.js";
-
 export const newModule = (proto, isGhost, position, rotation) => {
   let { category, name, boundingRect, tiles } = proto;
   return {

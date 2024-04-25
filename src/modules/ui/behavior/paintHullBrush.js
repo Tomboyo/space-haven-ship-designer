@@ -1,4 +1,3 @@
-import * as util from "../../util.js";
 import * as hullBlocks from "../../component/hullBlock.js";
 
 import selectionBrush from "./selectionBrush.js";

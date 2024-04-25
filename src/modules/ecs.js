@@ -2,30 +2,30 @@ export function createEcs() {
   return {
     isDirty: false,
     idSequence: 0,
-    resources: {},
+    resources: new Map([]),
     entities: [],
     systems: [],
 
     newResource(name, resource) {
-      if (this.resources.hasOwnProperty(name))
+      if (this.resources.has(name))
         throw new Error(`Resource ${name} already exists`);
-      this.resources[name] = resource;
+      this.resources.set(name, resource);
       this.isDirty = true;
       return resource;
     },
 
     getResource(name) {
-      if (this.resources.hasOwnProperty(name)) {
-        return this.resources[name];
+      if (this.resources.has(name)) {
+        return this.resources.get(name);
       } else {
         throw new Error("ECS does not have resource named " + name);
       }
     },
 
     updateResource(name, f) {
-      if (this.resources.hasOwnProperty(name)) {
+      if (this.resources.has(name)) {
         this.isDirty = true;
-        return f(this.resources[name]);
+        return f(this.resources.get(name));
       } else {
         throw new Error(`No such resource ${name}`);
       }
@@ -49,8 +49,9 @@ export function createEcs() {
     entityQuery(resourceSignature, componentSignature, f) {
       let buffer = new CommandBuffer();
       let resources = resourceSignature.map((name) => {
-        if (!this.resources[name]) throw new Error(`No such resource ${name}`);
-        return this.resources[name];
+        if (!this.resources.has(name))
+          throw new Error(`No such resource ${name}`);
+        return this.resources.get(name);
       });
       this.entities
         .filter((e) => this.hasComponentSignature(e, componentSignature))
@@ -82,20 +83,20 @@ export function createEcs() {
     },
 
     run() {
-      this.systems.forEach(
-        ({ name, resourceSignature, componentSignature, f }) => {
-          let resources = resourceSignature.map((name) => this.resources[name]);
-          let components = this.entities
-            .filter((e) => this.hasComponentSignature(e, componentSignature))
-            .map((e) => this.entityToComponents(e, componentSignature));
-          f(...resources, components);
-        },
-      );
+      this.systems.forEach(({ resourceSignature, componentSignature, f }) => {
+        let resources = resourceSignature.map((name) =>
+          this.resources.get(name),
+        );
+        let components = this.entities
+          .filter((e) => this.hasComponentSignature(e, componentSignature))
+          .map((e) => this.entityToComponents(e, componentSignature));
+        f(...resources, components);
+      });
       this.isDirty = false;
     },
 
     hasComponentSignature(entity, signature) {
-      return signature.every((name) => entity.hasOwnProperty(name));
+      return signature.every((name) => Object.hasOwn(entity, name));
     },
 
     entityToComponents(entity, signature) {

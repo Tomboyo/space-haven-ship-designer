@@ -9,7 +9,6 @@
  */
 
 import * as css from "../css.js";
-import * as util from "../util.js";
 
 import * as paintPanelUi from "./paintPanel.jsx";
 import * as layoutPanelUi from "./layoutPanel.jsx";

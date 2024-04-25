@@ -3,7 +3,7 @@ import * as css from "../css.js";
 const canvas = document.querySelector("canvas");
 
 export function install({ ecs }) {
-  window.addEventListener("resize", (e) => refitCanvas(ecs));
+  window.addEventListener("resize", () => refitCanvas(ecs));
 
   canvas.addEventListener("wheel", (e) => {
     let amount = css.rem() * e.deltaY * -0.00075;

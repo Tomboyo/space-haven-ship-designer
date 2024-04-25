@@ -1,6 +1,6 @@
 import ToolButton from "./ToolButton.jsx";
 import renderer from "react-test-renderer";
-import { cleanup, fireEvent, render } from "@testing-library/react";
+import { fireEvent, render } from "@testing-library/react";
 
 it("Uses active styling when active", () => {
   const component = renderer.create(

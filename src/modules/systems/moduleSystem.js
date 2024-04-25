@@ -26,7 +26,7 @@ export default [
     entities.forEach(([{ tiles, isGhost }, p]) => {
       Object.entries(tiles).forEach(([kind, rects]) => {
         switch (kind) {
-          case "solid":
+          case "solid": {
             ctx.save();
             ctx.fillStyle = isGhost ? "#0e6e1dbb" : "#0e6e1d";
             rects.forEach((rect) =>
@@ -34,7 +34,8 @@ export default [
             );
             ctx.restore();
             break;
-          case "wall":
+          }
+          case "wall": {
             ctx.save();
             ctx.fillStyle = isGhost ? "#0e316ebb" : "#0e316e";
             rects.forEach((rect) =>
@@ -42,23 +43,25 @@ export default [
             );
             ctx.restore();
             break;
-          case "striped":
+          }
+          case "striped": {
             ctx.save();
-            let m = grid.s / 5;
-            ctx.lineWidth = grid.s / 5;
+            let lw = grid.s / 5;
+            ctx.lineWidth = lw;
             ctx.beginPath();
             rects.forEach((rect) =>
               ctx.rect(...insetRectArgs(p, rect, grid, camera, ctx.lineWidth)),
             );
-            ctx.setLineDash([grid.s / 5, grid.s / 5]);
+            ctx.setLineDash([lw, lw]);
             ctx.strokeStyle = isGhost ? "#0008" : "#000";
             ctx.stroke();
-            ctx.lineDashOffset = grid.s / 5;
+            ctx.lineDashOffset = lw;
             ctx.strokeStyle = isGhost ? "#80850888" : "#808508";
             ctx.stroke();
             ctx.restore();
             break;
-          case "empty":
+          }
+          case "empty": {
             ctx.save();
             ctx.beginPath();
             ctx.setLineDash([grid.s / 5, grid.s / 5]);
@@ -70,7 +73,8 @@ export default [
             ctx.stroke();
             ctx.restore();
             break;
-          case "clearance":
+          }
+          case "clearance": {
             ctx.save();
             ctx.lineWidth = grid.s / 5;
             ctx.beginPath();
@@ -82,8 +86,10 @@ export default [
             ctx.stroke();
             ctx.restore();
             break;
-          default:
+          }
+          default: {
             throw new Error(`Unexpected tile kind ${kind}`);
+          }
         }
       });
     });

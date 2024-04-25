@@ -284,7 +284,6 @@ export const modules = [
       solid: [{ width: 1, height: 2, offsetX: 0, offsetY: 0 }],
     },
   },
-  ,
   {
     category: "Power",
     name: "Small Power Node",

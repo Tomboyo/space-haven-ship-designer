@@ -1,3 +1,5 @@
+const canvas = document.querySelector("canvas");
+
 export default class Brush {
   constructor(strategy) {
     this.strategy = strategy;

@@ -26,9 +26,9 @@ const canvas = document.querySelector("canvas");
 const ecs = createEcs();
 load(ecs);
 ecs.newResource("canvas", canvas);
-const cameraResource = ecs.newResource("camera", { offsetX: 0, offsetY: 0 });
-const gridResource = ecs.newResource("grid", { s: rem(), w: 0, h: 0 });
-const tilesResource = ecs.newResource("tiles", initializeTiles());
+ecs.newResource("camera", { offsetX: 0, offsetY: 0 });
+ecs.newResource("grid", { s: rem(), w: 0, h: 0 });
+ecs.newResource("tiles", initializeTiles());
 ecs.registerSystems([
   ClearCanvasSystem,
   TileRenderSystem,
@@ -45,7 +45,7 @@ editorUi.install(resources);
 
 /* Register this after all other listeners to ensure save always reflects most
  * recent modification. */
-canvas.addEventListener("mouseup", (e) => save(ecs));
+canvas.addEventListener("mouseup", () => save(ecs));
 
 canvasUi.refitCanvas(ecs);
 

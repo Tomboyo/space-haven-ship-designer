@@ -4,12 +4,11 @@ export default function (ecs, cancel) {
   return selectionBrush(ecs, cancel, erase);
 }
 
-function erase(ecs, entity, e) {
+function erase(ecs, entity) {
   let p0 = entity.selection.p0;
   let p1 = entity.selection.p1;
   let [x0, x1] = p0.x < p1.x ? [p0.x, p1.x] : [p1.x, p0.x];
   let [y0, y1] = p0.y < p1.y ? [p0.y, p1.y] : [p1.y, p0.y];
-  let tilesResource = ecs.getResource("tiles");
 
   ecs.entityQuery(
     ["tiles"],
@@ -17,7 +16,9 @@ function erase(ecs, entity, e) {
     (tiles, { id, position: { x, y } }, buffer) => {
       if (x0 <= x && x <= x1 && y0 <= y && y <= y1) {
         buffer.removeEntity(id);
-        if (tiles[x]) delete tiles[x][y];
+        if (tiles[x]) {
+          delete tiles[x][y];
+        }
       }
     },
   );
