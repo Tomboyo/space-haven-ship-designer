@@ -8,53 +8,55 @@
  * panel.
  */
 
-import * as css from '../css.js'
-import * as util from '../util.js'
+import * as css from "../css.js";
+import * as util from "../util.js";
 
-import * as paintPanelUi from './paintPanel.jsx'
-import * as layoutPanelUi from './layoutPanel.jsx'
+import * as paintPanelUi from "./paintPanel.jsx";
+import * as layoutPanelUi from "./layoutPanel.jsx";
 
-const paintTab = document.querySelector('#paint-tab')
-const layoutTab = document.querySelector('#layout-tab')
+const paintTab = document.querySelector("#paint-tab");
+const layoutTab = document.querySelector("#layout-tab");
 
 export function install(resources) {
-  let editor = new Editor(paintTab)
-  let a = [ paintTab, layoutTab ]
-  a.forEach(it =>
-    it.addEventListener('click', e => editor.changeActiveTab(e)))
+  let editor = new Editor(paintTab);
+  let a = [paintTab, layoutTab];
+  a.forEach((it) =>
+    it.addEventListener("click", (e) => editor.changeActiveTab(e)),
+  );
 
-  paintPanelUi.install(resources)
-  layoutPanelUi.install(resources)
+  paintPanelUi.install(resources);
+  layoutPanelUi.install(resources);
 }
 
 class Editor {
   constructor(activeTab) {
-    this.activeTab = activeTab 
-    this.activateTab(this.activeTab)
+    this.activeTab = activeTab;
+    this.activateTab(this.activeTab);
   }
 
   changeActiveTab(e) {
     if (e.target === this.activeTab) {
-      return
+      return;
     }
 
-    this.deactivateTab(this.activeTab)
-    this.activateTab(e.target)
-    this.activeTab = e.target
+    this.deactivateTab(this.activeTab);
+    this.activateTab(e.target);
+    this.activeTab = e.target;
   }
 
   activateTab(tab) {
-    css.styleButtonActive(tab)
-    css.styleButtonActive(this.panelForTab(tab))
+    css.styleButtonActive(tab);
+    css.styleButtonActive(this.panelForTab(tab));
   }
 
   deactivateTab(tab) {
-    css.styleButtonInactive(tab)
-    css.styleButtonInactive(this.panelForTab(tab))
+    css.styleButtonInactive(tab);
+    css.styleButtonInactive(this.panelForTab(tab));
   }
 
   panelForTab(target) {
-    return document.querySelector('#' + target.getAttribute('data-tab-body-id'))
+    return document.querySelector(
+      "#" + target.getAttribute("data-tab-body-id"),
+    );
   }
 }
-

@@ -22,586 +22,580 @@
  */
 export const modules = [
   {
-    category: 'System',
-    name: 'Point Defence Turret',
-    boundingRect: { width: 2, height: 2},
+    category: "System",
+    name: "Point Defence Turret",
+    boundingRect: { width: 2, height: 2 },
     tiles: {
-      solid: [{width: 2, height: 2, offsetX: 0, offsetY: 0}]
-    }
+      solid: [{ width: 2, height: 2, offsetX: 0, offsetY: 0 }],
+    },
   },
   {
-    category: 'System',
-    name: 'X1 Hyperdrive',
-    boundingRect: { width: 6, height: 17},
+    category: "System",
+    name: "X1 Hyperdrive",
+    boundingRect: { width: 6, height: 17 },
     tiles: {
-      solid: [
-	{width: 2, height: 4, offsetX: 2, offsetY: 0}
-      ],
-      wall: [
-	{width: 2, height: 1, offsetX: 2, offsetY: 4}
-      ],
+      solid: [{ width: 2, height: 4, offsetX: 2, offsetY: 0 }],
+      wall: [{ width: 2, height: 1, offsetX: 2, offsetY: 4 }],
       empty: [
-	{width: 1, height: 4, offsetX: 1, offsetY: 0},
-	{width: 1, height: 4, offsetX: 4, offsetY: 0}
+        { width: 1, height: 4, offsetX: 1, offsetY: 0 },
+        { width: 1, height: 4, offsetX: 4, offsetY: 0 },
       ],
-      clearance: [
-	{width: 6, height: 12, offsetX: 0, offsetY: 5}
-      ]
-    }
+      clearance: [{ width: 6, height: 12, offsetX: 0, offsetY: 5 }],
+    },
   },
   {
-    category: 'System',
-    name: 'Operations Console',
-    boundingRect: {width: 3, height: 3},
+    category: "System",
+    name: "Operations Console",
+    boundingRect: { width: 3, height: 3 },
     tiles: {
-      solid: [{width: 3, height: 2, offsetX: 0, offsetY: 0}],
-      striped: [{width: 1, height: 1, offsetX: 1, offsetY: 2}]
-    }
+      solid: [{ width: 3, height: 2, offsetX: 0, offsetY: 0 }],
+      striped: [{ width: 1, height: 1, offsetX: 1, offsetY: 2 }],
+    },
   },
   {
-    category: 'System',
-    name: 'Navigation Console',
-    boundingRect: {width: 3, height: 3},
+    category: "System",
+    name: "Navigation Console",
+    boundingRect: { width: 3, height: 3 },
     tiles: {
-      solid: [{width: 3, height: 2, offsetX: 0, offsetY: 0}],
-      striped: [{width: 1, height: 1, offsetX: 1, offsetY: 2}]
-    }
+      solid: [{ width: 3, height: 2, offsetX: 0, offsetY: 0 }],
+      striped: [{ width: 1, height: 1, offsetX: 1, offsetY: 2 }],
+    },
   },
   {
-    category: 'System',
-    name: 'Hull Stabilizer',
-    boundingRect: {width: 2, height: 2},
+    category: "System",
+    name: "Hull Stabilizer",
+    boundingRect: { width: 2, height: 2 },
     tiles: {
-      solid: [{width: 2, height: 1, offsetX: 0, offsetY: 0}],
-      striped: [{width: 2, height: 1, offsetX: 0, offsetY: 1}]
-    }
+      solid: [{ width: 2, height: 1, offsetX: 0, offsetY: 0 }],
+      striped: [{ width: 2, height: 1, offsetX: 0, offsetY: 1 }],
+    },
   },
   {
-    category: 'System',
-    name: 'X3 System Core',
-    boundingRect: { width: 3, height: 4},
+    category: "System",
+    name: "X3 System Core",
+    boundingRect: { width: 3, height: 4 },
     tiles: {
-      empty: [{width: 1, height: 4, offsetX: 0, offsetY: 0}],
-      solid: [{width: 2, height: 4, offsetY: 0, offsetX: 1}]
-    }
+      empty: [{ width: 1, height: 4, offsetX: 0, offsetY: 0 }],
+      solid: [{ width: 2, height: 4, offsetY: 0, offsetX: 1 }],
+    },
   },
   {
-    category: 'System',
-    name: 'X2 System Core',
-    boundingRect: { width: 3, height: 3},
+    category: "System",
+    name: "X2 System Core",
+    boundingRect: { width: 3, height: 3 },
     tiles: {
-      empty: [{width: 1, height: 3, offsetX: 0, offsetY: 0}],
-      solid: [{width: 2, height: 3, offsetX: 1, offsetY: 0}]
-    }
+      empty: [{ width: 1, height: 3, offsetX: 0, offsetY: 0 }],
+      solid: [{ width: 2, height: 3, offsetX: 1, offsetY: 0 }],
+    },
   },
   {
-    category: 'System',
-    name: 'X1 System Core',
-    boundingRect: { width: 3, height: 2},
+    category: "System",
+    name: "X1 System Core",
+    boundingRect: { width: 3, height: 2 },
     tiles: {
-      empty: [{width: 1, height: 2, offsetX: 0, offsetY: 0}],
-      solid: [{width: 2, height: 2, offsetX: 1, offsetY: 0}]
-    }
+      empty: [{ width: 1, height: 2, offsetX: 0, offsetY: 0 }],
+      solid: [{ width: 2, height: 2, offsetX: 1, offsetY: 0 }],
+    },
   },
   {
-    category: 'Airlock',
-    name: 'Shuttle Hanger',
-    boundingRect: {width: 7, height: 6},
+    category: "Airlock",
+    name: "Shuttle Hanger",
+    boundingRect: { width: 7, height: 6 },
     tiles: {
       empty: [
-	{width: 5, height: 1, offsetX: 1, offsetY: 0},
-	{width: 4, height: 1, offsetX: 1, offsetY: 5},
-	{width: 1, height: 6, offsetX: 0, offsetY: 0},
-	{width: 1, height: 6, offsetX: 6, offsetY: 0},
+        { width: 5, height: 1, offsetX: 1, offsetY: 0 },
+        { width: 4, height: 1, offsetX: 1, offsetY: 5 },
+        { width: 1, height: 6, offsetX: 0, offsetY: 0 },
+        { width: 1, height: 6, offsetX: 6, offsetY: 0 },
       ],
-      solid: [{width: 5, height: 4, offsetX: 1, offsetY: 1}],
-      striped: [{width: 1, height: 1, offsetX: 5, offsetY: 5}]
-    }
+      solid: [{ width: 5, height: 4, offsetX: 1, offsetY: 1 }],
+      striped: [{ width: 1, height: 1, offsetX: 5, offsetY: 5 }],
+    },
   },
   {
-    category: 'Airlock',
-    name: 'Pod Hangler',
-    boundingRect: {width: 3, height: 4},
+    category: "Airlock",
+    name: "Pod Hangler",
+    boundingRect: { width: 3, height: 4 },
     tiles: {
-      solid: [{width: 3, height: 3, offsetX: 0, offsetY: 0}],
-      empty: [{width: 2, height: 1, offsetX: 0, offsetY: 3}],
-      striped: [{width: 1, height: 1, offsetX: 2, offsetY: 3}]
-    }
+      solid: [{ width: 3, height: 3, offsetX: 0, offsetY: 0 }],
+      empty: [{ width: 2, height: 1, offsetX: 0, offsetY: 3 }],
+      striped: [{ width: 1, height: 1, offsetX: 2, offsetY: 3 }],
+    },
   },
   {
-    category: 'Airlock',
-    name: 'X1 Airlock',
-    boundingRect: {width: 11, height: 7},
+    category: "Airlock",
+    name: "X1 Airlock",
+    boundingRect: { width: 11, height: 7 },
     tiles: {
-      clearance: [{width: 7, height: 7, offsetX: 0, offsetY: 0}],
-      wall: [{width: 1, height: 1, offsetX: 7, offsetY: 3}],
+      clearance: [{ width: 7, height: 7, offsetX: 0, offsetY: 0 }],
+      wall: [{ width: 1, height: 1, offsetX: 7, offsetY: 3 }],
       solid: [
-	{width: 1, height: 3, offsetX: 8, offsetY: 2},
-	{width: 1, height: 1, offsetX: 9, offsetY: 2},
-	{width: 1, height: 1, offsetX: 9, offsetY: 4}
+        { width: 1, height: 3, offsetX: 8, offsetY: 2 },
+        { width: 1, height: 1, offsetX: 9, offsetY: 2 },
+        { width: 1, height: 1, offsetX: 9, offsetY: 4 },
       ],
       striped: [
-	{width: 1, height: 1, offsetX: 9, offsetY: 3},
-	{width: 1, height: 3, offsetX: 10, offsetY: 2}
+        { width: 1, height: 1, offsetX: 9, offsetY: 3 },
+        { width: 1, height: 3, offsetX: 10, offsetY: 2 },
       ],
-    }
+    },
   },
   {
-    category: 'Airlock',
-    name: 'Space Suit Locker',
-    boundingRect: {width: 1, height: 3},
+    category: "Airlock",
+    name: "Space Suit Locker",
+    boundingRect: { width: 1, height: 3 },
     tiles: {
-      empty: [{width: 1, height: 1, offsetX: 0, offsetY: 0}],
-      solid: [{width: 1, height: 2, offsetX: 0, offsetY: 1}]
-    }
+      empty: [{ width: 1, height: 1, offsetX: 0, offsetY: 0 }],
+      solid: [{ width: 1, height: 2, offsetX: 0, offsetY: 1 }],
+    },
   },
   {
-    category: 'Storage',
-    name: 'Cargo Port',
-    boundingRect: {width: 11, height: 7},
+    category: "Storage",
+    name: "Cargo Port",
+    boundingRect: { width: 11, height: 7 },
     tiles: {
       clearance: [
-	// Note: this overlaps with the forks. This may or may not be "correct."
-	{width: 8, height: 7, offsetX: 0, offsetY: 0},
+        // Note: this overlaps with the forks. This may or may not be "correct."
+        { width: 8, height: 7, offsetX: 0, offsetY: 0 },
       ],
       striped: [
-	{width: 6, height: 1, offsetX: 2, offsetY: 1},
-	{width: 6, height: 1, offsetX: 2, offsetY: 5},
+        { width: 6, height: 1, offsetX: 2, offsetY: 1 },
+        { width: 6, height: 1, offsetX: 2, offsetY: 5 },
       ],
       wall: [{ width: 1, height: 5, offsetX: 8, offsetY: 1 }],
       solid: [{ width: 1, height: 5, offsetX: 9, offsetY: 1 }],
       empty: [{ width: 1, height: 5, offsetX: 10, offsetY: 1 }],
-    }
+    },
   },
   {
-    category: 'Storage',
-    name: 'Body Storage',
-    boundingRect: {width: 2, height: 3},
+    category: "Storage",
+    name: "Body Storage",
+    boundingRect: { width: 2, height: 3 },
     tiles: {
-      solid: [{width: 2, height: 2, offsetX: 0, offsetY: 0}],
-      empty: [{width: 2, height: 1, offsetX: 0, offsetY: 2}]
-    }
+      solid: [{ width: 2, height: 2, offsetX: 0, offsetY: 0 }],
+      empty: [{ width: 2, height: 1, offsetX: 0, offsetY: 2 }],
+    },
   },
   {
-    category: 'Storage',
-    name: 'Large Storage',
-    boundingRect: {width: 3, height: 3},
+    category: "Storage",
+    name: "Large Storage",
+    boundingRect: { width: 3, height: 3 },
     tiles: {
-      solid: [{width: 3, height: 2, offsetX: 0, offsetY: 0}],
-      striped: [{width: 1, height: 1, offsetX: 1, offsetY: 2}]
-    }
+      solid: [{ width: 3, height: 2, offsetX: 0, offsetY: 0 }],
+      striped: [{ width: 1, height: 1, offsetX: 1, offsetY: 2 }],
+    },
   },
   {
-    category: 'Storage',
-    name: 'Small Storage',
-    boundingRect: {width: 1, height: 3},
+    category: "Storage",
+    name: "Small Storage",
+    boundingRect: { width: 1, height: 3 },
     tiles: {
-      solid: [{width: 1, height: 2, offsetX: 0, offsetY: 0}],
-      striped: [{width: 1, height: 1, offsetX: 0, offsetY: 2}]
-    }
+      solid: [{ width: 1, height: 2, offsetX: 0, offsetY: 0 }],
+      striped: [{ width: 1, height: 1, offsetX: 0, offsetY: 2 }],
+    },
   },
   {
-    category: 'Food',
-    name: 'Kitchen',
-    boundingRect: {width: 3, height: 2},
+    category: "Food",
+    name: "Kitchen",
+    boundingRect: { width: 3, height: 2 },
     tiles: {
-      solid: [{width: 3, height: 1, offsetX: 0, offsetY: 0}],
+      solid: [{ width: 3, height: 1, offsetX: 0, offsetY: 0 }],
       empty: [
-	{width: 1, height: 1, offsetX: 0, offsetY: 1},
-	{width: 1, height: 1, offsetX: 2, offsetY: 1},
+        { width: 1, height: 1, offsetX: 0, offsetY: 1 },
+        { width: 1, height: 1, offsetX: 2, offsetY: 1 },
       ],
-      striped: [{width: 1, height: 1, offsetX: 1, offsetY: 1}]
-    }
+      striped: [{ width: 1, height: 1, offsetX: 1, offsetY: 1 }],
+    },
   },
   {
-    category: 'Food',
-    name: 'Algae Dispenser',
-    boundingRect: {width: 2, height: 2},
+    category: "Food",
+    name: "Algae Dispenser",
+    boundingRect: { width: 2, height: 2 },
     tiles: {
-      solid: [{width: 2, height: 1, offsetX: 0, offsetY: 0}],
-      empty: [{width: 2, height: 1, offsetX: 0, offsetY: 1}]
-    }
+      solid: [{ width: 2, height: 1, offsetX: 0, offsetY: 0 }],
+      empty: [{ width: 2, height: 1, offsetX: 0, offsetY: 1 }],
+    },
   },
   {
-    category: 'Resource',
-    name: 'Recycler',
-    boundingRect: {width: 3, height: 4},
+    category: "Resource",
+    name: "Recycler",
+    boundingRect: { width: 3, height: 4 },
     tiles: {
       solid: [
-	{width: 3, height: 2, offsetX: 0, offsetY: 0},
-	{width: 2, height: 1, offsetX: 0, offsetY: 2}
+        { width: 3, height: 2, offsetX: 0, offsetY: 0 },
+        { width: 2, height: 1, offsetX: 0, offsetY: 2 },
       ],
       empty: [
-	{width: 1, height: 1, offsetX: 2, offsetY: 2},
-	{width: 3, height: 1, offsetX: 0, offsetY: 3}
-      ]
-    }
-  },
-  {
-    category: 'Resource',
-    name: 'Ore Processor',
-    boundingRect: {width: 3, height: 6},
-    tiles: {
-      solid: [{width: 3, height: 5, offsetX: 0, offsetY: 0}],
-      empty: [{width: 3, height: 1, offsetX: 0, offsetY: 5}]
-    }
-  },
-  {
-    category: 'Resource',
-    name: 'Water Collector',
-    boundingRect: {width: 1, height: 2},
-    tiles: {
-      solid: [{width: 1, height: 1, offsetX: 0, offsetY: 0}],
-      empty: [{width: 1, height: 1, offsetX: 0, offsetY: 1}]
-    }
-  },
-  {
-    category: 'Resource',
-    name: 'Water Purifier',
-    boundingRect: {width: 2, height: 2},
-    tiles: {
-      solid: [{width: 2, height: 1, offsetX: 0, offsetY: 0}],
-      empty: [{width: 2, height: 1, offsetX: 0, offsetY: 1}]
-    }
-  },
-  {
-    category: 'Resource',
-    name: 'Tools Facility',
-    boundingRect: {width: 2, height: 2},
-    tiles: {
-      solid: [{width: 2, height: 1, offsetX: 0, offsetY: 0}],
-      empty: [{width: 2, height: 1, offsetX: 0, offsetY: 1}]
-    }
-  },
-  {
-    category: 'Resource',
-    name: 'Item Workbench',
-    boundingRect: {width: 2, height: 2},
-    tiles: {
-      solid: [{width: 2, height: 1, offsetX: 0, offsetY: 0}],
-      empty: [{width: 2, height: 1, offsetX: 0, offsetY: 1}]
-    }
-  },
-  {
-    category: 'Power',
-    name: 'Large Power Node',
-    boundingRect: {width: 1, height: 2},
-    tiles: {
-      solid: [{width: 1, height: 2, offsetX: 0, offsetY: 0}]
-    }
-  },,
-  {
-    category: 'Power',
-    name: 'Small Power Node',
-    boundingRect: {width: 1, height: 1},
-    tiles: {
-      solid: [{width: 1, height: 1, offsetX: 0, offsetY: 0}]
-    }
-  },
-  {
-    category: 'Power',
-    name: 'Energium Power Generator',
-    boundingRect: {width: 2, height: 4},
-    tiles: {
-      solid: [{width: 2, height: 3, offsetX: 0, offsetY: 0}],
-      empty: [{width: 2, height: 1, offsetX: 0, offsetY: 3}]
-    }
-  },
-  {
-    category: 'Life Support',
-    name: 'Air Vent',
-    boundingRect: {width: 1, height: 2},
-    tiles: {
-      wall: [{width: 1, height: 1, offsetX: 0, offsetY: 0}],
-      empty: [{width: 1, height: 1, offsetX: 0, offsetY: 1}]
-    }
-  },
-  {
-    category: 'Life Support',
-    name: 'Thermal Regulator',
-    boundingRect: {width: 1, height: 1},
-    tiles: {
-      solid: [{width: 1, height: 1, offsetX: 0, offsetY: 0}]
-    }
-  },
-  {
-    category: 'Life Support',
-    name: 'Wall Thermal Regulator',
-    boundingRect: {width: 1, height: 2},
-    tiles: {
-      wall: [{width: 1, height: 1, offsetX: 0, offsetY: 0}],
-      empty: [{width: 1, height: 1, offsetX: 0, offsetY: 1}]
-    }
-  },
-  {
-    category: 'Life Support',
-    name: 'Gas Scrubber',
-    boundingRect: {width: 1, height: 2},
-    tiles: {
-      solid: [{width: 1, height: 1, offsetX: 0, offsetY: 0}],
-      striped: [{width: 1, height: 1, offsetX: 0, offsetY: 1}]
-    }
-  },
-  {
-    category: 'Life Support',
-    name: 'Oxygen Generator',
-    boundingRect: {width: 2, height: 2},
-    tiles: {
-      solid: [{width: 2, height: 1, offsetX: 0, offsetY: 0}],
-      striped: [{width: 1, height: 1, offsetX: 0, offsetY: 1}],
-      empty: [{width: 1, height: 1, offsetX: 1, offsetY: 1}]
-    }
-  },
-  {
-    category: 'Facility',
-    name: 'Research Workbench',
-    boundingRect: {width: 2, height: 2},
-    tiles: {
-      solid: [{width: 2, height: 1, offsetX: 0, offsetY: 0}],
-      empty: [{width: 2, height: 1, offsetX: 0, offsetY: 1}]
-    }
-  },
-  {
-    category: 'Facility',
-    name: 'Research Lab',
-    boundingRect: {width: 3, height: 3},
-    tiles: {
-      solid: [{width: 3, height: 2, offsetX: 0, offsetY: 0}],
-      empty: [{width: 3, height: 1, offsetX: 0, offsetY: 2}]
-    }
-  },
-  {
-    category: 'Facility',
-    name: 'ISP Dispenser',
-    boundingRect: {width: 1, height: 2},
-    tiles: {
-      wall: [{width: 1, height: 1, offsetX: 0, offsetY: 0}],
-      empty: [{width: 1, height: 1, offsetX: 0, offsetY: 1}]
-    }
-  },
-  {
-    category: 'Facility',
-    name: 'X1 Toilet',
-    boundingRect: {width: 2, height: 2},
-    tiles: {
-      solid: [{width: 2, height: 1, offsetX: 0, offsetY: 0}],
-      empty: [{width: 1, height: 1, offsetX: 0, offsetY: 1}],
-      striped: [{width: 1, height: 1, offsetX: 1, offsetY: 1}],
-    }
-  },
-  {
-    category: 'Decorations',
-    name: 'Decorative Object',
-    boundingRect: {width: 1, height: 1},
-    tiles: {
-      solid: [{width: 1, height: 1, offsetX: 0, offsetY: 0}]
-    }
-  },
-  {
-    category: 'Decorations',
-    name: 'Decorative Screen',
-    boundingRect: {width: 1, height: 2},
-    tiles: {
-      wall: [{width: 1, height: 1, offsetX: 0, offsetY: 0}],
-      empty: [{width: 1, height: 1, offsetX: 0, offsetY: 1}]
-    }
-  },
-  {
-    category: 'Decorations',
-    name: 'Green Wall',
-    boundingRect: {width: 1, height: 2},
-    tiles: {
-      wall: [{width: 1, height: 1, offsetX: 0, offsetY: 0}],
-      empty: [{width: 1, height: 1, offsetX: 0, offsetY: 1}]
-    }
-  },
-  {
-    category: 'Decorations',
-    name: 'Decorative Plant',
-    boundingRect: {width: 1, height: 1},
-    tiles: {
-      solid: [{width: 1, height: 1, offsetX: 0, offsetY: 0}],
-    }
-  },
-  {
-    category: 'Furniture',
-    name: 'X1 Couch (L)',
-    boundingRect: {width: 3, height: 2},
-    tiles: {
-      solid: [
-	{width: 3, height: 1, offsetX: 0, offsetY: 0},
-	{width: 1, height: 1, offsetX: 2, offsetY: 1}
-      ]
-    }
-  },
-  {
-    category: 'Furniture',
-    name: 'X1 Couch (L, Mirrored)',
-    boundingRect: {width: 3, height: 2},
-    tiles: {
-      solid: [
-	{width: 1, height: 1, offsetX: 2, offsetY: 0},
-	{width: 3, height: 1, offsetX: 0, offsetY: 1}
-      ]
-    }
-  },
-  {
-    category: 'Furniture',
-    name: 'X1 Couch (Single)',
-    boundingRect: {width: 1, height: 1},
-    tiles: {
-      solid: [{width: 1, height: 1, offsetX: 0, offsetY: 0}]
-    }
-  },
-  {
-    category: 'Furniture',
-    name: 'X1 Couch (Corner)',
-    boundingRect: {width: 2, height: 2},
-    tiles: {
-      solid: [
-	{width: 2, height: 1, offsetX: 0, offsetY: 0},
-	{width: 1, height: 1, offsetX: 1, offsetY: 1}
-      ]
-    }
-  },
-  {
-    category: 'Furniture',
-    name: 'X1 Couch (U)',
-    boundingRect: {width: 2, height: 3},
-    tiles: {
-      solid: [
-	{width: 2, height: 1, offsetX: 0, offsetY: 0},
-	{width: 1, height: 1, offsetX: 1, offsetY: 1},
-	{width: 2, height: 1, offsetX: 0, offsetY: 2},
-      ]
-    }
-  },
-  {
-    category: 'Furniture',
-    name: 'X1 Couch',
-    boundingRect: {width: 2, height: 1},
-    tiles: {
-      solid: [{width: 2, height: 1, offsetX: 0, offsetY: 0}]
-    }
-  },
-  {
-    category: 'Furniture',
-    name: 'X1 Chair',
-    boundingRect: {width: 1, height: 1},
-    tiles: {
-      solid: [{width: 1, height: 1, offsetX: 0, offsetY: 0}]
-    }
-  },
-  {
-    category: 'Furniture',
-    name: 'X1 Table',
-    boundingRect: {width: 1, height: 1},
-    tiles: {
-      solid: [{width: 1, height: 1, offsetX: 0, offsetY: 0}]
-    }
-  },
-  {
-    category: 'Furniture',
-    name: 'Cover Object',
-    boundingRect: {width: 1, height: 1},
-    tiles: {
-      solid: [{width: 1, height: 1, offsetX: 0, offsetY: 0}]
-    }
-  },
-  {
-    category: 'Furniture',
-    name: 'Light',
-    boundingRect: {width: 1, height: 1},
-    tiles: {
-      solid: [{width: 1, height: 1, offsetX: 0, offsetY: 0}]
-    }
-  },
-  {
-    category: 'Furniture',
-    name: 'In-Floor Light',
-    boundingRect: {width: 1, height: 1},
-    tiles: {
-      empty: [{width: 1, height: 1, offsetX: 0, offsetY: 0}]
-    }
-  },
-  {
-    category: 'Furniture',
-    name: 'Wall Light',
-    boundingRect: {width: 1, height: 2},
-    tiles: {
-      wall: [{width: 1, height: 1, offsetX: 0, offsetY: 0}],
-      empty: [{width: 1, height: 1, offsetX: 0, offsetY: 1}]
-    }
-  },
-  {
-    category: 'Furniture',
-    name: 'Bedside Table',
-    boundingRect: {width: 1, height: 1},
-    tiles: {
-      solid: [{width: 1, height: 1, offsetX: 0, offsetY: 0}]
-    }
-  },
-  {
-    category: 'Furniture',
-    name: 'Bunk Bed',
-    boundingRect: {width: 2, height: 1},
-    tiles: {
-      solid: [{width: 2, height: 1, offsetX: 0, offsetY: 0}]
-    }
-  },
-  {
-    category: 'Furniture',
-    name: 'Bed',
-    boundingRect: {width: 2, height: 1},
-    tiles: {
-      solid: [{width: 2, height: 1, offsetX: 0, offsetY: 0}]
-    }
-  },
-  {
-    category: 'Wall',
-    name: 'X1 Door',
-    boundingRect: {width: 3, height: 1},
-    tiles: {
-      solid: [{width: 1, height: 1, offsetX: 1, offsetY: 0}],
-      empty: [
-	{width: 1, height: 1, offsetX: 0, offsetY: 0},
-	{width: 1, height: 1, offsetX: 2, offsetY: 0},
-      ]
-    }
-  },
-  {
-    category: 'Wall',
-    name: 'X2 Door',
-    boundingRect: {width: 3, height: 2},
-    tiles: {
-      solid: [{width: 1, height: 2, offsetX: 1, offsetY: 0}],
-      empty: [
-	{width: 1, height: 2, offsetX: 0, offsetY: 0},
-	{width: 1, height: 2, offsetX: 2, offsetY: 0},
-      ]
-    }
-  },
-  {
-    category: 'Wall',
-    name: 'X1 Wall',
-    boundingRect: {width: 1, height: 1},
-    tiles: {
-      solid: [{width: 1, height: 1, offsetX: 0, offsetY: 0}]
-    }
-  },
-  {
-    category: 'Wall',
-    name: 'Spacesuit Door',
-    boundingRect: {width: 3, height: 3},
-    tiles: {
-      empty: [
-	{width: 1, height: 1, offsetX: 1, offsetY: 0},
-	{width: 1, height: 1, offsetX: 0, offsetY: 1},
-	{width: 1, height: 1, offsetX: 2, offsetY: 1}
+        { width: 1, height: 1, offsetX: 2, offsetY: 2 },
+        { width: 3, height: 1, offsetX: 0, offsetY: 3 },
       ],
-      solid: [{width: 1, height: 1, offsetX: 1, offsetY: 1}],
-      wall: [{width: 1, height: 1, offsetX: 1, offsetY: 2}],
-    }
-  }
-]
-
+    },
+  },
+  {
+    category: "Resource",
+    name: "Ore Processor",
+    boundingRect: { width: 3, height: 6 },
+    tiles: {
+      solid: [{ width: 3, height: 5, offsetX: 0, offsetY: 0 }],
+      empty: [{ width: 3, height: 1, offsetX: 0, offsetY: 5 }],
+    },
+  },
+  {
+    category: "Resource",
+    name: "Water Collector",
+    boundingRect: { width: 1, height: 2 },
+    tiles: {
+      solid: [{ width: 1, height: 1, offsetX: 0, offsetY: 0 }],
+      empty: [{ width: 1, height: 1, offsetX: 0, offsetY: 1 }],
+    },
+  },
+  {
+    category: "Resource",
+    name: "Water Purifier",
+    boundingRect: { width: 2, height: 2 },
+    tiles: {
+      solid: [{ width: 2, height: 1, offsetX: 0, offsetY: 0 }],
+      empty: [{ width: 2, height: 1, offsetX: 0, offsetY: 1 }],
+    },
+  },
+  {
+    category: "Resource",
+    name: "Tools Facility",
+    boundingRect: { width: 2, height: 2 },
+    tiles: {
+      solid: [{ width: 2, height: 1, offsetX: 0, offsetY: 0 }],
+      empty: [{ width: 2, height: 1, offsetX: 0, offsetY: 1 }],
+    },
+  },
+  {
+    category: "Resource",
+    name: "Item Workbench",
+    boundingRect: { width: 2, height: 2 },
+    tiles: {
+      solid: [{ width: 2, height: 1, offsetX: 0, offsetY: 0 }],
+      empty: [{ width: 2, height: 1, offsetX: 0, offsetY: 1 }],
+    },
+  },
+  {
+    category: "Power",
+    name: "Large Power Node",
+    boundingRect: { width: 1, height: 2 },
+    tiles: {
+      solid: [{ width: 1, height: 2, offsetX: 0, offsetY: 0 }],
+    },
+  },
+  ,
+  {
+    category: "Power",
+    name: "Small Power Node",
+    boundingRect: { width: 1, height: 1 },
+    tiles: {
+      solid: [{ width: 1, height: 1, offsetX: 0, offsetY: 0 }],
+    },
+  },
+  {
+    category: "Power",
+    name: "Energium Power Generator",
+    boundingRect: { width: 2, height: 4 },
+    tiles: {
+      solid: [{ width: 2, height: 3, offsetX: 0, offsetY: 0 }],
+      empty: [{ width: 2, height: 1, offsetX: 0, offsetY: 3 }],
+    },
+  },
+  {
+    category: "Life Support",
+    name: "Air Vent",
+    boundingRect: { width: 1, height: 2 },
+    tiles: {
+      wall: [{ width: 1, height: 1, offsetX: 0, offsetY: 0 }],
+      empty: [{ width: 1, height: 1, offsetX: 0, offsetY: 1 }],
+    },
+  },
+  {
+    category: "Life Support",
+    name: "Thermal Regulator",
+    boundingRect: { width: 1, height: 1 },
+    tiles: {
+      solid: [{ width: 1, height: 1, offsetX: 0, offsetY: 0 }],
+    },
+  },
+  {
+    category: "Life Support",
+    name: "Wall Thermal Regulator",
+    boundingRect: { width: 1, height: 2 },
+    tiles: {
+      wall: [{ width: 1, height: 1, offsetX: 0, offsetY: 0 }],
+      empty: [{ width: 1, height: 1, offsetX: 0, offsetY: 1 }],
+    },
+  },
+  {
+    category: "Life Support",
+    name: "Gas Scrubber",
+    boundingRect: { width: 1, height: 2 },
+    tiles: {
+      solid: [{ width: 1, height: 1, offsetX: 0, offsetY: 0 }],
+      striped: [{ width: 1, height: 1, offsetX: 0, offsetY: 1 }],
+    },
+  },
+  {
+    category: "Life Support",
+    name: "Oxygen Generator",
+    boundingRect: { width: 2, height: 2 },
+    tiles: {
+      solid: [{ width: 2, height: 1, offsetX: 0, offsetY: 0 }],
+      striped: [{ width: 1, height: 1, offsetX: 0, offsetY: 1 }],
+      empty: [{ width: 1, height: 1, offsetX: 1, offsetY: 1 }],
+    },
+  },
+  {
+    category: "Facility",
+    name: "Research Workbench",
+    boundingRect: { width: 2, height: 2 },
+    tiles: {
+      solid: [{ width: 2, height: 1, offsetX: 0, offsetY: 0 }],
+      empty: [{ width: 2, height: 1, offsetX: 0, offsetY: 1 }],
+    },
+  },
+  {
+    category: "Facility",
+    name: "Research Lab",
+    boundingRect: { width: 3, height: 3 },
+    tiles: {
+      solid: [{ width: 3, height: 2, offsetX: 0, offsetY: 0 }],
+      empty: [{ width: 3, height: 1, offsetX: 0, offsetY: 2 }],
+    },
+  },
+  {
+    category: "Facility",
+    name: "ISP Dispenser",
+    boundingRect: { width: 1, height: 2 },
+    tiles: {
+      wall: [{ width: 1, height: 1, offsetX: 0, offsetY: 0 }],
+      empty: [{ width: 1, height: 1, offsetX: 0, offsetY: 1 }],
+    },
+  },
+  {
+    category: "Facility",
+    name: "X1 Toilet",
+    boundingRect: { width: 2, height: 2 },
+    tiles: {
+      solid: [{ width: 2, height: 1, offsetX: 0, offsetY: 0 }],
+      empty: [{ width: 1, height: 1, offsetX: 0, offsetY: 1 }],
+      striped: [{ width: 1, height: 1, offsetX: 1, offsetY: 1 }],
+    },
+  },
+  {
+    category: "Decorations",
+    name: "Decorative Object",
+    boundingRect: { width: 1, height: 1 },
+    tiles: {
+      solid: [{ width: 1, height: 1, offsetX: 0, offsetY: 0 }],
+    },
+  },
+  {
+    category: "Decorations",
+    name: "Decorative Screen",
+    boundingRect: { width: 1, height: 2 },
+    tiles: {
+      wall: [{ width: 1, height: 1, offsetX: 0, offsetY: 0 }],
+      empty: [{ width: 1, height: 1, offsetX: 0, offsetY: 1 }],
+    },
+  },
+  {
+    category: "Decorations",
+    name: "Green Wall",
+    boundingRect: { width: 1, height: 2 },
+    tiles: {
+      wall: [{ width: 1, height: 1, offsetX: 0, offsetY: 0 }],
+      empty: [{ width: 1, height: 1, offsetX: 0, offsetY: 1 }],
+    },
+  },
+  {
+    category: "Decorations",
+    name: "Decorative Plant",
+    boundingRect: { width: 1, height: 1 },
+    tiles: {
+      solid: [{ width: 1, height: 1, offsetX: 0, offsetY: 0 }],
+    },
+  },
+  {
+    category: "Furniture",
+    name: "X1 Couch (L)",
+    boundingRect: { width: 3, height: 2 },
+    tiles: {
+      solid: [
+        { width: 3, height: 1, offsetX: 0, offsetY: 0 },
+        { width: 1, height: 1, offsetX: 2, offsetY: 1 },
+      ],
+    },
+  },
+  {
+    category: "Furniture",
+    name: "X1 Couch (L, Mirrored)",
+    boundingRect: { width: 3, height: 2 },
+    tiles: {
+      solid: [
+        { width: 1, height: 1, offsetX: 2, offsetY: 0 },
+        { width: 3, height: 1, offsetX: 0, offsetY: 1 },
+      ],
+    },
+  },
+  {
+    category: "Furniture",
+    name: "X1 Couch (Single)",
+    boundingRect: { width: 1, height: 1 },
+    tiles: {
+      solid: [{ width: 1, height: 1, offsetX: 0, offsetY: 0 }],
+    },
+  },
+  {
+    category: "Furniture",
+    name: "X1 Couch (Corner)",
+    boundingRect: { width: 2, height: 2 },
+    tiles: {
+      solid: [
+        { width: 2, height: 1, offsetX: 0, offsetY: 0 },
+        { width: 1, height: 1, offsetX: 1, offsetY: 1 },
+      ],
+    },
+  },
+  {
+    category: "Furniture",
+    name: "X1 Couch (U)",
+    boundingRect: { width: 2, height: 3 },
+    tiles: {
+      solid: [
+        { width: 2, height: 1, offsetX: 0, offsetY: 0 },
+        { width: 1, height: 1, offsetX: 1, offsetY: 1 },
+        { width: 2, height: 1, offsetX: 0, offsetY: 2 },
+      ],
+    },
+  },
+  {
+    category: "Furniture",
+    name: "X1 Couch",
+    boundingRect: { width: 2, height: 1 },
+    tiles: {
+      solid: [{ width: 2, height: 1, offsetX: 0, offsetY: 0 }],
+    },
+  },
+  {
+    category: "Furniture",
+    name: "X1 Chair",
+    boundingRect: { width: 1, height: 1 },
+    tiles: {
+      solid: [{ width: 1, height: 1, offsetX: 0, offsetY: 0 }],
+    },
+  },
+  {
+    category: "Furniture",
+    name: "X1 Table",
+    boundingRect: { width: 1, height: 1 },
+    tiles: {
+      solid: [{ width: 1, height: 1, offsetX: 0, offsetY: 0 }],
+    },
+  },
+  {
+    category: "Furniture",
+    name: "Cover Object",
+    boundingRect: { width: 1, height: 1 },
+    tiles: {
+      solid: [{ width: 1, height: 1, offsetX: 0, offsetY: 0 }],
+    },
+  },
+  {
+    category: "Furniture",
+    name: "Light",
+    boundingRect: { width: 1, height: 1 },
+    tiles: {
+      solid: [{ width: 1, height: 1, offsetX: 0, offsetY: 0 }],
+    },
+  },
+  {
+    category: "Furniture",
+    name: "In-Floor Light",
+    boundingRect: { width: 1, height: 1 },
+    tiles: {
+      empty: [{ width: 1, height: 1, offsetX: 0, offsetY: 0 }],
+    },
+  },
+  {
+    category: "Furniture",
+    name: "Wall Light",
+    boundingRect: { width: 1, height: 2 },
+    tiles: {
+      wall: [{ width: 1, height: 1, offsetX: 0, offsetY: 0 }],
+      empty: [{ width: 1, height: 1, offsetX: 0, offsetY: 1 }],
+    },
+  },
+  {
+    category: "Furniture",
+    name: "Bedside Table",
+    boundingRect: { width: 1, height: 1 },
+    tiles: {
+      solid: [{ width: 1, height: 1, offsetX: 0, offsetY: 0 }],
+    },
+  },
+  {
+    category: "Furniture",
+    name: "Bunk Bed",
+    boundingRect: { width: 2, height: 1 },
+    tiles: {
+      solid: [{ width: 2, height: 1, offsetX: 0, offsetY: 0 }],
+    },
+  },
+  {
+    category: "Furniture",
+    name: "Bed",
+    boundingRect: { width: 2, height: 1 },
+    tiles: {
+      solid: [{ width: 2, height: 1, offsetX: 0, offsetY: 0 }],
+    },
+  },
+  {
+    category: "Wall",
+    name: "X1 Door",
+    boundingRect: { width: 3, height: 1 },
+    tiles: {
+      solid: [{ width: 1, height: 1, offsetX: 1, offsetY: 0 }],
+      empty: [
+        { width: 1, height: 1, offsetX: 0, offsetY: 0 },
+        { width: 1, height: 1, offsetX: 2, offsetY: 0 },
+      ],
+    },
+  },
+  {
+    category: "Wall",
+    name: "X2 Door",
+    boundingRect: { width: 3, height: 2 },
+    tiles: {
+      solid: [{ width: 1, height: 2, offsetX: 1, offsetY: 0 }],
+      empty: [
+        { width: 1, height: 2, offsetX: 0, offsetY: 0 },
+        { width: 1, height: 2, offsetX: 2, offsetY: 0 },
+      ],
+    },
+  },
+  {
+    category: "Wall",
+    name: "X1 Wall",
+    boundingRect: { width: 1, height: 1 },
+    tiles: {
+      solid: [{ width: 1, height: 1, offsetX: 0, offsetY: 0 }],
+    },
+  },
+  {
+    category: "Wall",
+    name: "Spacesuit Door",
+    boundingRect: { width: 3, height: 3 },
+    tiles: {
+      empty: [
+        { width: 1, height: 1, offsetX: 1, offsetY: 0 },
+        { width: 1, height: 1, offsetX: 0, offsetY: 1 },
+        { width: 1, height: 1, offsetX: 2, offsetY: 1 },
+      ],
+      solid: [{ width: 1, height: 1, offsetX: 1, offsetY: 1 }],
+      wall: [{ width: 1, height: 1, offsetX: 1, offsetY: 2 }],
+    },
+  },
+];
