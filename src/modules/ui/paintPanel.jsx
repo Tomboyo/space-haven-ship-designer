@@ -6,7 +6,6 @@ import { modules } from "../component/modules.js";
 import { clearSaveData } from "../save.js";
 
 import useToolPalette from "./useToolPalette.jsx";
-import ToolButton from "./ToolButton.jsx";
 
 import paintModuleBrush from "./behavior/paintModuleBrush.js";
 import panBrush from "./behavior/panBrush.js";
@@ -19,15 +18,11 @@ export function install({ ecs }) {
 }
 
 function PaintToolPalette({ ecs }) {
-  const palette = useToolPalette({
+  const { ToolButton } = useToolPalette({
     defaultTool: { name: "pan", handler: panBrush(ecs) },
   });
-  const { activeTool, toggleTool, cancelTool } = palette;
   const [activeShelf, setActiveShelf] = React.useState("System");
-
   const cm = categorizedModules();
-  const paintTool = { name: "paint", handler: paintHullBrush(ecs, cancelTool) };
-  const eraseTool = { name: "erase", handler: eraseBrush(ecs, cancelTool) };
 
   function onCategorySelectChange(e) {
     setActiveShelf(e.target.value);
@@ -37,14 +32,14 @@ function PaintToolPalette({ ecs }) {
     <div className="flex-button-row big-gap">
       <div className="flex-button-row do-not-shrink">
         <ToolButton
-          onClick={() => toggleTool(paintTool)}
-          active={activeTool.name === paintTool.name}
+          toolName="paint"
+          makeTool={(cancel) => paintHullBrush(ecs, cancel)}
         >
           Paint Hull
         </ToolButton>
         <ToolButton
-          onClick={() => toggleTool(eraseTool)}
-          active={activeTool.name === eraseTool.name}
+          toolName="erase"
+          makeTool={(cancel) => eraseBrush(ecs, cancel)}
         >
           Erase
         </ToolButton>
@@ -55,7 +50,7 @@ function PaintToolPalette({ ecs }) {
         <CarouselShelf
           ecs={ecs}
           modules={cm.get(activeShelf)}
-          palette={palette}
+          ToolButton={ToolButton}
         />
       </div>
     </div>
@@ -77,20 +72,12 @@ function CarouselSelect({ modulesMap, onChange }) {
   return <select onChange={onChange}>{options}</select>;
 }
 
-function CarouselShelf({ ecs, modules, palette }) {
-  const { activeTool, toggleTool, cancelTool } = palette;
+function CarouselShelf({ ecs, modules, ToolButton }) {
   const tools = modules.map((module) => {
-    const tool = {
-      name: `module ${module.name}`,
-      handler: paintModuleBrush(ecs, module, cancelTool),
-    };
-
+    const toolName = `module ${module.name}`;
+    const makeTool = (cancel) => paintModuleBrush(ecs, module, cancel);
     return (
-      <ToolButton
-        key={tool.name}
-        active={activeTool.name === tool.name}
-        onClick={() => toggleTool(tool)}
-      >
+      <ToolButton key={toolName} toolName={toolName} makeTool={makeTool}>
         {module.name}
       </ToolButton>
     );
