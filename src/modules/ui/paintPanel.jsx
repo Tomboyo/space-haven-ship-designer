@@ -31,27 +31,31 @@ function PaintToolPalette({ ecs }) {
   return (
     <div className="flex-button-row big-gap">
       <div className="flex-button-row do-not-shrink">
-        <ToolButton
-          toolName="paint"
-          makeTool={(cancel) => paintHullBrush(ecs, cancel)}
-        >
-          Paint Hull
-        </ToolButton>
-        <ToolButton
-          toolName="erase"
-          makeTool={(cancel) => eraseBrush(ecs, cancel)}
-        >
-          Erase
-        </ToolButton>
-        <ClearAll ecs={ecs} />
-        <CarouselSelect onChange={onCategorySelectChange} modulesMap={cm} />
+        <div className="flex-button-row">
+          <ToolButton
+            toolName="paint"
+            makeTool={(cancel) => paintHullBrush(ecs, cancel)}
+          >
+            Paint Hull
+          </ToolButton>
+          <ToolButton
+            toolName="erase"
+            makeTool={(cancel) => eraseBrush(ecs, cancel)}
+          >
+            Erase
+          </ToolButton>
+          <ClearAll ecs={ecs} />
+        </div>
       </div>
-      <div className="modules-carousel">
-        <CarouselShelf
-          ecs={ecs}
-          modules={cm.get(activeShelf)}
-          ToolButton={ToolButton}
-        />
+      <div className="flex-button-row">
+        <CarouselSelect onChange={onCategorySelectChange} modulesMap={cm} />
+        <div className="modules-carousel">
+          <CarouselShelf
+            ecs={ecs}
+            modules={cm.get(activeShelf)}
+            ToolButton={ToolButton}
+          />
+        </div>
       </div>
     </div>
   );
