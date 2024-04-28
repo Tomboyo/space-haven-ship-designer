@@ -1,9 +1,9 @@
 import * as hullBlocks from "../../component/hullBlock.js";
+import SelectionHandler from "./selectionHandler.js";
+import * as tool from "./tool.js";
 
-import selectionBrush from "./selectionBrush.js";
-
-export default function (ecs, cancel) {
-  return selectionBrush(ecs, cancel, paintHull);
+export default function hullTool(ecs, onCancel) {
+  return tool.from("hull", new SelectionHandler(ecs, onCancel, paintHull));
 }
 
 function paintHull(ecs, entity) {

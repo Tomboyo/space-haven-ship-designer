@@ -1,45 +1,45 @@
 import React from "react";
 
 import ToolButton from "./ToolButton.jsx";
+import * as tool from "./tool/tool.js";
 
 export default function useToolPalette({ defaultTool }) {
   const [activeTool, setActiveTool] = React.useState(defaultTool);
 
-  const PreparedToolButton = React.useMemo(() => {
-    function toggleTool(tool) {
-      if (tool.name === activeTool.name) {
-        setActiveTool(defaultTool);
-      } else {
-        setActiveTool(tool);
-      }
-    }
+  const PaletteToolButton = React.useMemo(
+    () =>
+      function PaletteToolButton({ makeTool, children }) {
+        function toggleTool(tool) {
+          if (tool.name === activeTool.name) {
+            setActiveTool(defaultTool);
+          } else {
+            setActiveTool(tool);
+          }
+        }
 
-    function cancelTool() {
-      setActiveTool(defaultTool);
-    }
+        function cancelTool() {
+          setActiveTool(defaultTool);
+        }
 
-    return ({ toolName, makeTool, children }) => {
-      const tool = {
-        name: toolName,
-        handler: makeTool(cancelTool),
-      };
-      return (
-        <ToolButton
-          onClick={() => toggleTool(tool)}
-          active={activeTool.name === tool.name}
-        >
-          {children}
-        </ToolButton>
-      );
-    };
-  }, [activeTool, defaultTool]);
+        const tool = makeTool(cancelTool);
+        return (
+          <ToolButton
+            active={activeTool.name === tool.name}
+            onClick={() => toggleTool(tool)}
+          >
+            {children}
+          </ToolButton>
+        );
+      },
+    [activeTool, setActiveTool, defaultTool],
+  );
 
   React.useEffect(() => {
-    activeTool.handler.activate();
-    return () => activeTool.handler.deactivate();
+    tool.activate(activeTool);
+    return () => tool.deactivate(activeTool);
   }, [activeTool]);
 
   return {
-    ToolButton: PreparedToolButton,
+    PaletteToolButton,
   };
 }

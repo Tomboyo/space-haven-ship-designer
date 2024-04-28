@@ -6,14 +6,14 @@ import { clearSaveData } from "../save.js";
 
 import useToolPalette from "./useToolPalette.jsx";
 
-import paintModuleBrush from "./behavior/paintModuleBrush.js";
-import panBrush from "./behavior/panBrush.js";
-import paintHullBrush from "./behavior/paintHullBrush.js";
-import eraseBrush from "./behavior/eraseBrush.js";
+import panTool from "./tool/panTool.js";
+import hullTool from "./tool/hullTool.js";
+import eraseTool from "./tool/eraseTool.js";
+import moduleTool from "./tool/moduleTool.js";
 
 export default function PaintToolPalette({ ecs }) {
-  const { ToolButton } = useToolPalette({
-    defaultTool: { name: "pan", handler: panBrush(ecs) },
+  const { PaletteToolButton } = useToolPalette({
+    defaultTool: panTool(ecs),
   });
   const [activeShelf, setActiveShelf] = React.useState("System");
 
@@ -25,24 +25,21 @@ export default function PaintToolPalette({ ecs }) {
     <div className="flex-button-row big-gap">
       <div className="flex-button-row do-not-shrink">
         <div className="flex-button-row">
-          <ToolButton
-            toolName="paint"
-            makeTool={(cancel) => paintHullBrush(ecs, cancel)}
-          >
+          <PaletteToolButton makeTool={(cancel) => hullTool(ecs, cancel)}>
             Paint Hull
-          </ToolButton>
-          <ToolButton
+          </PaletteToolButton>
+          <PaletteToolButton
             toolName="erase"
-            makeTool={(cancel) => eraseBrush(ecs, cancel)}
+            makeTool={(cancel) => eraseTool(ecs, cancel)}
           >
             Erase
-          </ToolButton>
+          </PaletteToolButton>
           <ClearAll ecs={ecs} />
         </div>
       </div>
       <ModulesCarousel
         ecs={ecs}
-        ToolButton={ToolButton}
+        PaletteToolButton={PaletteToolButton}
         changeShelf={changeShelf}
         activeShelf={activeShelf}
       />
@@ -58,7 +55,7 @@ function ClearAll({ ecs }) {
   );
 }
 
-function ModulesCarousel({ ToolButton, ecs, changeShelf, activeShelf }) {
+function ModulesCarousel({ PaletteToolButton, ecs, changeShelf, activeShelf }) {
   const cm = categorizedModules();
 
   const options = [...cm.keys()].map((category) => (
@@ -72,21 +69,21 @@ function ModulesCarousel({ ToolButton, ecs, changeShelf, activeShelf }) {
         <CarouselShelf
           ecs={ecs}
           modules={cm.get(activeShelf)}
-          ToolButton={ToolButton}
+          PaletteToolButton={PaletteToolButton}
         />
       </div>
     </div>
   );
 }
 
-function CarouselShelf({ ecs, modules, ToolButton }) {
+function CarouselShelf({ ecs, modules, PaletteToolButton }) {
   const tools = modules.map((module) => {
     const toolName = `module ${module.name}`;
-    const makeTool = (cancel) => paintModuleBrush(ecs, module, cancel);
+    const makeTool = (cancel) => moduleTool(ecs, module, cancel);
     return (
-      <ToolButton key={toolName} toolName={toolName} makeTool={makeTool}>
+      <PaletteToolButton key={toolName} makeTool={makeTool}>
         {module.name}
-      </ToolButton>
+      </PaletteToolButton>
     );
   });
 

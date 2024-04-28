@@ -1,7 +1,8 @@
-import selectionBrush from "./selectionBrush.js";
+import SelectionHandler from "./selectionHandler.js";
+import * as tool from "./tool.js";
 
-export default function (ecs, cancel) {
-  return selectionBrush(ecs, cancel, erase);
+export default function eraseTool(ecs, onCancel) {
+  return tool.from("erase", new SelectionHandler(ecs, onCancel, erase));
 }
 
 function erase(ecs, entity) {
