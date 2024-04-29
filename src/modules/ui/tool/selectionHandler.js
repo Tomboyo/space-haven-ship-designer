@@ -1,7 +1,5 @@
 import * as util from "../../util.js";
 
-import * as tool from "./tool.js";
-
 export default class SelectionHandler {
   constructor(ecs, onCancel, onCommit) {
     this.ecs = ecs;
