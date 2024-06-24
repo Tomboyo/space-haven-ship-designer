@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8"/>
     <title>Space Haven Ship Designer</title>
-    <script type="module" src="./src/index.js" defer></script>
+    <script type="module" src="./src/index.jsx" defer></script>
     <link rel="stylesheet" type="text/css" href="./src/index.css"/>
   </head>
   <body oncontextmenu="return false;">
@@ -11,24 +11,7 @@
       <div id="canvas-wrapper">
         <canvas id="canvas">Space Haven ship designer</canvas>
       </div>
-      <div id="tab-panel">
-	<div class="tabs">
-	  <button
-            id="paint-tab"
-            class="tab-header active"
-            data-tab-body-id="paint-tab-body">
-              Paint
-          </button>
-	  <button
-            id="layout-tab"
-            class="tab-header"
-            data-tab-body-id="layout-tab-body">
-              Layout
-          </button>
-	</div>
-	<div id="paint-tab-body" class="tab-body"></div>
-	<div id="layout-tab-body" class="tab-body"></div>
-      </div>
+      <div id="editing-tools"></div>
     </div>
     <div id="things-here-overlay">
       Under the cursor:

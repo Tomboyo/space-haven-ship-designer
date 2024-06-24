@@ -75,13 +75,11 @@ button.active {
   max-height: 6.5rem;
   border: 1px solid white;
   padding: 0.5rem;
+  display: block;
   
 }
 .tab-body * {
   max-height: inherit;
-}
-.tab-body.active {
-  display: block;
 }
 
 
