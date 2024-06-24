@@ -5,7 +5,7 @@ import { save, load } from "./modules/save.js";
 
 import * as canvasUi from "./modules/ui/canvas.js";
 import EditingTools from "./modules/ui/EditingTools.jsx";
-import * as thingsHereUi from "./modules/ui/thingsHere.js";
+import UnderTheCursorTooltip from "./modules/ui/UnderTheCursorTooltip.jsx";
 
 import layout from "./modules/ui/layouts.js";
 
@@ -43,9 +43,11 @@ ecs.registerSystems([
 // N.B. these register event listeners.
 let resources = { ecs };
 canvasUi.install(resources);
-thingsHereUi.install(resources);
 ReactDOM.createRoot(document.querySelector("#editing-tools")).render(
-  <EditingTools ecs={ecs} />,
+  <>
+    <EditingTools ecs={ecs} />,
+    <UnderTheCursorTooltip ecs={ecs} />
+  </>,
 );
 
 /* Register this after all other listeners to ensure save always reflects most
