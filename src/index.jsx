@@ -43,7 +43,7 @@ ecs.registerSystems([
 // N.B. these register event listeners.
 let resources = { ecs };
 canvasUi.install(resources);
-ReactDOM.createRoot(document.querySelector("#editing-tools")).render(
+ReactDOM.createRoot(document.querySelector("#react-app")).render(
   <>
     <EditingTools ecs={ecs} />,
     <UnderTheCursorTooltip ecs={ecs} />
