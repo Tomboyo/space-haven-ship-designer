@@ -1,5 +1,5 @@
-export function save(ecs) {
-  localStorage.setItem("ecs", JSON.stringify(ecs.getSaveData()));
+export function save(data) {
+  localStorage.setItem("ecs", JSON.stringify(data));
 }
 
 export function load(ecs) {

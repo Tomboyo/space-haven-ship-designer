@@ -50,10 +50,6 @@ ReactDOM.createRoot(document.querySelector("#editing-tools")).render(
   </>,
 );
 
-/* Register this after all other listeners to ensure save always reflects most
- * recent modification. */
-canvas.addEventListener("mouseup", () => save(ecs));
-
 canvasUi.refitCanvas(ecs);
 
 /* Temporary hack:
@@ -67,9 +63,13 @@ ecs.updateResource("grid", (grid) => {
 });
 
 let renderLoop = () => {
-  if (ecs.isDirty) {
+  if (ecs.needsToRun) {
     ecs.run();
+  }
+  if (ecs.isSaveDataModified) {
+    save(ecs.getSaveData());
   }
   window.requestAnimationFrame(renderLoop);
 };
+ecs.run();
 renderLoop();

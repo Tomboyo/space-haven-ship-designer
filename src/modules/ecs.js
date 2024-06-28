@@ -1,5 +1,7 @@
 export function createEcs() {
   return {
+    isSaveDataModified: false,
+    needsToRun: false,
     isDirty: false,
     idSequence: 0,
     resources: new Map([]),
@@ -10,7 +12,7 @@ export function createEcs() {
       if (this.resources.has(name))
         throw new Error(`Resource ${name} already exists`);
       this.resources.set(name, resource);
-      this.isDirty = true;
+      this.needsToRun = true;
       return resource;
     },
 
@@ -24,7 +26,7 @@ export function createEcs() {
 
     updateResource(name, f) {
       if (this.resources.has(name)) {
-        this.isDirty = true;
+        this.needsToRun = true;
         return f(this.resources.get(name));
       } else {
         throw new Error(`No such resource ${name}`);
@@ -35,14 +37,16 @@ export function createEcs() {
     newEntity(components) {
       let entity = { ...components, id: this.idSequence++ };
       this.entities.push(entity);
-      this.isDirty = true;
+      this.needsToRun = true;
+      this.isSaveDataModified = true;
       return entity;
     },
 
     updateEntity(entity, f) {
       let e = this.entities.find((x) => x.id === entity.id);
       if (!e) throw new Error("ECS does not have entity with id " + entity.id);
-      this.isDirty = true;
+      this.needsToRun = true;
+      this.isSaveDataModified = true;
       return f(e);
     },
 
@@ -65,13 +69,15 @@ export function createEcs() {
       let id = typeof x === "object" ? x.id : x;
       let index = this.entities.findIndex((e) => e.id === id);
       this.entities.splice(index, 1);
-      this.isDirty = true;
+      this.needsToRun = true;
+      this.isSaveDataModified = true;
     },
 
     removeAllEntities() {
       this.entities = [];
       this.sequenceId = 0;
-      this.isDirty = true;
+      this.needsToRun = true;
+      this.isSaveDataModified = true;
     },
 
     /* args: [ [ name: String, resourceSignature: [string], componentSignature: [string], f: function arity resources.length + components.length ] ] => void */
@@ -79,7 +85,7 @@ export function createEcs() {
       args.forEach(([name, resourceSignature, componentSignature, f]) => {
         this.systems.push({ name, resourceSignature, componentSignature, f });
       });
-      this.isDirty = true;
+      this.needsToRun = true;
     },
 
     run() {
@@ -104,6 +110,7 @@ export function createEcs() {
     },
 
     getSaveData() {
+      this.isSaveDataModified = false;
       return {
         entities: this.entities,
       };
