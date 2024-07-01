@@ -1,6 +1,7 @@
 import { newModule } from "../../component/module.js";
 import { getTileCoordinates } from "../../util.js";
 import * as tool from "./tool.js";
+import { paintHull } from "./hullTool.js";
 
 export default function moduleTool(ecs, module, onCancel) {
   return tool.from(`module ${module.name}`, new Handler(ecs, module, onCancel));
@@ -23,7 +24,26 @@ class Handler {
   mousedown(e) {
     if (e.button === 0) {
       let p = getTileCoordinates(e, this.ecs);
-      this.ecs.newEntity(newModule(this.module, false, p, this.rotation));
+      let m = newModule(this.module, false, p, this.rotation);
+      this.ecs.newEntity(m);
+      ["empty", "striped"]
+        .filter((key) => m.module.tiles[key])
+        .forEach((key) =>
+          m.module.tiles[key].forEach(({ width, height, offsetX, offsetY }) =>
+            paintHull(this.ecs, {
+              selection: {
+                p0: {
+                  x: p.x + offsetX,
+                  y: p.y + offsetY,
+                },
+                p1: {
+                  x: p.x + offsetX + width - 1,
+                  y: p.y + offsetY + height - 1,
+                },
+              },
+            }),
+          ),
+        );
     } else if (e.button === 2) {
       if (this.entity) {
         this.ecs.removeEntity(this.entity);
