@@ -1,7 +1,7 @@
 import React from "react";
 
-import layouts from "./layouts.js";
 import useToolPalette from "./useToolPalette.jsx";
+import layouts from "./layouts.js";
 
 import panTool from "./tool/panTool.js";
 
@@ -17,11 +17,6 @@ export default function LayoutSelector({ ecs, layout, setLayout }) {
     setLayout(e.target.value);
   }
 
-  React.useEffect(() => {
-    let { width, height } = layouts[layout];
-    updateGrid(ecs, width, height);
-  }, [ecs, layout]);
-
   return (
     <div className="layout-tab-flex-container">
       <label>
@@ -32,11 +27,4 @@ export default function LayoutSelector({ ecs, layout, setLayout }) {
       </label>
     </div>
   );
-}
-
-function updateGrid(ecs, width, height) {
-  ecs.updateResource("grid", (grid) => {
-    grid.w = width;
-    grid.h = height;
-  });
 }

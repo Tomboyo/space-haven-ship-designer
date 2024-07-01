@@ -48,16 +48,6 @@ ReactDOM.createRoot(document.querySelector("#react-app")).render(
 
 canvasUi.refitCanvas(ecs);
 
-/* Temporary hack:
- * The editorUI loads the layout panel conditionally, and the layout panel has
- * a side-effect that sets the initial grid size. Eventually the grid size will
- * be decided in a root react component and passed down to the layout tab so it
- * can display the default grid size as the selected value when it loads. */
-ecs.updateResource("grid", (grid) => {
-  grid.w = layout[0].width;
-  grid.h = layout[0].height;
-});
-
 let renderLoop = () => {
   if (ecs.needsToRun) {
     ecs.run();
