@@ -1,8 +1,12 @@
 import React from "react";
 
 import layouts from "./layouts.js";
+import useToolPalette from "./useToolPalette.jsx";
+
+import panTool from "./tool/panTool.js";
 
 export default function LayoutSelector({ ecs, layout, setLayout }) {
+  useToolPalette({ defaultTool: panTool(ecs) });
   const options = layouts.map(({ label }, i) => (
     <option key={label} value={i}>
       {label}
