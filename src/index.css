@@ -85,7 +85,7 @@ button.active {
 
 
 .modules-carousel {
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 .carousel-shelf {
   flex-wrap: wrap;
