@@ -24,26 +24,9 @@ class Handler {
   mousedown(e) {
     if (e.button === 0) {
       let p = getTileCoordinates(e, this.ecs);
-      let m = newModule(this.module, false, p, this.rotation);
-      this.ecs.newEntity(m);
-      ["empty", "striped"]
-        .filter((key) => m.module.tiles[key])
-        .forEach((key) =>
-          m.module.tiles[key].forEach(({ width, height, offsetX, offsetY }) =>
-            paintHull(this.ecs, {
-              selection: {
-                p0: {
-                  x: p.x + offsetX,
-                  y: p.y + offsetY,
-                },
-                p1: {
-                  x: p.x + offsetX + width - 1,
-                  y: p.y + offsetY + height - 1,
-                },
-              },
-            }),
-          ),
-        );
+      let entity = newModule(this.module, false, p, this.rotation);
+      this.ecs.newEntity(entity);
+      paintHullUnderModule(this.ecs, p, entity.module);
     } else if (e.button === 2) {
       if (this.entity) {
         this.ecs.removeEntity(this.entity);
@@ -87,4 +70,29 @@ class Handler {
       );
     }
   }
+}
+
+/**
+ * Paint hull tiles underneath a module
+ * @param ecs {ECS}
+ * @param p {point} The x,y coordinates of the module
+ * @param module {module} The module component
+ */
+function paintHullUnderModule(ecs, p, module) {
+  ["empty", "striped", "solid"]
+    .filter((key) => module.tiles[key])
+    .forEach((key) =>
+      module.tiles[key].forEach(({ width, height, offsetX, offsetY }) =>
+        paintHull(ecs, {
+          p0: {
+            x: p.x + offsetX,
+            y: p.y + offsetY,
+          },
+          p1: {
+            x: p.x + offsetX + width - 1,
+            y: p.y + offsetY + height - 1,
+          },
+        }),
+      ),
+    );
 }

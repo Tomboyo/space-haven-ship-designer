@@ -3,12 +3,15 @@ import SelectionHandler from "./selectionHandler.js";
 import * as tool from "./tool.js";
 
 export default function hullTool(ecs, onCancel) {
-  return tool.from("hull", new SelectionHandler(ecs, onCancel, paintHull));
+  return tool.from(
+    "hull",
+    new SelectionHandler(ecs, onCancel, (ecs, entity) =>
+      paintHull(ecs, entity.selection),
+    ),
+  );
 }
 
-export function paintHull(ecs, entity) {
-  let p0 = entity.selection.p0;
-  let p1 = entity.selection.p1;
+export function paintHull(ecs, { p0, p1 }) {
   let [x0, x1] = p0.x < p1.x ? [p0.x, p1.x] : [p1.x, p0.x];
   let [y0, y1] = p0.y < p1.y ? [p0.y, p1.y] : [p1.y, p0.y];
 
