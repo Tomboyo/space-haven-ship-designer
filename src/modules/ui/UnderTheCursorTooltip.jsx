@@ -3,7 +3,7 @@ import React from "react";
 import * as util from "../util.js";
 
 export default function UnderTheCursorTooltip({ ecs }) {
-  const [hovered, setHovered] = React.useState([]);
+  const [hovered, setHovered] = React.useState(new Map());
 
   React.useEffect(() => {
     const canvas = document.querySelector("#canvas");
@@ -17,22 +17,30 @@ export default function UnderTheCursorTooltip({ ecs }) {
     return () => canvas.removeEventListener("mousemove", listener);
   }, [hovered, ecs]);
 
+  const content =
+    hovered.size > 0 ? (
+      [...hovered.entries()].map(([k, v]) => {
+        const count = v > 1 ? ` (${v})` : "";
+        return (
+          <li key={k}>
+            {k}
+            {count}
+          </li>
+        );
+      })
+    ) : (
+      <li>Nothing.</li>
+    );
   return (
     <div className="under-the-cursor-tooltip">
       Under the cursor:
-      <ul>
-        {hovered.length ? (
-          hovered.map((label) => <li key={label}>{label}</li>)
-        ) : (
-          <li>Nothing.</li>
-        )}
-      </ul>
+      <ul>{content}</ul>
     </div>
   );
 }
 
 function getHoveredModules(ecs, e) {
-  let acc = [];
+  let acc = new Map();
   ecs.entityQuery([], ["module"], ({ module, position: { x, y } }) => {
     if (module.isGhost) {
       return;
@@ -45,7 +53,7 @@ function getHoveredModules(ecs, e) {
         util.getTileCoordinates(e, ecs),
       )
     ) {
-      acc.push(module.name);
+      acc.set(module.name, (acc.get(module.name) || 0) + 1);
     }
   });
   return acc;
