@@ -4,8 +4,7 @@ import { createEcs } from "./modules/ecs.js";
 import { save, load } from "./modules/save.js";
 
 import * as canvasUi from "./modules/ui/canvas.js";
-import EditingTools from "./modules/ui/EditingTools.jsx";
-import UnderTheCursorTooltip from "./modules/ui/UnderTheCursorTooltip.jsx";
+import App from "./App.jsx";
 
 import layout from "./modules/ui/layouts.js";
 
@@ -44,10 +43,7 @@ ecs.registerSystems([
 let resources = { ecs };
 canvasUi.install(resources);
 ReactDOM.createRoot(document.querySelector("#react-app")).render(
-  <>
-    <EditingTools ecs={ecs} />
-    <UnderTheCursorTooltip ecs={ecs} />
-  </>
+  <App ecs={ecs} />,
 );
 
 canvasUi.refitCanvas(ecs);

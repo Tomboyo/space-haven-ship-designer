@@ -2,7 +2,7 @@ import React from "react";
 
 import layouts from "./layouts.js";
 
-export default function LayoutSelector({ ecs }) {
+export default function LayoutSelector({ ecs, layout, setLayout }) {
   const options = layouts.map(({ label }, i) => (
     <option key={label} value={i}>
       {label}
@@ -10,19 +10,19 @@ export default function LayoutSelector({ ecs }) {
   ));
 
   function onChange(e) {
-    const { width, height } = layouts[e.target.value];
-    updateGrid(ecs, width, height);
+    setLayout(e.target.value);
   }
 
   React.useEffect(() => {
-    updateGrid(ecs, layouts[0].width, layouts[0].height);
-  }, [ecs]);
+    let { width, height } = layouts[layout];
+    updateGrid(ecs, width, height);
+  }, [ecs, layout]);
 
   return (
     <div className="layout-tab-flex-container">
       <label>
         Select layout:
-        <select id="layout-select" onChange={onChange}>
+        <select id="layout-select" onChange={onChange} value={layout}>
           {options}
         </select>
       </label>

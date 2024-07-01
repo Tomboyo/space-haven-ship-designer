@@ -3,7 +3,7 @@ import React from "react";
 import PaintToolPalette from "./PaintToolPalette.jsx";
 import LayoutSelector from "./LayoutSelector.jsx";
 
-export default function EditingTools({ ecs }) {
+export default function EditingTools({ ecs, layout, setLayout }) {
   const [openTab, setOpenTab] = React.useState("paint");
 
   return (
@@ -26,7 +26,7 @@ export default function EditingTools({ ecs }) {
         {openTab === "paint" ? (
           <PaintToolPalette ecs={ecs} />
         ) : (
-          <LayoutSelector ecs={ecs} />
+          <LayoutSelector ecs={ecs} layout={layout} setLayout={setLayout} />
         )}
       </div>
     </div>
