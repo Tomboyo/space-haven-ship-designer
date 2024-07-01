@@ -19,11 +19,13 @@ export default function LayoutSelector({ ecs }) {
   }, [ecs]);
 
   return (
-    <div id="layout-tab-flex-container">
-      <label htmlFor="layout-select">Select layout:</label>
-      <select id="layout-select" onChange={onChange}>
-        {options}
-      </select>
+    <div className="layout-tab-flex-container">
+      <label>
+        Select layout:
+        <select id="layout-select" onChange={onChange}>
+          {options}
+        </select>
+      </label>
     </div>
   );
 }

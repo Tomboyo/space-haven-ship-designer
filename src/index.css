@@ -93,7 +93,7 @@ button.active {
 
 
 
-#layout-tab-flex-container {
+.layout-tab-flex-container {
   display: flex;
   flex-direction: row;
   gap: 2rem;
