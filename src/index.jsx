@@ -45,9 +45,9 @@ let resources = { ecs };
 canvasUi.install(resources);
 ReactDOM.createRoot(document.querySelector("#react-app")).render(
   <>
-    <EditingTools ecs={ecs} />,
+    <EditingTools ecs={ecs} />
     <UnderTheCursorTooltip ecs={ecs} />
-  </>,
+  </>
 );
 
 canvasUi.refitCanvas(ecs);
