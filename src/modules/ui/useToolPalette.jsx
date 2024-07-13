@@ -3,41 +3,64 @@ import React from "react";
 import ToolButton from "./ToolButton.jsx";
 import * as tool from "./tool/tool.js";
 
-export default function useToolPalette({ defaultTool }) {
-  const [activeTool, setActiveTool] = React.useState(defaultTool);
+export default function useToolPalette({
+  defaultToolName,
+  defaultToolFactory,
+}) {
+  const [currentToolFactory, setCurrentToolFactory] = React.useState({
+    name: defaultToolName,
+    f: defaultToolFactory,
+  });
 
   const PaletteToolButton = React.useMemo(
     () =>
-      function PaletteToolButton({ makeTool, children }) {
-        function toggleTool(tool) {
-          if (tool.name === activeTool.name) {
-            setActiveTool(defaultTool);
+      function PaletteToolButton({ toolName, toolFactory, children }) {
+        function toggleToolFactory() {
+          if (toolName === currentToolFactory.name) {
+            setCurrentToolFactory({
+              name: defaultToolName,
+              f: defaultToolFactory,
+            });
           } else {
-            setActiveTool(tool);
+            setCurrentToolFactory({
+              name: toolName,
+              f: toolFactory,
+            });
           }
         }
 
-        function cancelTool() {
-          setActiveTool(defaultTool);
-        }
-
-        const tool = makeTool(cancelTool);
         return (
           <ToolButton
-            active={activeTool.name === tool.name}
-            onClick={() => toggleTool(tool)}
+            active={currentToolFactory.name === toolName}
+            onClick={toggleToolFactory}
           >
             {children}
           </ToolButton>
         );
       },
-    [activeTool, setActiveTool, defaultTool],
+    [
+      currentToolFactory,
+      setCurrentToolFactory,
+      defaultToolFactory,
+      defaultToolName,
+    ],
   );
 
   React.useEffect(() => {
-    tool.activate(activeTool);
-    return () => tool.deactivate(activeTool);
-  }, [activeTool]);
+    let onCancel = () =>
+      setCurrentToolFactory({
+        name: defaultToolName,
+        f: defaultToolFactory,
+      });
+    let pickedTool = currentToolFactory.f(onCancel);
+    tool.activate(pickedTool);
+    return () => tool.deactivate(pickedTool);
+  }, [
+    currentToolFactory,
+    setCurrentToolFactory,
+    defaultToolFactory,
+    defaultToolName,
+  ]);
 
   return {
     PaletteToolButton,

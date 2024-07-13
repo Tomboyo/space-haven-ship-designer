@@ -6,13 +6,12 @@ import { save, load } from "./modules/save.js";
 import * as canvasUi from "./modules/ui/canvas.js";
 import App from "./App.jsx";
 
-import layout from "./modules/ui/layouts.js";
-
 import { ClearCanvasSystem } from "./modules/systems/clearCanvasSystem.js";
 import ModuleSystem from "./modules/systems/moduleSystem.js";
 import { GridRenderSystem } from "./modules/systems/gridRenderSystem.js";
 import SelectionSystem from "./modules/systems/selectionSystem.js";
 import { TileRenderSystem } from "./modules/systems/tileRenderSystem.js";
+import PathRenderSystem from "./modules/systems/pathRenderSystem.js";
 
 function initializeTiles() {
   let tiles = [];
@@ -36,6 +35,7 @@ ecs.registerSystems([
   TileRenderSystem,
   GridRenderSystem,
   ModuleSystem,
+  PathRenderSystem,
   SelectionSystem,
 ]);
 

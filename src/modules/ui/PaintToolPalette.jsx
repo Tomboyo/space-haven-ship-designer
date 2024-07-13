@@ -4,7 +4,7 @@ import { modules } from "../component/modules.js";
 
 import { clearSaveData } from "../save.js";
 
-import useToolPalette from "./useToolPalette.jsx";
+import useToolPalette2 from "./useToolPalette.jsx";
 
 import panTool from "./tool/panTool.js";
 import hullTool from "./tool/hullTool.js";
@@ -12,8 +12,8 @@ import eraseTool from "./tool/eraseTool.js";
 import moduleTool from "./tool/moduleTool.js";
 
 export default function PaintToolPalette({ ecs }) {
-  const { PaletteToolButton } = useToolPalette({
-    defaultTool: panTool(ecs),
+  const { PaletteToolButton } = useToolPalette2({
+    defaultToolFactory: () => panTool(ecs),
   });
   const [activeShelf, setActiveShelf] = React.useState("System");
 
@@ -25,12 +25,15 @@ export default function PaintToolPalette({ ecs }) {
     <div className="flex-button-row big-gap">
       <div className="flex-button-row do-not-shrink">
         <div className="flex-button-row">
-          <PaletteToolButton makeTool={(cancel) => hullTool(ecs, cancel)}>
+          <PaletteToolButton
+            toolName="pan"
+            toolFactory={(cancel) => hullTool(ecs, cancel)}
+          >
             Paint Hull
           </PaletteToolButton>
           <PaletteToolButton
             toolName="erase"
-            makeTool={(cancel) => eraseTool(ecs, cancel)}
+            toolFactory={(cancel) => eraseTool(ecs, cancel)}
           >
             Erase
           </PaletteToolButton>
@@ -81,7 +84,11 @@ function CarouselShelf({ ecs, modules, PaletteToolButton }) {
     const toolName = `module ${module.name}`;
     const makeTool = (cancel) => moduleTool(ecs, module, cancel);
     return (
-      <PaletteToolButton key={toolName} makeTool={makeTool}>
+      <PaletteToolButton
+        key={toolName}
+        toolName={toolName}
+        toolFactory={makeTool}
+      >
         {module.name}
       </PaletteToolButton>
     );

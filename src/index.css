@@ -110,3 +110,10 @@ button.active {
   color: white;
 }
 
+
+
+.mouse-tool-tip {
+  position: absolute;
+  padding: 0.5rem;
+  color: white;
+}
