@@ -4,7 +4,7 @@ import PaintToolPalette from "./PaintToolPalette.jsx";
 import LayoutSelector from "./LayoutSelector.jsx";
 import Pathing from "./Pathing.jsx";
 
-export default function EditingTools({ ecs, layout, setLayout }) {
+export default function TabBar({ ecs, layout, setLayout }) {
   const [openTab, setOpenTab] = React.useState("paint");
 
   return (
