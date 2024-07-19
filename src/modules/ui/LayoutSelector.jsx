@@ -19,7 +19,7 @@ export default function LayoutSelector({ ecs, layout, setLayout }) {
   }
 
   return (
-    <div className="layout-tab-flex-container">
+    <div className="tab-body layout-tab-flex-container">
       <label>
         Select layout:&nbsp;
         <select id="layout-select" onChange={onChange} value={layout}>

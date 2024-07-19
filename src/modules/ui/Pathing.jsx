@@ -25,7 +25,7 @@ export default function Pathing({ ecs }) {
   }
 
   return (
-    <div>
+    <div className="tab-body">
       <PaletteToolButton
         toolName="path"
         toolFactory={(onCancel) =>

@@ -22,30 +22,32 @@ export default function PaintToolPalette({ ecs }) {
   }
 
   return (
-    <div className="flex-button-row big-gap">
-      <div className="flex-button-row do-not-shrink">
-        <div className="flex-button-row">
-          <PaletteToolButton
-            toolName="pan"
-            toolFactory={(cancel) => hullTool(ecs, cancel)}
-          >
-            Paint Hull
-          </PaletteToolButton>
-          <PaletteToolButton
-            toolName="erase"
-            toolFactory={(cancel) => eraseTool(ecs, cancel)}
-          >
-            Erase
-          </PaletteToolButton>
-          <ClearAll ecs={ecs} />
+    <div className="tab-body">
+      <div className="flex-button-row big-gap">
+        <div className="flex-button-row do-not-shrink">
+          <div className="flex-button-row">
+            <PaletteToolButton
+              toolName="pan"
+              toolFactory={(cancel) => hullTool(ecs, cancel)}
+            >
+              Paint Hull
+            </PaletteToolButton>
+            <PaletteToolButton
+              toolName="erase"
+              toolFactory={(cancel) => eraseTool(ecs, cancel)}
+            >
+              Erase
+            </PaletteToolButton>
+            <ClearAll ecs={ecs} />
+          </div>
         </div>
+        <ModulesCarousel
+          ecs={ecs}
+          PaletteToolButton={PaletteToolButton}
+          changeShelf={changeShelf}
+          activeShelf={activeShelf}
+        />
       </div>
-      <ModulesCarousel
-        ecs={ecs}
-        PaletteToolButton={PaletteToolButton}
-        changeShelf={changeShelf}
-        activeShelf={activeShelf}
-      />
     </div>
   );
 }

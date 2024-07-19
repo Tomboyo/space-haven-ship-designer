@@ -29,8 +29,14 @@ button.active {
 .big-gap {
   gap: 2rem;
 }
+.max-height {
+  height: 100%;
+}
 .do-not-shrink {
   flex-shrink: 0;
+}
+.do-not-grow {
+  flex-grow: 0;
 }
 
 
@@ -70,7 +76,6 @@ button.active {
   margin-right: 0.1rem;
 }
 .tab-body {
-  display: none;
   height: 6.5rem;
   max-height: 6.5rem;
   border: 1px solid white;
@@ -117,3 +122,23 @@ button.active {
   padding: 0.5rem;
   color: white;
 }
+
+
+
+.export-import-tab {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 2rem;
+}
+.export-import-tab > .buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  align-items: flex-start;
+  flex: 0 0;
+}
+.export-import-tab > textarea {
+  flex: 1 0;
+}
+

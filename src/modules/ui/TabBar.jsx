@@ -3,6 +3,7 @@ import React from "react";
 import PaintToolPalette from "./PaintToolPalette.jsx";
 import LayoutSelector from "./LayoutSelector.jsx";
 import Pathing from "./Pathing.jsx";
+import ExportImport from "./ExportImport.jsx";
 
 export default function TabBar({ ecs, layout, setLayout }) {
   const [openTab, setOpenTab] = React.useState("paint");
@@ -28,14 +29,19 @@ export default function TabBar({ ecs, layout, setLayout }) {
         >
           Pathing
         </button>
+        <button
+          className={`tab-header ${openTab === "export/import" ? "active" : ""}`}
+          onClick={() => setOpenTab("export/import")}
+        >
+          Export/Import
+        </button>
       </div>
-      <div className="tab-body">
-        {openTab === "paint" ? <PaintToolPalette ecs={ecs} /> : null}
-        {openTab === "layout" ? (
-          <LayoutSelector ecs={ecs} layout={layout} setLayout={setLayout} />
-        ) : null}
-        {openTab === "pathing" ? <Pathing ecs={ecs} /> : null}
-      </div>
+      {openTab === "paint" ? <PaintToolPalette ecs={ecs} /> : null}
+      {openTab === "layout" ? (
+        <LayoutSelector ecs={ecs} layout={layout} setLayout={setLayout} />
+      ) : null}
+      {openTab === "pathing" ? <Pathing ecs={ecs} /> : null}
+      {openTab === "export/import" ? <ExportImport ecs={ecs} /> : null}
     </div>
   );
 }
