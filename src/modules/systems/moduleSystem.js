@@ -16,6 +16,21 @@ function insetRectArgs({ x, y }, rect, grid, camera, lineWidth) {
   ];
 }
 
+const colors = new Map([
+  ["System", "#bb0000"],
+  ["Airlock", "#bb6900"],
+  ["Storage", "#0060bb"],
+  ["Food", "#7800bb"],
+  ["Resource", "#999300"],
+  ["Power", "#fff600"],
+  ["Life Support", "#7c3700"],
+  ["Facility", "#0e316e"],
+  ["Decorations", "#7c0045"],
+  ["Furniture", "#ff8686"],
+  ["Wall", "#5f5f5f"],
+]);
+const defaultColor = "ff11dd"; // Hot pink
+
 export default [
   "ModuleSystem",
   ["canvas", "camera", "grid"],
@@ -23,21 +38,30 @@ export default [
   (canvas, camera, grid, entities) => {
     let ctx = canvas.getContext("2d");
 
-    entities.forEach(([{ tiles, isGhost }, p]) => {
+    entities.forEach(([{ category, name, tiles, isGhost }, p]) => {
       Object.entries(tiles).forEach(([kind, rects]) => {
         switch (kind) {
           case "solid": {
             ctx.save();
-            ctx.fillStyle = isGhost ? "#0e6e1dbb" : "#0e6e1d";
-            rects.forEach((rect) =>
-              ctx.fillRect(...rectArgs(p, rect, grid, camera)),
-            );
+            let color = colors.get(category) || defaultColor;
+            ctx.fillStyle = isGhost ? color + "bb" : color;
+            if (name.includes("Door")) {
+              ctx.beginPath();
+              rects.forEach((rect) => {
+                ctx.roundRect(...rectArgs(p, rect, grid, camera), grid.s);
+              });
+              ctx.fill();
+            } else {
+              rects.forEach((rect) =>
+                ctx.fillRect(...rectArgs(p, rect, grid, camera)),
+              );
+            }
             ctx.restore();
             break;
           }
           case "wall": {
             ctx.save();
-            ctx.fillStyle = isGhost ? "#0e316ebb" : "#0e316e";
+            ctx.fillStyle = colors.get("Wall") + (isGhost ? "bb" : "");
             rects.forEach((rect) =>
               ctx.fillRect(...rectArgs(p, rect, grid, camera)),
             );
